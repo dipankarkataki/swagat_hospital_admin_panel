@@ -42,67 +42,6 @@
         <!-- Header Nav Start end-->
         <!-- Header Nav End start -->
         <div class="header-action header-action-end">
-            <!-- Language Selector-->
-            <div class="dropdown">
-                <div class="dropdown-toggle" id="nav-lang-dropdown" data-bs-toggle="dropdown">
-                    <div class="header-action-item header-action-item-hoverable flex items-center">
-                        <span class="avatar avatar-circle" data-avatar-size="24">
-                            <img class="avatar-img avatar-circle" src="{{asset('assets/img/countries/us.png')}}" loading="lazy" alt="">
-                        </span>
-                    </div>
-                </div>
-                <ul class="dropdown-menu bottom-end">
-                    <li class="menu-item menu-item-hoverable mb-1 justify-between h-[35px]">
-                        <span class="flex items-center">
-                            <span class="avatar avatar-circle" data-avatar-size="18">
-                                <img class="avatar-img avatar-circle" src="{{asset('assets/img/countries/us.png')}}"
-                                    loading="lazy" alt="">
-                            </span>
-                            <span class="ltr:ml-2 rtl:mr-2">English</span>
-                        </span>
-                        <svg stroke="currentColor" fill="currentColor" stroke-width="0"
-                            viewBox="0 0 20 20" class="text-emerald-500 text-lg" height="1em"
-                            width="1em" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </li>
-                    <li class="menu-item menu-item-hoverable mb-1 justify-between h-[35px]">
-                        <span class="flex items-center">
-                            <span class="avatar avatar-circle" data-avatar-size="18">
-                                <img class="avatar-img avatar-circle" src="{{asset('assets/img/countries/cn.png')}}"
-                                    loading="lazy" alt="">
-                            </span>
-                            <span class="ltr:ml-2 rtl:mr-2">
-                                Chinese
-                            </span>
-                        </span>
-                    </li>
-                    <li class="menu-item menu-item-hoverable mb-1 justify-between h-[35px]">
-                        <span class="flex items-center">
-                            <span class="avatar avatar-circle" data-avatar-size="18">
-                                <img class="avatar-img avatar-circle" src="{{asset('assets/img/countries/sp.png')}}"
-                                    loading="lazy" alt="">
-                            </span>
-                            <span class="ltr:ml-2 rtl:mr-2">
-                                Espanol
-                            </span>
-                        </span>
-                    </li>
-                    <li class="menu-item menu-item-hoverable mb-1 justify-between h-[35px]">
-                        <span class="flex items-center">
-                            <span class="avatar avatar-circle" data-avatar-size="18">
-                                <img class="avatar-img avatar-circle" src="{{asset('assets/img/countries/ar.png')}}"
-                                    loading="lazy" alt="">
-                            </span>
-                            <span class="ltr:ml-2 rtl:mr-2">
-                                Arabic
-                            </span>
-                        </span>
-                    </li>
-                </ul>
-            </div>
             <!-- Notification-->
             <div class="dropdown">
                 <div class="dropdown-toggle" id="nav-notification-dropdown"
@@ -296,18 +235,6 @@
                     </li>
                 </ul>
             </div>
-            <!-- Config-->
-            <div class="text-2xl header-action-item header-action-item-hoverable"
-                data-bs-toggle="modal" data-bs-target="#nav-config">
-                <svg stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24"
-                    height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-                    </path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
-            </div>
             <!-- User Dropdown-->
             <div class="dropdown">
                 <div class="dropdown-toggle" id="user-dropdown" data-bs-toggle="dropdown">
@@ -350,37 +277,6 @@
                                 </svg>
                             </span>
                             <span>Profile</span>
-                        </a>
-                    </li>
-                    <li class="menu-item menu-item-hoverable mb-1 h-[35px]">
-                        <a class="flex gap-2 items-center" href="modern-settings.html">
-                            <span class="text-xl opacity-50">
-                                <svg stroke="currentColor" fill="none" stroke-width="0"
-                                    viewBox="0 0 24 24" height="1em" width="1em"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-                                    </path>
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
-                                    </path>
-                                </svg>
-                            </span>
-                            <span>Account Setting</span>
-                        </a>
-                    </li>
-                    <li class="menu-item menu-item-hoverable mb-1 h-[35px]">
-                        <a class="flex gap-2 items-center" href="modern-activity-log.html">
-                            <span class="text-xl opacity-50">
-                                <svg stroke="currentColor" fill="none" stroke-width="2"
-                                    viewBox="0 0 24 24" stroke-linecap="round"
-                                    stroke-linejoin="round" height="1em" width="1em"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                                </svg>
-                            </span>
-                            <span>Activity Log</span>
                         </a>
                     </li>
                     <li id="menu-item-29-2VewETdxAb" class="menu-item-divider"></li>

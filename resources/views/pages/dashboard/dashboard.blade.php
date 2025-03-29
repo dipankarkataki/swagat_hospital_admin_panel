@@ -167,61 +167,133 @@
                 </div>
             </div>
             <div class="grid grid-cols-1 xl:grid-cols-7 gap-4">
-                {{-- <div class="card card-layout-frame xl:col-span-5">
+                <div class="card card-layout-frame xl:col-span-5">
                     <div class="card-body">
-                        <h4>Lead By Countries</h4>
-                        <div class="grid lg:grid-cols-3 gap-4">
-                            <div class="lg:col-span-2 px-4">
-                                <div id="vmap" class="h-[320px]"></div>
-                            </div>
-                            <div class="flex flex-col justify-center px-4">
-                                <div class="mb-6 flex justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="badge-dot bg-indigo-600"></span>
-                                        <div class="font-semibold">United States of America
-                                        </div>
-                                    </div>
-                                    <div>37.61%</div>
-                                </div>
-                                <div class="mb-6 flex justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="badge-dot bg-blue-500"></span>
-                                        <div class="font-semibold">Brazil</div>
-                                    </div>
-                                    <div>16.79%</div>
-                                </div>
-                                <div class="mb-6 flex justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="badge-dot bg-green-500"></span>
-                                        <div class="font-semibold">India</div>
-                                    </div>
-                                    <div>12.42%</div>
-                                </div>
-                                <div class="mb-6 flex justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="badge-dot bg-yellow-500"></span>
-                                        <div class="font-semibold">China</div>
-                                    </div>
-                                    <div>9.85%</div>
-                                </div>
-                                <div class="mb-6 flex justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="badge-dot bg-pink-500"></span>
-                                        <div class="font-semibold">Algeria</div>
-                                    </div>
-                                    <div>7.68%</div>
-                                </div>
-                                <div class="mb-6 flex justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="badge-dot bg-purple-500"></span>
-                                        <div class="font-semibold">Indonesia</div>
-                                    </div>
-                                    <div>5.11%</div>
-                                </div>
-                            </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h4>Leads</h4>
+                            <button class="btn btn-default btn-sm">View All Leads</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="table-default table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>Email</th>
+                                        <th>Created Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
+                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-1.jpg')}}"
+                                                        loading="lazy">
+                                                </span>
+                                                <span class="font-semibold">Eileen Horton</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="tag rounded-md">New</div>
+                                        </td>
+                                        <td>eileen_h@hotmail.com</td>
+                                        <td><span>12/06/2021 12:53</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
+                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-2.jpg')}}"
+                                                        loading="lazy">
+                                                </span>
+                                                <span class="font-semibold">Terrance Moreno</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div
+                                                class="tag bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100 border-0 rounded">
+                                                Sold</div>
+                                        </td>
+                                        <td>terrance_moreno@infotech.io</td>
+                                        <td><span>23/09/2021 06:40</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
+                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-3.jpg')}}"
+                                                        loading="lazy">
+                                                </span>
+                                                <span class="font-semibold">Ron Vargas</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div
+                                                class="tag bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100 border-0 rounded">
+                                                Sold</div>
+                                        </td>
+                                        <td>ronnie_vergas@infotech.io</td>
+                                        <td><span>23/09/2021 06:40</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
+                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-4.jpg')}}"
+                                                        loading="lazy">
+                                                </span>
+                                                <span class="font-semibold">Luke Cook</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div
+                                                class="tag text-amber-600 bg-amber-100 dark:text-amber-100 dark:bg-amber-500/20 border-0 rounded">
+                                                Not Interested</div>
+                                        </td>
+                                        <td>cookie_lukie@hotmail.com</td>
+                                        <td><span>28/09/2021 12:53</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
+                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-5.jpg')}}"
+                                                        loading="lazy">
+                                                </span>
+                                                <span class="font-semibold">Joyce Freeman</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div
+                                                class="tag bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100 border-0 rounded">
+                                                In Progress</div>
+                                        </td>
+                                        <td>joyce991@infotech.io</td>
+                                        <td><span>24/09/2021 12:53</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
+                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-6.jpg')}}"
+                                                        loading="lazy">
+                                                </span>
+                                                <span class="font-semibold">Samantha
+                                                    Phillips</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="tag rounded-md">New</div>
+                                        </td>
+                                        <td>samanthaphil@infotech.io</td>
+                                        <td><span>02/10/2021 12:53</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </div> --}}
+                </div>
                 <div class="card card-layout-frame xl:col-span-2">
                     <div class="card-body">
                         <h4>Email Sent</h4>
@@ -254,165 +326,6 @@
                                 <h4 class="font-bold">Average</h4>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card card-layout-frame">
-                <div class="card-body">
-                    <div class="flex items-center justify-between mb-4">
-                        <h4>Leads</h4>
-                        <button class="btn btn-default btn-sm">View All Leads</button>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="table-default table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Status</th>
-                                    <th>Email</th>
-                                    <th>Created Time</th>
-                                    <th>Assignee</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center gap-2">
-                                            <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-1.jpg')}}"
-                                                    loading="lazy">
-                                            </span>
-                                            <span class="font-semibold">Eileen Horton</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="tag rounded-md">New</div>
-                                    </td>
-                                    <td>eileen_h@hotmail.com</td>
-                                    <td><span>12/06/2021 12:53</span></td>
-                                    <td>
-                                        <div
-                                            class="tag rounded-md font-bold cursor-pointer select-none text-gray-900 dark:text-gray-100">
-                                            Carrie Harris
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center gap-2">
-                                            <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-2.jpg')}}"
-                                                    loading="lazy">
-                                            </span>
-                                            <span class="font-semibold">Terrance Moreno</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div
-                                            class="tag bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100 border-0 rounded">
-                                            Sold</div>
-                                    </td>
-                                    <td>terrance_moreno@infotech.io</td>
-                                    <td><span>23/09/2021 06:40</span></td>
-                                    <td>
-                                        <div
-                                            class="tag rounded-md font-bold cursor-pointer select-none text-gray-900 dark:text-gray-100">
-                                            Toni Lane</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center gap-2">
-                                            <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-3.jpg')}}"
-                                                    loading="lazy">
-                                            </span>
-                                            <span class="font-semibold">Ron Vargas</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div
-                                            class="tag bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100 border-0 rounded">
-                                            Sold</div>
-                                    </td>
-                                    <td>ronnie_vergas@infotech.io</td>
-                                    <td><span>23/09/2021 06:40</span></td>
-                                    <td>
-                                        <div
-                                            class="tag rounded-md font-bold cursor-pointer select-none text-gray-900 dark:text-gray-100">
-                                            Joanne Mendoza</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center gap-2">
-                                            <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-4.jpg')}}"
-                                                    loading="lazy">
-                                            </span>
-                                            <span class="font-semibold">Luke Cook</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div
-                                            class="tag text-amber-600 bg-amber-100 dark:text-amber-100 dark:bg-amber-500/20 border-0 rounded">
-                                            Not Interested</div>
-                                    </td>
-                                    <td>cookie_lukie@hotmail.com</td>
-                                    <td><span>28/09/2021 12:53</span></td>
-                                    <td>
-                                        <div
-                                            class="tag rounded-md font-bold cursor-pointer select-none text-gray-900 dark:text-gray-100">
-                                            Lorraine Carr</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center gap-2">
-                                            <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-5.jpg')}}"
-                                                    loading="lazy">
-                                            </span>
-                                            <span class="font-semibold">Joyce Freeman</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div
-                                            class="tag bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100 border-0 rounded">
-                                            In Progress</div>
-                                    </td>
-                                    <td>joyce991@infotech.io</td>
-                                    <td><span>24/09/2021 12:53</span></td>
-                                    <td>
-                                        <div
-                                            class="tag rounded-md font-bold cursor-pointer select-none text-gray-900 dark:text-gray-100">
-                                            Myrtle Mason</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center gap-2">
-                                            <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-6.jpg')}}"
-                                                    loading="lazy">
-                                            </span>
-                                            <span class="font-semibold">Samantha
-                                                Phillips</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="tag rounded-md">New</div>
-                                    </td>
-                                    <td>samanthaphil@infotech.io</td>
-                                    <td><span>02/10/2021 12:53</span></td>
-                                    <td>
-                                        <div
-                                            class="tag rounded-md font-bold cursor-pointer select-none text-gray-900 dark:text-gray-100">
-                                            Perry Ward</div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
