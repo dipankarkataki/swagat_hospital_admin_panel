@@ -25,7 +25,8 @@
                 <!-- Side Nav end-->
 
                 <!-- Header Nav start-->
-                <div class="flex flex-col flex-auto min-h-screen min-w-0 relative w-full bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700">
+                <div
+                    class="flex flex-col flex-auto min-h-screen min-w-0 relative w-full bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700">
                     @include('layout.header.header')
                     <!-- Popup start -->
                     <div class="modal fade" id="nav-config" tabindex="-1" aria-hidden="true">
@@ -53,8 +54,7 @@
                                                 </div>
                                                 <div>
                                                     <label class="switcher">
-                                                        <input name="dark-mode-toggle" type="checkbox"
-                                                            value="">
+                                                        <input name="dark-mode-toggle" type="checkbox" value="">
                                                         <span class="switcher-toggle"></span>
                                                     </label>
                                                 </div>
@@ -87,9 +87,8 @@
                                                     </label>
                                                     <label class="radio-label inline-flex mr-3"
                                                         for="nav-mode-radio-themed">
-                                                        <input id="nav-mode-radio-themed" type="radio"
-                                                            value="themed" name="nav-mode-radio-group"
-                                                            class="radio text-primary-600">
+                                                        <input id="nav-mode-radio-themed" type="radio" value="themed"
+                                                            name="nav-mode-radio-group" class="radio text-primary-600">
                                                         <span>Themed</span>
                                                     </label>
                                                 </div>
@@ -127,8 +126,7 @@
                                                                 <img src="{{ asset('assets/img/thumbs/layouts/classic.jpg') }}"
                                                                     alt="" class="rounded-md dark:hidden">
                                                                 <img src="{{ asset('assets/img/thumbs/layouts/classic-dark.jpg') }}"
-                                                                    alt=""
-                                                                    class="rounded-md hidden dark:block">
+                                                                    alt="" class="rounded-md hidden dark:block">
                                                             </div>
                                                             <div class="mt-2 font-semibold">Classic</div>
                                                         </div>
@@ -239,9 +237,9 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <svg stroke="currentColor" fill="currentColor"
-                                                        stroke-width="0" viewBox="0 0 20 20" aria-hidden="true"
-                                                        class="text-lg" height="1em" width="1em"
+                                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                        viewBox="0 0 20 20" aria-hidden="true" class="text-lg"
+                                                        height="1em" width="1em"
                                                         xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd"
                                                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
@@ -269,9 +267,9 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <svg stroke="currentColor" fill="currentColor"
-                                                        stroke-width="0" viewBox="0 0 20 20" aria-hidden="true"
-                                                        class="text-lg" height="1em" width="1em"
+                                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                        viewBox="0 0 20 20" aria-hidden="true" class="text-lg"
+                                                        height="1em" width="1em"
                                                         xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd"
                                                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
@@ -300,9 +298,9 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <svg stroke="currentColor" fill="currentColor"
-                                                        stroke-width="0" viewBox="0 0 20 20" aria-hidden="true"
-                                                        class="text-lg" height="1em" width="1em"
+                                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                        viewBox="0 0 20 20" aria-hidden="true" class="text-lg"
+                                                        height="1em" width="1em"
                                                         xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd"
                                                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
@@ -342,12 +340,11 @@
                                                             <div class="menu-collapse-item">
                                                                 <svg class="menu-item-icon" stroke="currentColor"
                                                                     fill="none" stroke-width="0"
-                                                                    viewBox="0 0 24 24" height="1em"
-                                                                    width="1em"
+                                                                    viewBox="0 0 24 24" height="1em" width="1em"
                                                                     xmlns="http://www.w3.org/2000/svg">
                                                                     <path stroke-linecap="round"
                                                                         stroke-linejoin="round" stroke-width="2"
-                                                                        d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                                        d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z">
                                                                     </path>
                                                                 </svg>
                                                                 <span class="menu-item-text">Portfolio</span>
@@ -356,28 +353,15 @@
                                                                 <li data-menu-item="modern-project-dashboard"
                                                                     class="menu-item">
                                                                     <a class="h-full w-full flex items-center"
-                                                                        href="stacked-side-project-dashboard.html">
-                                                                        <span>Dashboard</span>
+                                                                        href="/portfolio/list-of-doctors">
+                                                                        <span>List of Doctors'</span>
                                                                     </a>
                                                                 </li>
                                                                 <li data-menu-item="modern-project-list"
                                                                     class="menu-item">
                                                                     <a class="h-full w-full flex items-center"
                                                                         href="stacked-side-project-list.html">
-                                                                        <span>Project List</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li data-menu-item="modern-scrum-board"
-                                                                    class="menu-item">
-                                                                    <a class="h-full w-full flex items-center"
-                                                                        href="stacked-side-scrum-board.html">
-                                                                        <span>Scrum Board</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li data-menu-item="modern-issue" class="menu-item">
-                                                                    <a class="h-full w-full flex items-center"
-                                                                        href="stacked-side-issue.html">
-                                                                        <span>Issue</span>
+                                                                        <span>Create</span>
                                                                     </a>
                                                                 </li>
                                                             </ul>
@@ -386,8 +370,7 @@
                                                             <div class="menu-collapse-item">
                                                                 <svg class="menu-item-icon" stroke="currentColor"
                                                                     fill="none" stroke-width="0"
-                                                                    viewBox="0 0 24 24" height="1em"
-                                                                    width="1em"
+                                                                    viewBox="0 0 24 24" height="1em" width="1em"
                                                                     xmlns="http://www.w3.org/2000/svg">
                                                                     <path stroke-linecap="round"
                                                                         stroke-linejoin="round" stroke-width="2"
@@ -435,14 +418,8 @@
                                                         </li>
                                                         <li class="menu-collapse">
                                                             <div class="menu-collapse-item">
-                                                                <svg class="menu-item-icon" stroke="currentColor"
-                                                                    fill="none" stroke-width="0"
-                                                                    viewBox="0 0 24 24" height="1em"
-                                                                    width="1em"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round" stroke-width="2"
-                                                                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                                                <svg class="menu-item-icon" stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                                                 </svg>
                                                                 <span class="menu-item-text">Consultation</span>
                                                             </div>
@@ -495,8 +472,7 @@
                                                             <div class="menu-collapse-item">
                                                                 <svg class="menu-item-icon" stroke="currentColor"
                                                                     fill="none" stroke-width="0"
-                                                                    viewBox="0 0 24 24" height="1em"
-                                                                    width="1em"
+                                                                    viewBox="0 0 24 24" height="1em" width="1em"
                                                                     xmlns="http://www.w3.org/2000/svg">
                                                                     <path stroke-linecap="round"
                                                                         stroke-linejoin="round" stroke-width="2"
@@ -520,15 +496,13 @@
                                                                         <span>Portfolio</span>
                                                                     </a>
                                                                 </li>
-                                                                <li data-menu-item="modern-market"
-                                                                    class="menu-item">
+                                                                <li data-menu-item="modern-market" class="menu-item">
                                                                     <a class="h-full w-full flex items-center"
                                                                         href="stacked-side-market.html">
                                                                         <span>Market</span>
                                                                     </a>
                                                                 </li>
-                                                                <li data-menu-item="modern-wallets"
-                                                                    class="menu-item">
+                                                                <li data-menu-item="modern-wallets" class="menu-item">
                                                                     <a class="h-full w-full flex items-center"
                                                                         href="stacked-side-wallets.html">
                                                                         <span>Wallets</span>
@@ -538,15 +512,8 @@
                                                         </li>
                                                         <li class="menu-collapse">
                                                             <div class="menu-collapse-item">
-                                                                <svg class="menu-item-icon" stroke="currentColor"
-                                                                    fill="none" stroke-width="0"
-                                                                    viewBox="0 0 24 24" height="1em"
-                                                                    width="1em"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round" stroke-width="2"
-                                                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-                                                                    </path>
+                                                                <svg class="menu-item-icon" stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                                                                 </svg>
                                                                 <span class="menu-item-text">Hospital</span>
                                                             </div>
@@ -609,12 +576,19 @@
 
     <script src="{{ asset('assets/js/vendors.min.js') }}"></script>
     <!-- Other Vendors JS -->
-    {{-- <script src="{{ asset('assets/vendors/jqvmap/jquery.vmap.js') }}"></script>
-    <script src="{{ asset('assets/vendors/jqvmap/jquery.vmap.js') }}"></script> --}}
+    <script src="{{ asset('assets/vendors/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/datatables/dataTables.custom-ui.min.js') }}"></script>
+
+    <!-- Page js -->
+    <script src="{{ asset('assets/js/pages/customers.js') }}"></script>
     <!-- Page js -->
     <script src="{{ asset('assets/js/pages/crm-dashboard.js') }}"></script>
     <!-- Core JS -->
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
+    
+    <!-- Custome Scripts -->
+    @yield('custom-scripts')
 </body>
 
 </html>
