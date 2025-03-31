@@ -8,15 +8,16 @@
             </div>
             <div class="card card-border">
                 <div class="card-body">
-                    <form id="createPortfolioForm">
+                    <form id="createPortfolioForm" method="POST" action="{{ route('portfolio.create') }}">
+                        @csrf
                         <div class="form-container">
                             <div class="form-item">
                                 <div class="grid xl:grid-cols-3">
                                     <div class="col-span-1 form-item vertical">
                                         <label class="form-label mb-2">Profile Picture *</label>
-                                        <div class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]">
+                                        <div class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]" @error('uploadProfilePicture') style="border: 2px dashed rgb(239 68 68)" @enderror>
                                             <div>
-                                                <input class="upload-input draggable" id="uploadProfilePicture" name="uploadProfilePicture" type="file" required>
+                                                <input class="upload-input draggable" id="uploadProfilePicture" name="uploadProfilePicture" type="file">
                                             </div>
                                             <div class="text-center">
                                                 <svg id="uploadImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -32,9 +33,12 @@
                                                 <p class="mt-1 opacity-60 dark:text-white">Support: jpeg, png</p>
                                             </div>
                                         </div>
+                                        @error('uploadProfilePicture')
+                                            <div class="text-red-500 mt-2">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="col-span-2 flex md:justify-end">
-                                        <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white">
+                                        <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white" id="acceptingAppointments" data-status=1>
                                             Accepting Appointments
                                         </button>
                                     </div>
@@ -43,17 +47,20 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Full Name *</label>
                                 <div>
-                                    <input type="text" class="input form-control" name="fullName"
-                                        placeholder="Required *" required>
+                                    <input type="text" class="input form-control @error('fullName') input-invalid @enderror" name="fullName" placeholder="e.g Jhon Doe" value="{{ old('fullName') }}">
                                 </div>
+                                @error('fullName')
+                                    <div class="text-red-500 mt-2">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Choose Years of Experience *</label>
                                 <div>
-                                    <select class="input" name="yearsOfExperience" required>
-                                        <option selected>Choose years</option>
+                                    <select class="input" name="yearsOfExperience"  >
+                                        <option value="">Choose years</option>
                                         @for ($i = 1; $i <= 60; $i++)
-                                            <option value="{{ $i }}">Years of Experience : {{ $i }}
+                                            <option value="{{ $i }}" {{ old('yearsOfExperience') == $i ? 'selected' : '' }}>
+                                                Years of Experience : {{ $i }}
                                             </option>
                                         @endfor
                                     </select>
@@ -62,30 +69,31 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Choose Linked Department *</label>
                                 <div>
-                                    <select class="input" name="department" required>
-                                        <option selected>Choose department</option>
-                                        <option value="gynacology">Gynachology</option>
-                                        <option value="medicine">Medicine</option>
+                                    <select class="input" name="department">
+                                        <option value="">Choose department</option>
+                                        <option value="gynacology" {{ old('department') === 'gynacology' ? 'selected' : '' }}>Gynachology</option>
+                                        <option value="medicine" {{ old('department') === 'medicine' ? 'selected' : '' }}>Medicine</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Languages Speak</label>
                                 <div>
-                                    <input type="text" class="input form-control" name="languagesSpeak" placeholder="Enter languages separated by comma(,)">
+                                    <input type="text" class="input form-control" name="languagesSpeak" placeholder="Enter languages separated by comma(,)" value="{{ old('languagesSpeak') }}">
                                 </div>
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Brief Description *</label>
                                 <div>
-                                    <textarea class="input input-textarea" placeholder="Write a brief description about the doctor, his work etc." required></textarea>
+                                    <textarea class="input input-textarea" name="briefDescription" placeholder="Write a brief description about the doctor, his work etc."  >{{ old('briefDescription') }}</textarea>
                                 </div>
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Add Expertise</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        <input class="input expertise" type="text" name="expertise[]" placeholder="e.g Expert in Robotic Surgery">
+                                        @php $expertises = old('expertise', []); @endphp
+                                        <input class="input expertise" type="text" name="expertise[]" placeholder="e.g Expert in Robotic Surgery" value="{{ $expertises[0] ?? '' }}">
                                         <button class="btn btn-solid" id="addExpertiseBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -100,6 +108,22 @@
                                             </span>
                                         </button>
                                     </div>
+                                    @foreach(array_slice($expertises, 1) as $expertise)
+                                        <div class="input-group mb-4 expertise-item">
+                                            <input class="input expertise" type="text" name="expertise[]" placeholder="e.g Expert in Robotic Surgery"
+                                                value="{{ $expertise }}">
+                                            <button class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white removeExpertiseBtn">
+                                                <span class="flex items-center justify-center gap-2">
+                                                    <span class="text-lg">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Del</span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    @endforeach
                                     <div id="expertiseList"></div>
                                 </div>
                             </div>
@@ -107,7 +131,8 @@
                                 <label class="form-label mb-2">Add Membership</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        <input class="input membership" type="text" name="membership[]" placeholder="e.g Member of Nephrology Association of Karnataka">
+                                        @php $memberships = old('membership', []); @endphp
+                                        <input class="input membership" type="text" name="membership[]" placeholder="e.g Member of Nephrology Association of Karnataka" value="{{ $memberships[0] ?? '' }}">  
                                         <button class="btn btn-solid" id="addMembershipBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -122,6 +147,21 @@
                                             </span>
                                         </button>
                                     </div>
+                                    @foreach(array_slice($memberships, 1) as $membership)
+                                        <div class="input-group mb-4 membership-item">
+                                            <input class="input membership" type="text" name="membership[]" placeholder="e.g Member of Nephrology Association of Karnataka" value="{{ $membership }}">
+                                            <button class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white removeMembershipBtn">
+                                                <span class="flex items-center justify-center gap-2">
+                                                    <span class="text-lg">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Del</span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    @endforeach
                                     <div id="membershipList"></div>
                                 </div>
                             </div>
@@ -129,7 +169,8 @@
                                 <label class="form-label mb-2">Add Research And Publications</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        <input class="input research" type="text" name="research[]" placeholder="e.g Collagen type III diseases – case reports – IJPM – March 2016">
+                                        @php $researches = old('research', []); @endphp
+                                        <input class="input research" type="text" name="research[]" placeholder="e.g Collagen type III diseases – case reports – IJPM – March 2016" value="{{ $researches[0] ?? '' }}">
                                         <button class="btn btn-solid" id="addResearchBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -144,6 +185,21 @@
                                             </span>
                                         </button>
                                     </div>
+                                    @foreach(array_slice($researches, 1) as $research)
+                                        <div class="input-group mb-4 research-item">
+                                            <input class="input research" type="text" name="research[]" placeholder="e.g Collagen type III diseases – case reports – IJPM – March 2016" value="{{ $research }}">
+                                            <button class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white removeResearchBtn">
+                                                <span class="flex items-center justify-center gap-2">
+                                                    <span class="text-lg">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Del</span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    @endforeach
                                     <div id="researchList"></div>
                                 </div>
                             </div>
@@ -151,7 +207,8 @@
                                 <label class="form-label mb-2">Add Awards And Achievements</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        <input class="input awards" type="text" name="awards[]" placeholder="e.g Best Surgeon Award">
+                                        @php $awards = old('awards', []); @endphp
+                                        <input class="input awards" type="text" name="awards[]" placeholder="e.g Best Surgeon Award" value={{ $awards[0] ?? '' }}>
                                         <button class="btn btn-solid" id="addAwardsBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -166,6 +223,21 @@
                                             </span>
                                         </button>
                                     </div>
+                                    @foreach(array_slice($awards, 1) as $award)
+                                        <div class="input-group mb-4 awards-item">
+                                            <input class="input awards" type="text" name="awards[]" placeholder="e.g Collagen type III diseases – case reports – IJPM – March 2016" value={{ $award }}>
+                                            <button class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white removeAwardsBtn">
+                                                <span class="flex items-center justify-center gap-2">
+                                                    <span class="text-lg">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Del</span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    @endforeach
                                     <div id="awardsList"></div>
                                 </div>
                             </div>
@@ -173,7 +245,8 @@
                                 <label class="form-label mb-2">Set Available Date And Time</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        <input class="input availableDate" type="datetime-local" name="availableDate[]">
+                                        @php $availableDates = old('availableDate', []); @endphp
+                                        <input class="input availableDate" type="datetime-local" name="availableDate[]" value={{ $availableDates[0] ?? '' }}>
                                         <button class="btn btn-solid" id="addAvailableDateBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -188,16 +261,31 @@
                                             </span>
                                         </button>
                                     </div>
+                                    @foreach(array_slice($availableDates, 1) as $availableDate)
+                                        <div class="input-group mb-4 available-date-item">
+                                            <input class="input availableDate" type="datetime-local" name="availableDate[]" value={{ $availableDate }}>
+                                            <button class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white removeAvailableDateTimeBtn">
+                                                <span class="flex items-center justify-center gap-2">
+                                                    <span class="text-lg">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Del</span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    @endforeach
                                     <div id="availableDateTimeList"></div>
                                 </div>
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Assign Hospital *</label>
                                 <div>
-                                    <select class="input" name="hospital" required>
+                                    <select class="input" name="hospital">
                                         <option selected>Choose hospital</option>
-                                        <option value="gynacology">Gate No 3, Maligaon</option>
-                                        <option value="medicine">Santipur</option>
+                                        <option value="maligaon" {{ old('hospital') === 'maligaon' ? 'selected' : ''}}>Gate No 3, Maligaon</option>
+                                        <option value="santipur" {{ old('hospital') === 'santipur' ? 'selected' : ''}}>Santipur</option>
                                     </select>
                                 </div>
                             </div>
