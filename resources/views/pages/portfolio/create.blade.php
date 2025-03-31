@@ -8,22 +8,21 @@
             </div>
             <div class="card card-border">
                 <div class="card-body">
-                    <form id="form-validation">
+                    <form id="createPortfolioForm">
                         <div class="form-container">
                             <div class="form-item">
-                                <div class="grid xl:grid-cols-4">
-                                    <div class="form-item vertical">
+                                <div class="grid xl:grid-cols-3">
+                                    <div class="col-span-1 form-item vertical">
                                         <label class="form-label mb-2">Profile Picture *</label>
                                         <div
                                             class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]">
                                             <div>
-                                                <input class="upload-input draggable" name="uploadProfilePicture"
-                                                    type="file" title="" value="" required>
+                                                <input class="upload-input draggable" name="uploadProfilePicture" type="file" required>
                                             </div>
                                             <div class="text-center">
-                                                <svg class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
+                                                <svg class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor" class="size-6">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                                                 </svg>
@@ -35,6 +34,11 @@
                                                 <p class="mt-1 opacity-60 dark:text-white">Support: jpeg, png</p>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-span-2 flex md:justify-end">
+                                        <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white">
+                                            Accepting Appointments
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -70,8 +74,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Languages Speak</label>
                                 <div>
-                                    <input type="text" class="input form-control" name="languagesSpeak"
-                                        placeholder="Enter languages separated by comma(,)">
+                                    <input type="text" class="input form-control" name="languagesSpeak" placeholder="Enter languages separated by comma(,)">
                                 </div>
                             </div>
                             <div class="form-item">
@@ -85,11 +88,14 @@
                                 <div>
                                     <div class="input-group mb-4">
                                         <input class="input expertise" type="text" name="expertise[]" placeholder="e.g Expert in Robotic Surgery">
-                                        <button class="btn btn-solid" id="addExpertiseBtn"> 
+                                        <button class="btn btn-solid" id="addExpertiseBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        aria-hidden="true" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M12 6v12m6-6H6"></path>
                                                     </svg>
                                                 </span>
                                                 <span>Add</span>
@@ -107,8 +113,11 @@
                                         <button class="btn btn-solid" id="addMembershipBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        aria-hidden="true" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M12 6v12m6-6H6"></path>
                                                     </svg>
                                                 </span>
                                                 <span>Add</span>
@@ -126,8 +135,11 @@
                                         <button class="btn btn-solid" id="addResearchBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        aria-hidden="true" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M12 6v12m6-6H6"></path>
                                                     </svg>
                                                 </span>
                                                 <span>Add</span>
@@ -145,8 +157,11 @@
                                         <button class="btn btn-solid" id="addAwardsBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        aria-hidden="true" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M12 6v12m6-6H6"></path>
                                                     </svg>
                                                 </span>
                                                 <span>Add</span>
@@ -157,15 +172,18 @@
                                 </div>
                             </div>
                             <div class="form-item">
-                                <label class="form-label mb-2">Select Available Date And Time</label>
+                                <label class="form-label mb-2">Set Available Date And Time</label>
                                 <div>
                                     <div class="input-group mb-4">
                                         <input class="input availableDate" type="datetime-local" name="availableDate[]">
                                         <button class="btn btn-solid" id="addAvailableDateBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        aria-hidden="true" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M12 6v12m6-6H6"></path>
                                                     </svg>
                                                 </span>
                                                 <span>Add</span>
@@ -175,11 +193,19 @@
                                     <div id="availableDateTimeList"></div>
                                 </div>
                             </div>
+                            <div class="form-item">
+                                <label class="form-label mb-2">Assign Hospital *</label>
+                                <div>
+                                    <select class="input" name="hospital" required>
+                                        <option selected>Choose hospital</option>
+                                        <option value="gynacology">Gate No 3, Maligaon</option>
+                                        <option value="medicine">Santipur</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-item"><label class="form-label"></label>
                                 <div>
-                                    <button class="btn btn-default" type="submit">
-                                        Submit
-                                    </button>
+                                    <button class="btn btn-default" type="submit"> Submit </button>
                                 </div>
                             </div>
                         </div>
@@ -191,8 +217,8 @@
 @endsection
 @section('custom-scripts')
     <script>
-        $(document).ready(function(){
-            $('#addExpertiseBtn').on('click', function(e){
+        $(document).ready(function() {
+            $('#addExpertiseBtn').on('click', function(e) {
                 e.preventDefault();
 
                 $('#expertiseList').append(
@@ -214,14 +240,14 @@
                 )
             });
 
-            $(document).on("click", ".removeExpertiseBtn", function () {
+            $(document).on("click", ".removeExpertiseBtn", function() {
                 $(this).parent(".expertise-item").remove();
             });
-            
+
         });
 
-        $(document).ready(function(){
-            $('#addMembershipBtn').on('click', function(e){
+        $(document).ready(function() {
+            $('#addMembershipBtn').on('click', function(e) {
                 e.preventDefault();
 
                 $('#membershipList').append(
@@ -243,14 +269,14 @@
                 )
             });
 
-            $(document).on("click", ".removeMembershipBtn", function () {
+            $(document).on("click", ".removeMembershipBtn", function() {
                 $(this).parent(".membership-item").remove();
             });
-            
+
         });
 
-        $(document).ready(function(){
-            $('#addResearchBtn').on('click', function(e){
+        $(document).ready(function() {
+            $('#addResearchBtn').on('click', function(e) {
                 e.preventDefault();
 
                 $('#researchList').append(
@@ -272,14 +298,14 @@
                 )
             });
 
-            $(document).on("click", ".removeResearchBtn", function () {
+            $(document).on("click", ".removeResearchBtn", function() {
                 $(this).parent(".research-item").remove();
             });
-            
+
         });
 
-        $(document).ready(function(){
-            $('#addAwardsBtn').on('click', function(e){
+        $(document).ready(function() {
+            $('#addAwardsBtn').on('click', function(e) {
                 e.preventDefault();
 
                 $('#awardsList').append(
@@ -301,14 +327,14 @@
                 )
             });
 
-            $(document).on("click", ".removeAwardsBtn", function () {
+            $(document).on("click", ".removeAwardsBtn", function() {
                 $(this).parent(".awards-item").remove();
             });
-            
+
         });
 
-        $(document).ready(function(){
-            $('#addAvailableDateBtn').on('click', function(e){
+        $(document).ready(function() {
+            $('#addAvailableDateBtn').on('click', function(e) {
                 e.preventDefault();
 
                 $('#availableDateTimeList').append(
@@ -330,10 +356,10 @@
                 )
             });
 
-            $(document).on("click", ".removeAvailableDateTimeBtn", function () {
+            $(document).on("click", ".removeAvailableDateTimeBtn", function() {
                 $(this).parent(".available-date-item").remove();
             });
-            
+
         });
     </script>
 @endsection
