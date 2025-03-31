@@ -576,7 +576,6 @@
 
     <script src="{{ asset('assets/js/vendors.min.js') }}"></script>
     <!-- Other Vendors JS -->
-    <script src="{{ asset('assets/vendors/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/datatables/dataTables.custom-ui.min.js') }}"></script>
 

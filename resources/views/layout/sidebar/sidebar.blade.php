@@ -25,12 +25,12 @@
                             <span class="menu-item-text">Portfolio</span>
                         </div>
                         <ul style="{{ request()->segment(1) === 'portfolio' ? 'display:block' : 'display:none' }}">
-                            <li data-menu-item="modern-project-dashboard" class="{{ request()->segment(2) === 'list-of-doctors'  ? 'menu-item  menu-item-active' : 'menu-item ' }}">
+                            <li data-menu-item="modern-project-dashboard" class="{{ request()->routeIs('portfolio.list')  ? 'menu-item  menu-item-active' : 'menu-item ' }}">
                                 <a class="h-full w-full flex items-center" href="{{ route('portfolio.list') }}">
                                     <span>List of Doctors'</span>
                                 </a>
                             </li>
-                            <li data-menu-item="modern-project-list" class="menu-item">
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('portfolio.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
                                 <a class="h-full w-full flex items-center" href="{{ route('portfolio.create') }}">
                                     <span>Create</span>
                                 </a>
