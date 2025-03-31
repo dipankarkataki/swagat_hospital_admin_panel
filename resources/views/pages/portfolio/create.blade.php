@@ -11,7 +11,7 @@
                     <form id="form-validation">
                         <div class="form-container">
                             <div class="form-item">
-                                <div class="grid xl:grid-cols-2">
+                                <div class="grid xl:grid-cols-4">
                                     <div class="form-item vertical">
                                         <label class="form-label mb-2">Profile Picture</label>
                                         <div class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]">
@@ -133,6 +133,13 @@
                 error.removeClass('input-valid');
                 if (element.prop('type') === 'checkbox') {
                     error.insertAfter(element.parent('label'));
+                } else if(element.prop('type') === 'file'){
+                    const uploadDiv = element.closest('.upload');
+
+                    error.insertAfter(uploadDiv);
+                    uploadDiv.css({
+                        'border': '2px dashed rgb(239 68 68)'
+                    });
                 } else {
                     error.insertAfter(element);
                 }
@@ -192,6 +199,16 @@
                 inputValidCheckbox: {
                     required: true
                 }
+            }
+        });
+
+        $('input[name="uploadProfilePicture"]').on('change', function() {
+            const uploadDiv = $(this).closest('.upload');
+
+            if ($(this).val()) {
+                uploadDiv.css({
+                    'border': ''  // Reset border
+                });
             }
         });
     </script>
