@@ -1,5 +1,13 @@
 @extends('layout.main')
 @section('title', "Create Doctor's Portfolio")
+@section('custom-style')
+    <style>
+        .invalid-div{
+            border: 2px solid rgb(239 68 68);
+            border-radius: 5px;
+        }
+    </style>
+@endsection
 @section('content')
     <div class="page-container relative h-full flex flex-auto flex-col px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div class="container mx-auto">
@@ -8,7 +16,7 @@
             </div>
             <div class="card card-border">
                 <div class="card-body">
-                    <form id="createPortfolioForm" method="POST" action="{{ route('portfolio.create') }}">
+                    <form id="createPortfolioForm" method="POST" action="{{ route('portfolio.create') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-container">
                             <div class="form-item">
@@ -56,7 +64,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Choose Years of Experience *</label>
                                 <div>
-                                    <select class="input" name="yearsOfExperience"  >
+                                    <select class="input @error('yearsOfExperience') invalid-div @enderror" name="yearsOfExperience">
                                         <option value="">Choose years</option>
                                         @for ($i = 1; $i <= 60; $i++)
                                             <option value="{{ $i }}" {{ old('yearsOfExperience') == $i ? 'selected' : '' }}>
@@ -64,36 +72,48 @@
                                             </option>
                                         @endfor
                                     </select>
+                                    @error('yearsOfExperience')
+                                        <div class="text-red-500 mt-2">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Choose Linked Department *</label>
                                 <div>
-                                    <select class="input" name="department">
+                                    <select class="input @error('department') invalid-div @enderror" name="department">
                                         <option value="">Choose department</option>
                                         <option value="gynacology" {{ old('department') === 'gynacology' ? 'selected' : '' }}>Gynachology</option>
                                         <option value="medicine" {{ old('department') === 'medicine' ? 'selected' : '' }}>Medicine</option>
                                     </select>
                                 </div>
+                                @error('department')
+                                    <div class="text-red-500 mt-2">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Languages Speak</label>
                                 <div>
-                                    <input type="text" class="input form-control" name="languagesSpeak" placeholder="Enter languages separated by comma(,)" value="{{ old('languagesSpeak') }}">
+                                    <input type="text" class="input form-control @error('languagesSpeak') input-invalid @enderror" name="languagesSpeak" placeholder="Enter languages separated by comma(,)" value="{{ old('languagesSpeak') }}">
                                 </div>
+                                @error('languagesSpeak')
+                                    <div class="text-red-500 mt-2">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Brief Description *</label>
                                 <div>
-                                    <textarea class="input input-textarea" name="briefDescription" placeholder="Write a brief description about the doctor, his work etc."  >{{ old('briefDescription') }}</textarea>
+                                    <textarea class="input input-textarea @error('briefDescription') input-invalid @enderror" name="briefDescription" placeholder="Write a brief description about the doctor, his work etc."  >{{ old('briefDescription') }}</textarea>
                                 </div>
+                                @error('briefDescription')
+                                    <div class="text-red-500 mt-2">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Add Expertise</label>
                                 <div>
                                     <div class="input-group mb-4">
                                         @php $expertises = old('expertise', []); @endphp
-                                        <input class="input expertise" type="text" name="expertise[]" placeholder="e.g Expert in Robotic Surgery" value="{{ $expertises[0] ?? '' }}">
+                                        <input class="input expertise @error('expertise') input-invalid @enderror" type="text" name="expertise[]" placeholder="e.g Expert in Robotic Surgery" value="{{ $expertises[0] ?? '' }}">
                                         <button class="btn btn-solid" id="addExpertiseBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -126,13 +146,16 @@
                                     @endforeach
                                     <div id="expertiseList"></div>
                                 </div>
+                                @error('expertise')
+                                    <div class="text-red-500 mt-2">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Add Membership</label>
                                 <div>
                                     <div class="input-group mb-4">
                                         @php $memberships = old('membership', []); @endphp
-                                        <input class="input membership" type="text" name="membership[]" placeholder="e.g Member of Nephrology Association of Karnataka" value="{{ $memberships[0] ?? '' }}">  
+                                        <input class="input membership @error('membership') input-invalid @enderror" type="text" name="membership[]" placeholder="e.g Member of Nephrology Association of Karnataka" value="{{ $memberships[0] ?? '' }}">  
                                         <button class="btn btn-solid" id="addMembershipBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -163,6 +186,9 @@
                                         </div>
                                     @endforeach
                                     <div id="membershipList"></div>
+                                    @error('membership')
+                                        <div class="text-red-500 mt-2">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-item">
@@ -170,7 +196,7 @@
                                 <div>
                                     <div class="input-group mb-4">
                                         @php $researches = old('research', []); @endphp
-                                        <input class="input research" type="text" name="research[]" placeholder="e.g Collagen type III diseases – case reports – IJPM – March 2016" value="{{ $researches[0] ?? '' }}">
+                                        <input class="input research @error('research') input-invalid @enderror" type="text" name="research[]" placeholder="e.g Collagen type III diseases – case reports – IJPM – March 2016" value="{{ $researches[0] ?? '' }}">
                                         <button class="btn btn-solid" id="addResearchBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -201,6 +227,9 @@
                                         </div>
                                     @endforeach
                                     <div id="researchList"></div>
+                                    @error('research')
+                                        <div class="text-red-500 mt-2">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-item">
@@ -208,7 +237,7 @@
                                 <div>
                                     <div class="input-group mb-4">
                                         @php $awards = old('awards', []); @endphp
-                                        <input class="input awards" type="text" name="awards[]" placeholder="e.g Best Surgeon Award" value={{ $awards[0] ?? '' }}>
+                                        <input class="input awards @error('awards') input-invalid @enderror" type="text" name="awards[]" placeholder="e.g Best Surgeon Award" value={{ $awards[0] ?? '' }}>
                                         <button class="btn btn-solid" id="addAwardsBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -239,6 +268,9 @@
                                         </div>
                                     @endforeach
                                     <div id="awardsList"></div>
+                                    @error('awards')
+                                        <div class="text-red-500 mt-2">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-item">
@@ -246,7 +278,7 @@
                                 <div>
                                     <div class="input-group mb-4">
                                         @php $availableDates = old('availableDate', []); @endphp
-                                        <input class="input availableDate" type="datetime-local" name="availableDate[]" value={{ $availableDates[0] ?? '' }}>
+                                        <input class="input availableDate @error('availableDate') input-invalid @enderror" type="datetime-local" name="availableDate[]" value={{ $availableDates[0] ?? '' }}>
                                         <button class="btn btn-solid" id="addAvailableDateBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -277,17 +309,23 @@
                                         </div>
                                     @endforeach
                                     <div id="availableDateTimeList"></div>
+                                    @error('availableDate')
+                                        <div class="text-red-500 mt-2">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Assign Hospital *</label>
                                 <div>
-                                    <select class="input" name="hospital">
-                                        <option selected>Choose hospital</option>
+                                    <select class="input @error('hospital') invalid-div @enderror" name="hospital">
+                                        <option value="">Choose hospital</option>
                                         <option value="maligaon" {{ old('hospital') === 'maligaon' ? 'selected' : ''}}>Gate No 3, Maligaon</option>
                                         <option value="santipur" {{ old('hospital') === 'santipur' ? 'selected' : ''}}>Santipur</option>
                                     </select>
                                 </div>
+                                @error('hospital')
+                                    <div class="text-red-500 mt-2">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-item"><label class="form-label"></label>
                                 <div>
@@ -300,6 +338,49 @@
             </div>
         </div>
     </div>
+
+    @if(session('success'))
+        <div class="toast fade show" id="notificationToastSuccess">
+            <div class="notification">
+                <div class="notification-content">
+                    <div class="mr-3">
+                        <span class="text-2xl text-emerald-400">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="mr-4">
+                        <div class="notification-title">Success</div>
+                        <div class="notification-description">
+                            {{ session('success') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    @if($errors->hasBag('exception'))
+        <div class="toast fade" id="notificationToastError">
+            <div class="notification">
+                <div class="notification-content">
+                    <div class="mr-3">
+                        <span class="text-2xl text-red-400">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="mr-4">
+                        <div class="notification-title">Error</div>
+                        <div class="notification-description">
+                            {{ $errors->getBag('exception')->first('error') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
 @section('custom-scripts')
     <script>
@@ -454,6 +535,16 @@
                 };
                 reader.readAsDataURL(this.files[0]);
             });
+
+            //Hide Toast Message 
+            const toastSuccess = $("#notificationToastSuccess");
+            const toastError = $("#notificationToastError");
+            if (toastSuccess.length) {
+                toastSuccess.fadeIn().delay(3000).fadeOut();
+            }
+            if (toastError.length) {
+                toastError.fadeIn().delay(3000).fadeOut();
+            }
 
         });
     </script>
