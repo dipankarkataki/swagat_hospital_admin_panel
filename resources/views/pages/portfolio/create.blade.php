@@ -340,7 +340,7 @@
     </div>
 
     @if(session('success'))
-        <div class="toast fade show" id="notificationToastSuccess">
+        <div class="toast fade show toast-wrapper top-end" id="notificationToastSuccess">
             <div class="notification">
                 <div class="notification-content">
                     <div class="mr-3">

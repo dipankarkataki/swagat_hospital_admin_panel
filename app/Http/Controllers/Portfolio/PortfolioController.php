@@ -58,7 +58,7 @@ class PortfolioController extends Controller
                     'hospital' => $request->hospital
                 ]);
     
-                return back()->with(['success' => 'Portfolio created successfully']);
+                return redirect('/portfolio/create-doctors-portfolio')->with('success', 'Portfolio created successfully');
             }catch(\Exception $e){
                 Log::error('Error occurred at create portfolio function: ' . $e->getMessage());
                 return back()->withErrors(['error' => 'Something went wrong. Please try later.'], 'exception');
