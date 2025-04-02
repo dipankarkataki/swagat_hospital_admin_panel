@@ -11,7 +11,7 @@ class Portfolio extends Model
     
     protected $table = 'portfolios';
     protected $fillable = [
-        'profile_pic', 'full_name', 'experience', 'department', 'languages_speak', 'brief_description', 'expertise', 
+        'profile_pic', 'full_name', 'email', 'experience', 'department', 'languages_speak', 'brief_description', 'expertise', 
         'membership', 'research', 'awards', 'available_time_slot', 'hospital', 'accepting_appointments', 'status'
     ];
 }

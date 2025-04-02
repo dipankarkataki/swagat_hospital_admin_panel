@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers\Portfolio;
 
+use App\Models\Portfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\Portfolio;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class PortfolioController extends Controller
 {
     public function listOfDoctors(){
-        return view('pages.portfolio.list_of_doctors');
+
+        try{
+            $get_portfolio = Portfolio::where('status', 1)->get();
+            return view('pages.portfolio.list_of_doctors')->with(['portfolio' => $get_portfolio]);
+        }catch(\Exception $e){
+            Log::error('Error occurred at create portfolio function: ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Something went wrong. Please try later.'], 'exception');
+        }
+        
     }
 
     public function createDoctorsPortfolio(Request $request){
@@ -22,6 +31,7 @@ class PortfolioController extends Controller
             $validator = Validator::make($request->all(), [
                 'uploadProfilePicture' => 'required|image|mimes:png,jpg,jpeg|max:1024',
                 'fullName' => 'required|string|min:3|max:255',
+                'email' => 'required|email|unique:portfolios,email',
                 'yearsOfExperience' => 'required|numeric',
                 'department' => 'required|string',
                 'languagesSpeak' => 'nullable|string',
@@ -36,9 +46,9 @@ class PortfolioController extends Controller
     
             if($validator->fails()){
                 Log::error('Validator Error'.$validator->errors()->first());
-                return back()->withErrors($validator)->withInput();
+                return redirect()->route('portfolio.create')->withErrors($validator)->withInput();
             }
-    
+
             try{
 
                 $image_path = $request->file('uploadProfilePicture')->store('portfolio/images');
@@ -46,6 +56,7 @@ class PortfolioController extends Controller
                 Portfolio::create([
                     'profile_pic' => $image_path,
                     'full_name' => $request->fullName,
+                    'email' => $request->email,
                     'experience' => $request->yearsOfExperience,
                     'department' => $request->department,
                     'languages_speak' => $request->languagesSpeak,
@@ -57,14 +68,13 @@ class PortfolioController extends Controller
                     'available_time_slot' => json_encode($request->availableDate),
                     'hospital' => $request->hospital
                 ]);
-    
-                return redirect('/portfolio/create-doctors-portfolio')->with('success', 'Portfolio created successfully');
+                Session::flash('success', 'Portfolio created successfully.');
+                return redirect()->route('portfolio.create');
             }catch(\Exception $e){
                 Log::error('Error occurred at create portfolio function: ' . $e->getMessage());
-                return back()->withErrors(['error' => 'Something went wrong. Please try later.'], 'exception');
+                Session::flash('exception', 'Something went wrong. Please try later.');
+                return redirect()->route('portfolio.create')->withInput();
             }
         }
-
-        
     }
 }

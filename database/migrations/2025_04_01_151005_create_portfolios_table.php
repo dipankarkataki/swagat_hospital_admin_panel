@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('profile_pic');
             $table->string('full_name');
+            $table->string('email')->unique();
             $table->integer('experience');
             $table->string('department');
             $table->text('languages_speak')->nullable()->default('Assamese');
