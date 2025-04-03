@@ -1,10 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Portfolio\PortfolioController;
 
 Route::get('/', function () {
-    return view('pages.dashboard.dashboard');
+    return view('pages.auth.login');
+});
+
+Route::group(['prefix' => 'dashboard'], function(){
+    Route::get('', [DashboardController::class, 'index'])->name('dashboard.index');
 });
 
 Route::group(['prefix' => 'portfolio'], function(){
