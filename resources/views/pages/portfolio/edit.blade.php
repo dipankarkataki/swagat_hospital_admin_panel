@@ -1,5 +1,5 @@
 @extends('layout.main')
-@section('title', "Create Doctor's Portfolio")
+@section('title', "Edit Doctor's Portfolio")
 @section('custom-style')
     <style>
         .invalid-div{
@@ -17,11 +17,11 @@
     <div class="page-container relative h-full flex flex-auto flex-col px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div class="container mx-auto">
             <div class=" mb-4">
-                <h3>Create Portfolio</h3>
+                <h3>Edit Portfolio</h3>
             </div>
             <div class="card card-border">
                 <div class="card-body">
-                    <form id="createPortfolioForm" method="POST" action="{{ route('portfolio.create') }}" enctype="multipart/form-data">
+                    <form id="editPortfolioForm" method="POST" action="{{ route('portfolio.edit', ['id' => $portfolio->id]) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-container">
                             <div class="form-item">
@@ -33,11 +33,14 @@
                                                 <input class="upload-input draggable" id="uploadProfilePicture" name="uploadProfilePicture" type="file">
                                             </div>
                                             <div class="text-center">
-                                                <svg id="uploadImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                                                </svg>
                                                 <div class="flex flex-row justify-center items-center">
-                                                    <img id="imagePreview" src="" alt="Image Preview" style="display:none; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                                    <img id="imageFromDB" src="{{ asset('storage/'.$portfolio->profile_pic) }}" alt="Image Preview" style="max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                                </div>
+                                                {{-- <svg id="uploadImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                                </svg> --}}
+                                                <div class="flex flex-row justify-center items-center">
+                                                    <img id="imagePreview" src="{{ asset('assets/storage/'.$portfolio->profile_pic) }}" alt="Image Preview" style="display:none; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
                                                 </div>
                                                 <p class="font-semibold">
                                                     <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
@@ -50,17 +53,24 @@
                                             <div class="text-red-500 mt-2">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    {{-- <div class="col-span-2 flex md:justify-end">
-                                        <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white" id="acceptingAppointments" data-status=1>
-                                            Accepting Appointments
-                                        </button>
-                                    </div> --}}
+                                    <div class="col-span-2 flex md:justify-end">
+                                        @if ($portfolio->accepting_appointments == 1)
+                                            <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white" id="acceptingAppointments" data-status=0>
+                                                Accepting Appointments
+                                            </button>
+                                        @else
+                                            <button class="btn btn-default hover:bg-gray-400 active:bg-gray-600 text-white" id="offlineAppointments" data-status=1>
+                                                Appointments Offline
+                                            </button>
+                                        @endif
+                                        
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Full Name *</label>
                                 <div>
-                                    <input type="text" class="input form-control @error('fullName') input-invalid @enderror" name="fullName" placeholder="e.g Jhon Doe" value="{{ old('fullName') }}">
+                                    <input type="text" class="input form-control @error('fullName') input-invalid @enderror" name="fullName" placeholder="e.g Jhon Doe" value="{{ $portfolio->full_name }}">
                                 </div>
                                 @error('fullName')
                                     <div class="text-red-500 mt-2">{{ $message }}</div>
@@ -69,7 +79,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Enter Official Email Id *</label>
                                 <div>
-                                    <input type="email" class="input form-control @error('email') input-invalid @enderror" name="email" placeholder="e.g jhondoe@example.com" value="{{ old('email') }}">
+                                    <input type="email" class="input form-control @error('email') input-invalid @enderror" name="email" placeholder="e.g jhondoe@example.com" value="{{ $portfolio->email }}">
                                 </div>
                                 @error('email')
                                     <div class="text-red-500 mt-2">{{ $message }}</div>
@@ -81,7 +91,7 @@
                                     <select class="input @error('yearsOfExperience') invalid-div @enderror" name="yearsOfExperience">
                                         <option value="">Choose years</option>
                                         @for ($i = 1; $i <= 60; $i++)
-                                            <option value="{{ $i }}" {{ old('yearsOfExperience') == $i ? 'selected' : '' }}>
+                                            <option value="{{ $i }}" {{ $portfolio->experience == $i ? 'selected' : '' }}>
                                                 Years of Experience : {{ $i }}
                                             </option>
                                         @endfor
@@ -96,8 +106,8 @@
                                 <div>
                                     <select class="input @error('department') invalid-div @enderror" name="department">
                                         <option value="">Choose department</option>
-                                        <option value="gynacology" {{ old('department') === 'gynacology' ? 'selected' : '' }}>Gynachology</option>
-                                        <option value="medicine" {{ old('department') === 'medicine' ? 'selected' : '' }}>Medicine</option>
+                                        <option value="gynacology" {{ $portfolio->department === 'gynacology' ? 'selected' : '' }}>Gynachology</option>
+                                        <option value="medicine" {{ $portfolio->department === 'medicine' ? 'selected' : '' }}>Medicine</option>
                                     </select>
                                 </div>
                                 @error('department')
@@ -107,7 +117,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Languages Speak</label>
                                 <div>
-                                    <input type="text" class="input form-control @error('languagesSpeak') input-invalid @enderror" name="languagesSpeak" placeholder="Enter languages separated by comma(,)" value="{{ old('languagesSpeak') }}">
+                                    <input type="text" class="input form-control @error('languagesSpeak') input-invalid @enderror" name="languagesSpeak" placeholder="Enter languages separated by comma(,)" value="{{ $portfolio->languages_speak }}">
                                 </div>
                                 @error('languagesSpeak')
                                     <div class="text-red-500 mt-2">{{ $message }}</div>
@@ -116,7 +126,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Brief Description *</label>
                                 <div>
-                                    <textarea class="input input-textarea @error('briefDescription') input-invalid @enderror" name="briefDescription" placeholder="Write a brief description about the doctor, his work etc."  >{{ old('briefDescription') }}</textarea>
+                                    <textarea class="input input-textarea @error('briefDescription') input-invalid @enderror" name="briefDescription" placeholder="Write a brief description about the doctor, his work etc."  >{{ $portfolio->brief_description }}</textarea>
                                 </div>
                                 @error('briefDescription')
                                     <div class="text-red-500 mt-2">{{ $message }}</div>
@@ -126,7 +136,7 @@
                                 <label class="form-label mb-2">Add Expertise</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        @php $expertises = old('expertise', []); @endphp
+                                        @php $expertises = json_decode($portfolio->expertise ?? '[]', true) ?? []; @endphp
                                         <input class="input expertise @error('expertise') input-invalid @enderror" type="text" name="expertise[]" placeholder="e.g Expert in Robotic Surgery" value="{{ $expertises[0] ?? '' }}">
                                         <button class="btn btn-solid" id="addExpertiseBtn">
                                             <span class="flex items-center justify-center gap-2">
@@ -168,7 +178,7 @@
                                 <label class="form-label mb-2">Add Membership</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        @php $memberships = old('membership', []); @endphp
+                                        @php $memberships = json_decode($portfolio->membership ?? '[]', true) ?? []; @endphp
                                         <input class="input membership @error('membership') input-invalid @enderror" type="text" name="membership[]" placeholder="e.g Member of Nephrology Association of Karnataka" value="{{ $memberships[0] ?? '' }}">  
                                         <button class="btn btn-solid" id="addMembershipBtn">
                                             <span class="flex items-center justify-center gap-2">
@@ -209,7 +219,7 @@
                                 <label class="form-label mb-2">Add Research And Publications</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        @php $researches = old('research', []); @endphp
+                                        @php $researches = json_decode($portfolio->research ?? '[]', true) ?? []; @endphp
                                         <input class="input research @error('research') input-invalid @enderror" type="text" name="research[]" placeholder="e.g Collagen type III diseases – case reports – IJPM – March 2016" value="{{ $researches[0] ?? '' }}">
                                         <button class="btn btn-solid" id="addResearchBtn">
                                             <span class="flex items-center justify-center gap-2">
@@ -250,7 +260,7 @@
                                 <label class="form-label mb-2">Add Awards And Achievements</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        @php $awards = old('awards', []); @endphp
+                                        @php $awards = json_decode($portfolio->awards ?? '[]', true) ?? []; @endphp
                                         <input class="input awards @error('awards') input-invalid @enderror" type="text" name="awards[]" placeholder="e.g Best Surgeon Award" value={{ $awards[0] ?? '' }}>
                                         <button class="btn btn-solid" id="addAwardsBtn">
                                             <span class="flex items-center justify-center gap-2">
@@ -291,7 +301,7 @@
                                 <label class="form-label mb-2">Set Available Date And Time (MM/DD/YYYY)</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        @php $availableDates = old('availableDate', []); @endphp
+                                        @php $availableDates =json_decode($portfolio->available_time_slot ?? '[]', true) ?? []; @endphp
                                         <input class="input availableDate @error('availableDate') input-invalid @enderror" type="datetime-local" name="availableDate[]" value={{ $availableDates[0] ?? '' }}>
                                         <button class="btn btn-solid" id="addAvailableDateBtn">
                                             <span class="flex items-center justify-center gap-2">
@@ -333,8 +343,8 @@
                                 <div>
                                     <select class="input @error('hospital') invalid-div @enderror" name="hospital">
                                         <option value="">Choose hospital</option>
-                                        <option value="maligaon" {{ old('hospital') === 'maligaon' ? 'selected' : ''}}>Gate No 3, Maligaon</option>
-                                        <option value="santipur" {{ old('hospital') === 'santipur' ? 'selected' : ''}}>Santipur</option>
+                                        <option value="maligaon" {{ $portfolio->hospital === 'maligaon' ? 'selected' : ''}}>Gate No 3, Maligaon</option>
+                                        <option value="santipur" {{ $portfolio->hospital === 'santipur' ? 'selected' : ''}}>Santipur</option>
                                     </select>
                                 </div>
                                 @error('hospital')
@@ -548,7 +558,7 @@
             $('#uploadProfilePicture').on('change', function(e) {
                 var reader = new FileReader();
                 reader.onload = function(event) {
-                    $('#uploadImgSvg').attr('src', event.target.result).hide();
+                    $('#imageFromDB').attr('src', event.target.result).hide();
                     $('#imagePreview').attr('src', event.target.result).show();
                 };
                 reader.readAsDataURL(this.files[0]);

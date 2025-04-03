@@ -1,5 +1,14 @@
 @extends('layout.main')
 @section('title', "List of Doctors'")
+@section('custom-style')
+<style>
+    .toast-position{
+        position: absolute;
+        top:85px;
+        right:50px;
+    }
+</style>
+@endsection
 @section('content')
     <div class="page-container relative h-full flex flex-auto flex-col px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div class="container mx-auto">
@@ -106,17 +115,21 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <div class="flex justify-end text-lg">
-                                            <span class="cursor-pointer p-2 hover:text-indigo-600 editButton" data-id="{{ $item->id }}">
-                                                <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                                                </svg>
-                                            </span>
-                                            <span class="cursor-pointer p-2 hover:text-red-500 deleteButton" data-id="{{ $item->id }}">
-                                                <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                </svg>
-                                            </span>
+                                        <div class="flex justify-end text-lg gap-2">
+                                            <a href="{{ route('portfolio.by.id', ['id' => encrypt($item->id)]) }}">
+                                                <span class="cursor-pointer p-2 hover:text-indigo-600 editButton">
+                                                    <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                            <a href="{{ route('portfolio.edit', ['id' => encrypt($item->id)]) }}">
+                                                <span class="cursor-pointer p-2 hover:text-red-500 deleteButton">
+                                                    <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                    </svg>
+                                                </span>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
@@ -129,19 +142,39 @@
             </div>
         </div>
     </div>
+    @if(Session::has('exception'))
+        <div class="toast-position">
+            <div class="toast fade show" id="notificationToastError">
+                <div class="notification">
+                    <div class="notification-content">
+                        <div class="mr-3">
+                            <span class="text-2xl text-red-400">
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="mr-4">
+                            <div class="notification-title">Error</div>
+                            <div class="notification-description">
+                                {{ Session::get('exception') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
 @section('custom-scripts')
     <script>
         $(document).ready(function(){
-            $('.editButton').on('click', function(){
-                const url = $(this).data('id');
-                alert(url)
-            })
 
-            $('.deleteButton').on('click', function(){
-                const url = $(this).data('id');
-                alert(url)
-            })
+            const toastError = $("#notificationToastError");
+            if (toastError.length) {
+                toastError.fadeIn().delay(3000).fadeOut();
+            }
+
         });
     </script>
 @endsection

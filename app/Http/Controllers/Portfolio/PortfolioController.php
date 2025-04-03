@@ -77,4 +77,16 @@ class PortfolioController extends Controller
             }
         }
     }
+
+    public function portfolioById($id){
+        try{
+            $portfolio_id = decrypt($id);
+            $portfolio = Portfolio::find($portfolio_id);
+            return view('pages.portfolio.edit')->with(['portfolio' => $portfolio]);
+        }catch(\Exception $e){
+            Log::error('Error on portfolio by id function: '.$e->getMessage());
+            Session::flash('exception', 'Oops! Something went wrong. Please try later.');
+            return redirect()->route('portfolio.list');
+        }
+    }
 }
