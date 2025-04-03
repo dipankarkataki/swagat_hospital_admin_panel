@@ -398,7 +398,6 @@
                 </div>
             </div>
         </div>
-        
     @endif
 @endsection
 @section('custom-scripts')

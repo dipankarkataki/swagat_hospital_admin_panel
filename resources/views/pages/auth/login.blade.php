@@ -12,6 +12,13 @@
 
     <!-- Core CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+    <style>
+        .toast-position{
+            position: absolute;
+            top:85px;
+            right:50px;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,8 +29,7 @@
             <main class="h-full">
                 <div class="page-container relative h-full flex flex-auto flex-col">
                     <div class="h-full">
-                        <div
-                            class="container mx-auto flex flex-col flex-auto items-center justify-center min-w-0 h-full">
+                        <div class="container mx-auto flex flex-col flex-auto items-center justify-center min-w-0 h-full">
                             <div class="card min-w-[320px] md:min-w-[450px] card-shadow" role="presentation">
                                 <div class="card-body md:p-10">
                                     <div class="text-center">
@@ -38,21 +44,23 @@
                                             <p>Please enter your credentials to sign in!</p>
                                         </div>
                                         <div>
-                                            <form action="#">
+                                            <form action="{{ route('login') }}" method="POST">
+                                                @csrf
                                                 <div class="form-container vertical">
                                                     <div class="form-item vertical">
                                                         <label class="form-label mb-2">Email</label>
                                                         <div>
-                                                            <input class="input" type="email" name="email"
-                                                                autocomplete="off" placeholder="e.g jhon doe"
-                                                                value="">
+                                                            <input class="input @error('email') input-invalid @enderror" type="email" name="email" autocomplete="off" placeholder="e.g jhon doe" value={{ old('email') }}>
                                                         </div>
+                                                        @error('email')
+                                                            <div class="text-red-500 mt-2">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                     <div class="form-item vertical">
                                                         <label class="form-label mb-2">Password</label>
                                                         <div>
                                                             <span class="input-wrapper">
-                                                                <input class="input pr-8" type="password" name="password" id="password" autocomplete="off" placeholder="* * * * * * * *" value="">
+                                                                <input class="input pr-8 @error('password') input-invalid @enderror" type="password" name="password" id="password" autocomplete="off" placeholder="* * * * * * * *" value="{{ old('password') }}">
                                                                 <div class="input-suffix-end">
                                                                     <span class="cursor-pointer text-xl" id="togglePassword">
                                                                         <svg id="eyeIcon" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -62,6 +70,9 @@
                                                                 </div>
                                                             </span>
                                                         </div>
+                                                        @error('password')
+                                                            <div class="text-red-500 mt-2">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                     <div class="flex justify-between mb-6">
                                                         <label class="checkbox-label mb-0">
@@ -85,6 +96,30 @@
             </main>
         </div>
     </div>
+
+    @if(Session::has('exception'))
+        <div class="toast-position">
+            <div class="toast fade show" id="notificationToastError">
+                <div class="notification">
+                    <div class="notification-content">
+                        <div class="mr-3">
+                            <span class="text-2xl text-red-400">
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="mr-4">
+                            <div class="notification-title">Error</div>
+                            <div class="notification-description">
+                                {{ Session::get('exception') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <!-- Core Vendors JS -->
     <script src="{{ asset('assets/js/vendors.min.js') }}"></script>
@@ -118,6 +153,11 @@
                         );
                 }
             });
+
+            const toastError = $("#notificationToastError");
+            if (toastError.length) {
+                toastError.fadeIn().delay(3000).fadeOut();
+            }
         });
     </script>
 </body>
