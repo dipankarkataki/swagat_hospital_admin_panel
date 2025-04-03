@@ -11,35 +11,16 @@
                                 class="avatar avatar-rounded bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-100 avatar-lg text-3xl"
                                 data-avatar-size="55">
                                 <span class="avatar-icon">
-                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20"
-                                        aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                                            clip-rule="evenodd"></path>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" height="1em" width="1em">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path>
                                     </svg>
                                 </span>
                             </span>
                             <div>
                                 <div class="flex gap-1.5 items-end mb-2">
                                     <h3 class="font-bold leading-none">63</h3>
-                                    <p class="font-semibold">New Leads</p>
+                                    <p class="font-semibold">Doctors</p>
                                 </div>
-                                <p class="flex items-center gap-1">
-                                    <span class="flex items-center rounded-full gap-1">
-                                        <span
-                                            class="rounded-full p-1 bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100">
-                                            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
-                                                aria-hidden="true" height="1em" width="1em"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                                            </svg>
-                                        </span>
-                                        <span class="font-semibold text-emerald-600">+
-                                            2.6</span>
-                                    </span>
-                                    <span>this month</span>
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -49,86 +30,6 @@
                         <div class="flex items-center gap-4">
                             <span
                                 class="avatar avatar-rounded bg-cyan-100 text-cyan-600 dark:bg-cyan-500/20 dark:text-cyan-100 avatar-lg text-3xl"
-                                data-avatar-size="55">
-                                <span class="avatar-icon">
-                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20"
-                                        aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z">
-                                        </path>
-                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z">
-                                        </path>
-                                    </svg>
-                                </span>
-                            </span>
-                            <div>
-                                <div class="flex gap-1.5 items-end mb-2">
-                                    <h3 class="font-bold leading-none">25</h3>
-                                    <p class="font-semibold">Email</p>
-                                </div>
-                                <p class="flex items-center gap-1">
-                                    <span class="flex items-center rounded-full gap-1">
-                                        <span
-                                            class="rounded-full p-1 bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100">
-                                            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
-                                                aria-hidden="true" height="1em" width="1em"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                                            </svg>
-                                        </span>
-                                        <span class="font-semibold text-emerald-600">+
-                                            5.5</span>
-                                    </span>
-                                    <span>this month</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-layout-frame">
-                    <div class="card-body">
-                        <div class="flex items-center gap-4">
-                            <span
-                                class="avatar avatar-rounded bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100 avatar-lg text-3xl"
-                                data-avatar-size="55">
-                                <span class="avatar-icon">
-                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20"
-                                        aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                            d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                            <div>
-                                <div class="flex gap-1.5 items-end mb-2">
-                                    <h3 class="font-bold leading-none">49</h3>
-                                    <p class="font-semibold">Proposals</p>
-                                </div>
-                                <p class="flex items-center gap-1">
-                                    <span class="flex items-center rounded-full gap-1">
-                                        <span
-                                            class="rounded-full p-1 text-red-600 bg-red-100 dark:text-red-100 dark:bg-red-500/20">
-                                            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
-                                                aria-hidden="true" height="1em" width="1em"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
-                                            </svg>
-                                        </span>
-                                        <span class="font-semibold text-red-600">-0.7</span>
-                                    </span>
-                                    <span>this month</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-layout-frame">
-                    <div class="card-body">
-                        <div class="flex items-center gap-4">
-                            <span
-                                class="avatar avatar-rounded bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-100 avatar-lg text-3xl"
                                 data-avatar-size="55">
                                 <span class="avatar-icon">
                                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20"
@@ -142,25 +43,51 @@
                             </span>
                             <div>
                                 <div class="flex gap-1.5 items-end mb-2">
-                                    <h3 class="font-bold leading-none">12</h3>
-                                    <p class="font-semibold">Appointment</p>
+                                    <h3 class="font-bold leading-none">25</h3>
+                                    <p class="font-semibold">Appointments</p>
                                 </div>
-                                <p class="flex items-center gap-1">
-                                    <span class="flex items-center rounded-full gap-1">
-                                        <span
-                                            class="rounded-full p-1 bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100">
-                                            <svg stroke="currentColor" fill="none" stroke-width="2"
-                                                viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                                            </svg>
-                                        </span>
-                                        <span class="font-semibold text-emerald-600">+
-                                            2.6</span>
-                                    </span>
-                                    <span>this month</span>
-                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-layout-frame">
+                    <div class="card-body">
+                        <div class="flex items-center gap-4">
+                            <span
+                                class="avatar avatar-rounded bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100 avatar-lg text-3xl"
+                                data-avatar-size="55">
+                                <span class="avatar-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" height="1em" width="1em">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"></path>
+                                    </svg>
+                                </span>
+                            </span>
+                            <div>
+                                <div class="flex gap-1.5 items-end mb-2">
+                                    <h3 class="font-bold leading-none">49</h3>
+                                    <p class="font-semibold">Consultations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-layout-frame">
+                    <div class="card-body">
+                        <div class="flex items-center gap-4">
+                            <span
+                                class="avatar avatar-rounded bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-100 avatar-lg text-3xl"
+                                data-avatar-size="55">
+                                <span class="avatar-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" height="1em" width="1em">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"></path>
+                                    </svg>
+                                </span>
+                            </span>
+                            <div>
+                                <div class="flex gap-1.5 items-end mb-2">
+                                    <h3 class="font-bold leading-none">12</h3>
+                                    <p class="font-semibold">Lab Tests</p>
+                                </div>
                             </div>
                         </div>
                     </div>

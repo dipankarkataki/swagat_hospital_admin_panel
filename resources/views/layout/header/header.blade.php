@@ -245,7 +245,7 @@
                                 loading="lazy" alt=""></span>
                         <div class="hidden md:block">
                             <div class="text-xs capitalize">admin</div>
-                            <div class="font-bold">Carolyn Perkins</div>
+                            <div class="font-bold">{{ auth()->user()->name }}</div>
                         </div>
                     </div>
                 </div>
@@ -257,9 +257,8 @@
                                     src="{{asset('assets/img/avatars/thumb-1.jpg')}}" loading="lazy" alt="">
                             </span>
                             <div>
-                                <div class="font-bold text-gray-900 dark:text-gray-100">Carolyn
-                                    Perkins</div>
-                                <div class="text-xs">carolyn.p@swagat.com</div>
+                                <div class="font-bold text-gray-900 dark:text-gray-100">{{ auth()->user()->name }}</div>
+                                <div class="text-xs">{{ auth()->user()->email }}</div>
                             </div>
                         </div>
                     </li>
