@@ -44,7 +44,7 @@
                                             <p>Please enter your credentials to sign in!</p>
                                         </div>
                                         <div>
-                                            <form action="{{ route('login') }}" method="POST">
+                                            <form action="{{ route('login') }}" method="POST" id="loginForm">
                                                 @csrf
                                                 <div class="form-container vertical">
                                                     <div class="form-item vertical">
@@ -83,7 +83,7 @@
                                                         <a class="text-primary-600 hover:underline"
                                                             href="/">Forgot Password?</a>
                                                     </div>
-                                                    <button class="btn btn-solid w-full" type="submit">Sign In</button>
+                                                    <button class="btn btn-solid w-full" type="submit" id="submitBtn">Sign In</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -158,6 +158,11 @@
             if (toastError.length) {
                 toastError.fadeIn().delay(3000).fadeOut();
             }
+
+            $('#loginForm').on('submit',function() {
+                $('#submitBtn').prop('disabled', true);
+                $('#submitBtn').text('Please wait...');
+            });
         });
     </script>
 </body>

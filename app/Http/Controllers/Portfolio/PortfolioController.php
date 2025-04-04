@@ -14,7 +14,7 @@ class PortfolioController extends Controller
     public function listOfDoctors(){
 
         try{
-            $get_portfolio = Portfolio::where('status', 1)->get();
+            $get_portfolio = Portfolio::where('status', 1)->latest()->get();
             return view('pages.portfolio.list_of_doctors')->with(['portfolio' => $get_portfolio]);
         }catch(\Exception $e){
             Log::error('Error occurred at create portfolio function: ' . $e->getMessage());
@@ -87,6 +87,63 @@ class PortfolioController extends Controller
             Log::error('Error on portfolio by id function: '.$e->getMessage());
             Session::flash('exception', 'Oops! Something went wrong. Please try later.');
             return redirect()->route('portfolio.list');
+        }
+    }
+
+    public function editPortfolio(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'uploadProfilePicture' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
+            'fullName' => 'required|string|min:3|max:255',
+            'email' => 'required|email|unique:portfolios,email,'.$id,
+            'yearsOfExperience' => 'required|numeric',
+            'department' => 'required|string',
+            'languagesSpeak' => 'nullable|string',
+            'briefDescription' => 'required|string|min:100',
+            'expertise' => 'nullable|array',
+            'membership' => 'nullable|array',
+            'research' => 'nullable|array',
+            'awards' => 'nullable|array',
+            'availableDate' => 'nullable|array',
+            'hospital' => 'required|string'
+        ]);
+
+        if($validator->fails()){
+            Log::error('Validator Error'.$validator->errors()->first());
+            return redirect()->route('portfolio.by.id', ['id' => encrypt($id)])->withErrors($validator)->withInput();
+        }
+
+        try{
+            $portfolio = Portfolio::find($id);
+            
+            if($request->hasFile('uploadProfilePicture')){
+                $image_path = $request->file('uploadProfilePicture')->store('portfolio/images');
+                $portfolio->profile_pic = $image_path;
+            }
+    
+            $portfolio->full_name = $request->fullName;
+            $portfolio->email = $request->email;
+            $portfolio->experience = $request->yearsOfExperience;
+            $portfolio->department = $request->department;
+            $portfolio->languages_speak = $request->languagesSpeak;
+            $portfolio->brief_description = $request->briefDescription;
+            $portfolio->expertise = json_encode($request->expertise);
+            $portfolio->membership = json_encode($request->membership);
+            $portfolio->research = json_encode($request->research);
+            $portfolio->awards = json_encode($request->awards);
+            $portfolio->available_time_slot = json_encode($request->availableDate);
+            $portfolio->hospital = $request->hospital;
+
+            if ($portfolio->save()) {
+                Session::flash('success', 'Portfolio updated successfully.');
+                return redirect()->route('portfolio.by.id', ['id' => encrypt($id)]);
+            } else {
+                Session::flash('exception', 'Something went wrong. Please try later.');
+                return redirect()->route('portfolio.by.id', ['id' => encrypt($id)])->withInput();
+            }
+        }catch(\Exception $e){
+            Log::error('Error occurred at edit portfolio function: ' . $e->getMessage());
+            Session::flash('exception', 'Something went wrong. Please try later.');
+            return redirect()->route('portfolio.by.id', ['id' => encrypt($id)])->withInput();
         }
     }
 }

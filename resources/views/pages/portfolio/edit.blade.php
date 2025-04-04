@@ -36,9 +36,6 @@
                                                 <div class="flex flex-row justify-center items-center">
                                                     <img id="imageFromDB" src="{{ asset('storage/'.$portfolio->profile_pic) }}" alt="Image Preview" style="max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
                                                 </div>
-                                                {{-- <svg id="uploadImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                                                </svg> --}}
                                                 <div class="flex flex-row justify-center items-center">
                                                     <img id="imagePreview" src="{{ asset('assets/storage/'.$portfolio->profile_pic) }}" alt="Image Preview" style="display:none; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
                                                 </div>
@@ -353,7 +350,7 @@
                             </div>
                             <div class="form-item"><label class="form-label"></label>
                                 <div>
-                                    <button class="btn btn-default" type="submit"> Submit </button>
+                                    <button class="btn btn-default" type="submit" id="editPortfolioSubmitBtn"> Submit </button>
                                 </div>
                             </div>
                         </div>
@@ -573,6 +570,10 @@
             if (toastError.length) {
                 toastError.fadeIn().delay(3000).fadeOut();
             }
+
+            $('#editPortfolioForm').on('submit', function() {
+                $('#editPortfolioSubmitBtn').attr('disabled', true).text('Please wait...');
+            });
 
         });
     </script>

@@ -28,7 +28,7 @@
                                 <div>
                                     <span>Total Doctors</span>
                                     <h3>
-                                        <span>2,420</span>
+                                        <span>{{ count($portfolio) }}</span>
                                     </h3>
                                 </div>
                             </div>
