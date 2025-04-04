@@ -159,22 +159,12 @@
                         <ul>
                             <li data-menu-item="modern-help-center" class="menu-item">
                                 <a class="h-full w-full flex items-center" href="modern-help-center.html">
-                                    <span>Help Center</span>
+                                    <span>List of Hospitals</span>
                                 </a>
                             </li>
                             <li data-menu-item="modern-article" class="menu-item">
                                 <a class="h-full w-full flex items-center" href="modern-article.html">
-                                    <span>Article</span>
-                                </a>
-                            </li>
-                            <li data-menu-item="modern-manage-articles" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="modern-manage-articles.html">
-                                    <span>Manage Articles</span>
-                                </a>
-                            </li>
-                            <li data-menu-item="modern-edit-article" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="modern-edit-article.html">
-                                    <span>Edit Article</span>
+                                    <span>Create</span>
                                 </a>
                             </li>
                         </ul>

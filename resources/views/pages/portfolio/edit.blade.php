@@ -21,7 +21,7 @@
             </div>
             <div class="card card-border">
                 <div class="card-body">
-                    <form id="editPortfolioForm" method="POST" action="{{ route('portfolio.edit', ['id' => $portfolio->id]) }}" enctype="multipart/form-data">
+                    <form id="editPortfolioForm" method="POST" action="{{ route('portfolio.edit', ['id' => encrypt($portfolio->id)]) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-container">
                             <div class="form-item">
@@ -258,7 +258,7 @@
                                 <div>
                                     <div class="input-group mb-4">
                                         @php $awards = json_decode($portfolio->awards ?? '[]', true) ?? []; @endphp
-                                        <input class="input awards @error('awards') input-invalid @enderror" type="text" name="awards[]" placeholder="e.g Best Surgeon Award" value={{ $awards[0] ?? '' }}>
+                                        <input class="input awards @error('awards') input-invalid @enderror" type="text" name="awards[]" placeholder="e.g Best Surgeon Award" value="{{ $awards[0] ?? '' }}">
                                         <button class="btn btn-solid" id="addAwardsBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -275,7 +275,7 @@
                                     </div>
                                     @foreach(array_slice($awards, 1) as $award)
                                         <div class="input-group mb-4 awards-item">
-                                            <input class="input awards" type="text" name="awards[]" placeholder="e.g Collagen type III diseases – case reports – IJPM – March 2016" value={{ $award }}>
+                                            <input class="input awards" type="text" name="awards[]" placeholder="e.g Collagen type III diseases – case reports – IJPM – March 2016" value="{{ $award }}">
                                             <button class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white removeAwardsBtn">
                                                 <span class="flex items-center justify-center gap-2">
                                                     <span class="text-lg">

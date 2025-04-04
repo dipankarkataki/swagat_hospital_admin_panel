@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Hospital\HospitalController;
 use App\Http\Controllers\Portfolio\PortfolioController;
 
 Route::match(['get', 'post',], '/', [LoginController::class, 'login'])->name('login');
@@ -20,6 +21,17 @@ Route::group(['middleware' => 'auth'], function(){
         Route::match(['get', 'post'], 'create-doctors-portfolio', [PortfolioController::class, 'createDoctorsPortfolio'])->name('portfolio.create');
         Route::get('portfolio-by-id/{id}', [PortfolioController::class, 'portfolioById'])->name('portfolio.by.id');
         Route::post('edit-portfolio/{id}', [PortfolioController::class, 'editPortfolio'])->name('portfolio.edit');
+        Route::get('delete-portfolio/{id}', [PortfolioController::class, 'deletePortfolio'])->name('portfolio.delete');
+        Route::post('update-portfolio-status/{id}', [PortfolioController::class, 'updatePortfolioStatus'])->name('portfolio.status.update');
+        Route::post('update-appointment-status/{id}', [PortfolioController::class, 'updateAppointmentStatus'])->name('appointment.status.update');
+    });
+
+    Route::group(['prefix' => 'hospital'], function(){
+        Route::get('list-of-hospitals', [HospitalController::class, 'listOfHospitals'])->name('hospital.list');
+        Route::match(['get', 'post'], 'create-hospital-portfolio', [HospitalController::class, 'createHospitalPortfolio'])->name('hospital.create');
+        Route::get('hospital-by-id/{id}', [HospitalController::class, 'hospitalById'])->name('hospital.by.id');
+        Route::post('edit-hospital/{id}', [HospitalController::class, 'editHospitalPortfolio'])->name('hospital.edit');
+        Route::get('delete-hospital/{id}', [HospitalController::class, 'deleteHospitalPortfolio'])->name('hospital.delete');
     });
     
     Route::get('logout', function(){

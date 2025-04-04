@@ -91,10 +91,12 @@ class PortfolioController extends Controller
     }
 
     public function editPortfolio(Request $request, $id){
+        $portfolio_id = decrypt($id);
+
         $validator = Validator::make($request->all(), [
             'uploadProfilePicture' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
             'fullName' => 'required|string|min:3|max:255',
-            'email' => 'required|email|unique:portfolios,email,'.$id,
+            'email' => 'required|email|unique:portfolios,email,'.$portfolio_id,
             'yearsOfExperience' => 'required|numeric',
             'department' => 'required|string',
             'languagesSpeak' => 'nullable|string',
@@ -109,11 +111,12 @@ class PortfolioController extends Controller
 
         if($validator->fails()){
             Log::error('Validator Error'.$validator->errors()->first());
-            return redirect()->route('portfolio.by.id', ['id' => encrypt($id)])->withErrors($validator)->withInput();
+            return redirect()->route('portfolio.by.id', ['id' => encrypt($portfolio_id)])->withErrors($validator)->withInput();
         }
 
         try{
-            $portfolio = Portfolio::find($id);
+            
+            $portfolio = Portfolio::find($portfolio_id);
             
             if($request->hasFile('uploadProfilePicture')){
                 $image_path = $request->file('uploadProfilePicture')->store('portfolio/images');
@@ -135,15 +138,52 @@ class PortfolioController extends Controller
 
             if ($portfolio->save()) {
                 Session::flash('success', 'Portfolio updated successfully.');
-                return redirect()->route('portfolio.by.id', ['id' => encrypt($id)]);
+                return redirect()->route('portfolio.by.id', ['id' => encrypt($portfolio_id)]);
             } else {
                 Session::flash('exception', 'Something went wrong. Please try later.');
-                return redirect()->route('portfolio.by.id', ['id' => encrypt($id)])->withInput();
+                return redirect()->route('portfolio.by.id', ['id' => encrypt($portfolio_id)])->withInput();
             }
         }catch(\Exception $e){
             Log::error('Error occurred at edit portfolio function: ' . $e->getMessage());
             Session::flash('exception', 'Something went wrong. Please try later.');
-            return redirect()->route('portfolio.by.id', ['id' => encrypt($id)])->withInput();
+            return redirect()->route('portfolio.by.id', ['id' => encrypt($portfolio_id)])->withInput();
+        }
+    }
+
+    public function deletePortfolio($id){
+        try{
+            $portfolio_id = decrypt($id);
+            $portfolio = Portfolio::find($portfolio_id);
+            if($portfolio){
+                $portfolio->delete();
+                Session::flash('success', 'Portfolio deleted successfully.');
+                return redirect()->route('portfolio.list');
+            }else{
+                Session::flash('exception', 'Portfolio not found.');
+                return redirect()->route('portfolio.list');
+            }
+        }catch(\Exception $e){
+            Log::error('Error occurred at delete portfolio function: ' . $e->getMessage());
+            Session::flash('exception', 'Something went wrong. Please try later.');
+            return redirect()->route('portfolio.list');
+        }
+    }
+
+    public function updatePortfolioStatus(Request $request, $id){
+        try{
+            $portfolio = Portfolio::find($id);
+            if($portfolio){
+                $portfolio->status = $request->status;
+                $portfolio->save();
+                Session::flash('success', 'Portfolio status updated successfully.');
+                return redirect()->route('portfolio.by.id', ['id' => encrypt($id)]);
+            }else{
+                Session::flash('exception', 'Portfolio not found.');
+                return redirect()->route('portfolio.by.id', ['id' => encrypt($id)]);
+            }
+        }catch(\Exception $e){
+            Log::error('Error occurred at update portfolio status function: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Something went wrong. Please try later.']);
         }
     }
 }
