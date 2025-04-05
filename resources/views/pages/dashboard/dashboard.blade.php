@@ -18,7 +18,7 @@
                             </span>
                             <div>
                                 <div class="flex gap-1.5 items-end mb-2">
-                                    <h3 class="font-bold leading-none">63</h3>
+                                    <h3 class="font-bold leading-none">{{ $total_portfolio }}</h3>
                                     <p class="font-semibold">Doctors</p>
                                 </div>
                             </div>

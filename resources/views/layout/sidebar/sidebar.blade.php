@@ -158,12 +158,12 @@
                         </div>
                         <ul>
                             <li data-menu-item="modern-help-center" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="modern-help-center.html">
+                                <a class="h-full w-full flex items-center" href="{{ route('hospital.list') }}">
                                     <span>List of Hospitals</span>
                                 </a>
                             </li>
                             <li data-menu-item="modern-article" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="modern-article.html">
+                                <a class="h-full w-full flex items-center" href="{{ route('hospital.create') }}">
                                     <span>Create</span>
                                 </a>
                             </li>
