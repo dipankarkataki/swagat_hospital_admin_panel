@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="/favicon.ico">
     <title>
         Login | Swagat Hospital Admin Panel
@@ -12,6 +13,7 @@
 
     <!-- Core CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>
     <style>
         .toast-position{
             position: absolute;
@@ -44,23 +46,20 @@
                                             <p>Please enter your credentials to sign in!</p>
                                         </div>
                                         <div>
-                                            <form action="{{ route('login') }}" method="POST" id="loginForm">
-                                                @csrf
+                                            <form id="loginForm">
                                                 <div class="form-container vertical">
                                                     <div class="form-item vertical">
                                                         <label class="form-label mb-2">Email</label>
                                                         <div>
-                                                            <input class="input @error('email') input-invalid @enderror" type="email" name="email" autocomplete="off" placeholder="e.g jhon doe" value={{ old('email') }}>
+                                                            <input class="input" type="email" name="email" id="email" autocomplete="off" placeholder="e.g jhon doe">
                                                         </div>
-                                                        @error('email')
-                                                            <div class="text-red-500 mt-2">{{ $message }}</div>
-                                                        @enderror
+                                                        <div class="error-message"></div>
                                                     </div>
                                                     <div class="form-item vertical">
                                                         <label class="form-label mb-2">Password</label>
                                                         <div>
                                                             <span class="input-wrapper">
-                                                                <input class="input pr-8 @error('password') input-invalid @enderror" type="password" name="password" id="password" autocomplete="off" placeholder="* * * * * * * *" value="{{ old('password') }}">
+                                                                <input class="input pr-8" type="password" name="password" id="password" autocomplete="off" placeholder="* * * * * * * *">
                                                                 <div class="input-suffix-end">
                                                                     <span class="cursor-pointer text-xl" id="togglePassword">
                                                                         <svg id="eyeIcon" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -70,9 +69,7 @@
                                                                 </div>
                                                             </span>
                                                         </div>
-                                                        @error('password')
-                                                            <div class="text-red-500 mt-2">{{ $message }}</div>
-                                                        @enderror
+                                                        <div class="error-message"></div>
                                                     </div>
                                                     <div class="flex justify-between mb-6">
                                                         <label class="checkbox-label mb-0">
@@ -97,35 +94,13 @@
         </div>
     </div>
 
-    @if(Session::has('exception'))
-        <div class="toast-position">
-            <div class="toast fade show" id="notificationToastError">
-                <div class="notification">
-                    <div class="notification-content">
-                        <div class="mr-3">
-                            <span class="text-2xl text-red-400">
-                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                                </svg>
-                            </span>
-                        </div>
-                        <div class="mr-4">
-                            <div class="notification-title">Error</div>
-                            <div class="notification-description">
-                                {{ Session::get('exception') }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
-
     <!-- Core Vendors JS -->
     <script src="{{ asset('assets/js/vendors.min.js') }}"></script>
 
     <!-- Core JS -->
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -154,14 +129,46 @@
                 }
             });
 
-            const toastError = $("#notificationToastError");
-            if (toastError.length) {
-                toastError.fadeIn().delay(3000).fadeOut();
-            }
-
-            $('#loginForm').on('submit',function() {
+            $('#loginForm').on('submit',function(e) {
+                e.preventDefault();
                 $('#submitBtn').prop('disabled', true);
                 $('#submitBtn').text('Please wait...');
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'Accept': 'application/json'
+                    },
+                    url: "{{ route('login') }}",
+                    type: "POST",
+                    data:{
+                        'email' : $('#email').val(),
+                        'password' : $('#password').val(),
+                    },
+                    success:function(response){
+                        if(response.success === true){
+                            window.location.href = "{{ route('dashboard.index') }}"; 
+                        }else{
+                            toastr.error(response.message);
+                            const errors = response.data;
+                            for (const field in errors) {
+                                const input = $(`[name="${field}"]`);
+                                input.addClass('input-invalid');
+
+                                input.closest('.form-item').find('.error-message').html(
+                                    `<div class="text-red-500 mt-2">${errors[field][0]}</div>`
+                                );
+                            }
+                        }
+                    }, error:function(xhr){
+                        if (xhr) {
+                            toastr.error("Oops! Something went wrong. Please try later.");
+                        }
+                    },complete:function(){
+                        $('#submitBtn').prop('disabled', false);
+                        $('#submitBtn').text('Sign In');
+                    }
+                })
             });
         });
     </script>

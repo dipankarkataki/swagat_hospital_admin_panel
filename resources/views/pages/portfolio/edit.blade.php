@@ -52,11 +52,11 @@
                                     </div>
                                     <div class="col-span-2 flex md:justify-end">
                                         @if ($portfolio->accepting_appointments == 1)
-                                            <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white" id="acceptingAppointments" data-status=0>
+                                            <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white update-appointment-status" data-id="{{ encrypt($portfolio->id) }}" type="button" data-status=0>
                                                 Accepting Appointments
                                             </button>
                                         @else
-                                            <button class="btn btn-default hover:bg-gray-400 active:bg-gray-600 text-white" id="offlineAppointments" data-status=1>
+                                            <button class="btn btn-default hover:bg-gray-400 active:bg-gray-600 text-white update-appointment-status" data-id="{{ encrypt($portfolio->id) }}" type="button" data-status=1>
                                                 Appointments Offline
                                             </button>
                                         @endif
@@ -571,9 +571,38 @@
                 toastError.fadeIn().delay(3000).fadeOut();
             }
 
+            //Disable Submit Button After Click
             $('#editPortfolioForm').on('submit', function() {
                 $('#editPortfolioSubmitBtn').attr('disabled', true).text('Please wait...');
             });
+
+
+            //Ajax Call To Update Appointment Application Status
+            $('.update-appointment-status').on('click', function(e){
+                $(this).attr('disabled', true).text('Please wait...');
+                const status = $(this).data('status');
+                const portfolio_id = $(this).data('id');
+                $.ajax({
+                    url:"{{ route('appointment.status.update') }}",
+                    type:"POST",
+                    data:{
+                        'status': status,
+                        'portfolio_id': portfolio_id,
+                        '_token': "{{ csrf_token() }}",
+                    },
+                    success:function(response){
+                        console.log('Response', response);
+                        if(response.success === true){
+                            $('#notificationToastSuccess').fadeIn().delay(3000).fadeOut();
+                        }else{
+                            $('#notificationToastError').fadeIn().delay(3000).fadeOut();
+                        }
+                    },error:function(xhr, status, error){
+                        $('#notificationToastError').fadeIn().delay(3000).fadeOut();
+                    }
+                });
+            });
+            
 
         });
     </script>

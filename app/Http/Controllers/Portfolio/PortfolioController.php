@@ -169,21 +169,44 @@ class PortfolioController extends Controller
         }
     }
 
-    public function updatePortfolioStatus(Request $request, $id){
+    public function updatePortfolioStatus(Request $request){
         try{
-            $portfolio = Portfolio::find($id);
+            $portfolio_id = decrypt($request->portfolio_id);
+            $portfolio = Portfolio::find($portfolio_id);
             if($portfolio){
                 $portfolio->status = $request->status;
                 $portfolio->save();
                 Session::flash('success', 'Portfolio status updated successfully.');
-                return redirect()->route('portfolio.by.id', ['id' => encrypt($id)]);
+                return redirect()->route('portfolio.by.id', ['id' => encrypt($portfolio->id)]);
             }else{
                 Session::flash('exception', 'Portfolio not found.');
-                return redirect()->route('portfolio.by.id', ['id' => encrypt($id)]);
+                return redirect()->route('portfolio.by.id', ['id' => encrypt($portfolio->id)]);
             }
         }catch(\Exception $e){
             Log::error('Error occurred at update portfolio status function: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'Something went wrong. Please try later.']);
+        }
+    }
+
+    public function updateAppointmentStatus(Request $request){
+        try{
+            $portfolio_id = decrypt($request->portfolio_id);
+            $portfolio = Portfolio::find($portfolio_id);
+            if($portfolio){
+                $portfolio->accepting_appointments = $request->status;
+                $portfolio->save();
+                // Session::flash('success', 'Portfolio updated successfully.');
+                // return redirect()->route('portfolio.by.id', ['id' => encrypt($portfolio_id)]);
+                return response()->json(['success' => true, 'message' => 'Portfolio updated successfully.']);
+            }else{
+                // Session::flash('exception', 'Portfolio not found.');
+                // return redirect()->route('portfolio.by.id', ['id' => encrypt($portfolio_id)]);
+                return response()->json(['success' => false, 'message' => 'Oops! Failed to update portfolio.']);
+            }
+        }catch(\Exception $e){
+            Log::error('Error occurred at update appointment status function: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Oops! Something went wrong.']);
+            // return response()->json(['success' => false, 'message' => 'Something went wrong. Please try later.']);
         }
     }
 }

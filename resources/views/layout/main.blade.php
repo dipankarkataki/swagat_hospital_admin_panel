@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="/favicon.ico">
     <title>
         @yield('title') | Swagat Hospital Admin Panel
@@ -12,6 +13,8 @@
 
     <!-- Core CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.16.1/sweetalert2.min.css" integrity="sha512-WnmDqbbAeHb7Put2nIAp7KNlnMup0FXVviOctducz1omuXB/hHK3s2vd3QLffK/CvvFUKrpioxdo+/Jo3k/xIw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     @yield('custom-style')
     
@@ -588,10 +591,11 @@
 
     <!-- Page js -->
     <script src="{{ asset('assets/js/pages/customers.js') }}"></script>
-    <!-- Page js -->
-    <script src="{{ asset('assets/js/pages/crm-dashboard.js') }}"></script>
+    
     <!-- Core JS -->
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.16.1/sweetalert2.min.js" integrity="sha512-LGHBR+kJ5jZSIzhhdfytPoEHzgaYuTRifq9g5l6ja6/k9NAOsAi5dQh4zQF6JIRB8cAYxTRedERUF+97/KuivQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <!-- Custome Scripts -->
     @yield('custom-scripts')
