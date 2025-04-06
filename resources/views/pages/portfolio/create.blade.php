@@ -326,7 +326,7 @@
                             </div>
                             <div class="form-item"><label class="form-label"></label>
                                 <div>
-                                    <button class="btn btn-default form-submit-btn" type="submit" id="submitPortfolioBtn">Submit</button>
+                                    <button class="btn btn-default" type="submit" id="submitPortfolioBtn">Submit</button>
                                 </div>
                             </div>
                         </div>

@@ -56,7 +56,6 @@ class PortfolioController extends Controller
             }
 
             try{
-
                 $image_path = $request->file('uploadProfilePicture')->store('portfolio/images');
     
                 Portfolio::create([
@@ -72,7 +71,8 @@ class PortfolioController extends Controller
                     'research' => json_encode($request->research),
                     'awards' => json_encode($request->awards),
                     'available_time_slot' => json_encode($request->availableDate),
-                    'hospital_id' => $request->hospital_id
+                    'hospital_id' => $request->hospital_id,
+                    'accepting_appointments' => $request->availableDate[0] ? 1 : 0,
                 ]);
                 Session::flash('success', 'Portfolio created successfully.');
                 return redirect()->route('portfolio.create');

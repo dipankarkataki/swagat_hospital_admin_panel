@@ -47,7 +47,6 @@
                                                 Appointments Offline
                                             </button>
                                         @endif
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -356,33 +355,41 @@
 
             //Ajax Call To Update Appointment Application Status
             $('.update-appointment-status').on('click', function(e){
+                const button_text = $(this).text();
                 $(this).attr('disabled', true).text('Please wait...');
                 const status = $(this).data('status');
                 const portfolio_id = $(this).data('id');
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url:"{{ route('appointment.status.update') }}",
-                    type:"POST",
-                    data:{
-                        'status': status,
-                        'portfolio_id': portfolio_id,
-                    },
-                    success:function(response){
-                        if(response.success === true){
-                            toastr.success(response.message);
-                            location.reload();
-                        }
-                    },error:function(xhr, status, error){
-                        if(xhr){
-                            toastr.error('Oops! Something went wrong. Please try again.');
+                const available_time_slot = @json($portfolio->available_time_slot);
+                
+                if(available_time_slot === '[null]'){
+                    toastr.error('Please set available date and time first!');
+                    $(this).attr('disabled', false).text(button_text);
+                }else{
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url:"{{ route('appointment.status.update') }}",
+                        type:"POST",
+                        data:{
+                            'status': status,
+                            'portfolio_id': portfolio_id,
+                        },
+                        success:function(response){
+                            if(response.success === true){
+                                toastr.success(response.message);
+                                location.reload();
+                            }
+                        },error:function(xhr, status, error){
+                            if(xhr){
+                                toastr.error('Oops! Something went wrong. Please try again.');
+                                $(this).attr('disabled', false).text($(this).text());
+                            }
+                        },complete:function(){
                             $(this).attr('disabled', false).text($(this).text());
                         }
-                    },complete:function(){
-                        $(this).attr('disabled', false).text($(this).text());
-                    }
-                });
+                    });
+                }
             });
         });
     </script>
