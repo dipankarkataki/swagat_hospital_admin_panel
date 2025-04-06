@@ -338,10 +338,11 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Assign Hospital *</label>
                                 <div>
-                                    <select class="input @error('hospital') invalid-div @enderror" name="hospital">
+                                    <select class="input @error('hospital') invalid-div @enderror" name="hospital_id">
                                         <option value="">Choose hospital</option>
-                                        <option value="maligaon" {{ $portfolio->hospital === 'maligaon' ? 'selected' : ''}}>Gate No 3, Maligaon</option>
-                                        <option value="santipur" {{ $portfolio->hospital === 'santipur' ? 'selected' : ''}}>Santipur</option>
+                                        @foreach ($list_of_hospitals as $item)
+                                            <option value="{{ $item->id }}" {{ $portfolio->hospital_id ==  $item->id  ? 'selected' : ''}}>{{ $item->name }} : {{ $item->address }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 @error('hospital')
@@ -583,22 +584,27 @@
                 const status = $(this).data('status');
                 const portfolio_id = $(this).data('id');
                 $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     url:"{{ route('appointment.status.update') }}",
                     type:"POST",
                     data:{
                         'status': status,
                         'portfolio_id': portfolio_id,
-                        '_token': "{{ csrf_token() }}",
                     },
                     success:function(response){
-                        console.log('Response', response);
                         if(response.success === true){
-                            $('#notificationToastSuccess').fadeIn().delay(3000).fadeOut();
-                        }else{
-                            $('#notificationToastError').fadeIn().delay(3000).fadeOut();
+                            toastr.success(response.message);
+                            location.reload();
                         }
                     },error:function(xhr, status, error){
-                        $('#notificationToastError').fadeIn().delay(3000).fadeOut();
+                        if(xhr){
+                            toastr.error('Oops! Something went wrong. Please try again.');
+                            $(this).attr('disabled', false).text($(this).text());
+                        }
+                    },complete:function(){
+                        $(this).attr('disabled', false).text($(this).text());
                     }
                 });
             });

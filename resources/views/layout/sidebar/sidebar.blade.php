@@ -17,6 +17,26 @@
                             <span class="menu-item-text">Dashboard</span>
                         </a>
                     </li>
+                    <li class="{{ request()->segment(1) === 'hospital' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
+                        <div class="menu-collapse-item">
+                            <svg class="menu-item-icon" stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                            <span class="menu-item-text">Hospital</span>
+                        </div>
+                        <ul style="{{ request()->segment(1) === 'hospital' ? 'display:block' : 'display:none' }}">
+                            <li data-menu-item="modern-help-center" class="{{ request()->routeIs('hospital.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('hospital.list') }}">
+                                    <span>List of Hospitals</span>
+                                </a>
+                            </li>
+                            <li data-menu-item="modern-article" class="{{ request()->routeIs('hospital.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('hospital.create') }}">
+                                    <span>Create</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="{{ request()->segment(1) === 'portfolio' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
                         <div class="menu-collapse-item">
                             <svg class="menu-item-icon" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -149,26 +169,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="menu-collapse">
-                        <div class="menu-collapse-item">
-                            <svg class="menu-item-icon" stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                            </svg>
-                            <span class="menu-item-text">Hospital</span>
-                        </div>
-                        <ul>
-                            <li data-menu-item="modern-help-center" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="{{ route('hospital.list') }}">
-                                    <span>List of Hospitals</span>
-                                </a>
-                            </li>
-                            <li data-menu-item="modern-article" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="{{ route('hospital.create') }}">
-                                    <span>Create</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    
                 </ul>
             </div>
         </nav>

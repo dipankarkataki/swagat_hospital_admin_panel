@@ -6,11 +6,14 @@ use App\Models\Portfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Hospital;
+use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class PortfolioController extends Controller
 {
+    use ApiResponse;
     public function listOfDoctors(){
 
         try{
@@ -25,7 +28,8 @@ class PortfolioController extends Controller
 
     public function createDoctorsPortfolio(Request $request){
         if($request->isMethod('get')){
-            return view('pages.portfolio.create');
+            $list_of_hospitals = Hospital::where('status', 1)->get();
+            return view('pages.portfolio.create')->with(['list_of_hospitals' => $list_of_hospitals]);
         }else{
             
             $validator = Validator::make($request->all(), [
@@ -41,7 +45,7 @@ class PortfolioController extends Controller
                 'research' => 'nullable|array',
                 'awards' => 'nullable|array',
                 'availableDate' => 'nullable|array',
-                'hospital' => 'required|string'
+                'hospital_id' => 'required|numeric'
             ]);
     
             if($validator->fails()){
@@ -66,7 +70,7 @@ class PortfolioController extends Controller
                     'research' => json_encode($request->research),
                     'awards' => json_encode($request->awards),
                     'available_time_slot' => json_encode($request->availableDate),
-                    'hospital' => $request->hospital
+                    'hospital_id' => $request->hospital_id
                 ]);
                 Session::flash('success', 'Portfolio created successfully.');
                 return redirect()->route('portfolio.create');
@@ -82,7 +86,8 @@ class PortfolioController extends Controller
         try{
             $portfolio_id = decrypt($id);
             $portfolio = Portfolio::find($portfolio_id);
-            return view('pages.portfolio.edit')->with(['portfolio' => $portfolio]);
+            $list_of_hospitals = Hospital::where('status', 1)->get();
+            return view('pages.portfolio.edit')->with(['portfolio' => $portfolio, 'list_of_hospitals' => $list_of_hospitals]);
         }catch(\Exception $e){
             Log::error('Error on portfolio by id function: '.$e->getMessage());
             Session::flash('exception', 'Oops! Something went wrong. Please try later.');
@@ -106,7 +111,7 @@ class PortfolioController extends Controller
             'research' => 'nullable|array',
             'awards' => 'nullable|array',
             'availableDate' => 'nullable|array',
-            'hospital' => 'required|string'
+            'hospital_id' => 'required|numeric'
         ]);
 
         if($validator->fails()){
@@ -134,7 +139,7 @@ class PortfolioController extends Controller
             $portfolio->research = json_encode($request->research);
             $portfolio->awards = json_encode($request->awards);
             $portfolio->available_time_slot = json_encode($request->availableDate);
-            $portfolio->hospital = $request->hospital;
+            $portfolio->hospital_id = $request->hospital_id;
 
             if ($portfolio->save()) {
                 Session::flash('success', 'Portfolio updated successfully.');
@@ -194,19 +199,14 @@ class PortfolioController extends Controller
             $portfolio = Portfolio::find($portfolio_id);
             if($portfolio){
                 $portfolio->accepting_appointments = $request->status;
-                $portfolio->save();
-                // Session::flash('success', 'Portfolio updated successfully.');
-                // return redirect()->route('portfolio.by.id', ['id' => encrypt($portfolio_id)]);
-                return response()->json(['success' => true, 'message' => 'Portfolio updated successfully.']);
+                $portfolio->save();;
+                return $this->success('Appointment status updated successfully.', null, 204);
             }else{
-                // Session::flash('exception', 'Portfolio not found.');
-                // return redirect()->route('portfolio.by.id', ['id' => encrypt($portfolio_id)]);
-                return response()->json(['success' => false, 'message' => 'Oops! Failed to update portfolio.']);
+                return $this->success('Failed to update the appointment status.', null, 400);
             }
         }catch(\Exception $e){
             Log::error('Error occurred at update appointment status function: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'Oops! Something went wrong.']);
-            // return response()->json(['success' => false, 'message' => 'Something went wrong. Please try later.']);
+            return $this->success('Oops! Something went wrong. Please try later.', null, 500);
         }
     }
 }

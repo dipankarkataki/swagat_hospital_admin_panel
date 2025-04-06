@@ -25,11 +25,13 @@ return new class extends Migration
             $table->json('research')->nullable();
             $table->json('awards')->nullable();
             $table->json('available_time_slot')->nullable();
-            $table->string('hospital');
+            $table->unsignedBigInteger('hospital_id');
             $table->boolean('accepting_appointments')->default(1);
             $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('hospital_id')->references('id')->on('hospitals')->onDelete('cascade');
         });
     }
 

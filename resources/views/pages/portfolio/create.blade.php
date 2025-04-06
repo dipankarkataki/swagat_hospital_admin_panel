@@ -331,13 +331,14 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Assign Hospital *</label>
                                 <div>
-                                    <select class="input @error('hospital') invalid-div @enderror" name="hospital">
+                                    <select class="input @error('hospital_id') invalid-div @enderror" name="hospital_id">
                                         <option value="">Choose hospital</option>
-                                        <option value="maligaon" {{ old('hospital') === 'maligaon' ? 'selected' : ''}}>Gate No 3, Maligaon</option>
-                                        <option value="santipur" {{ old('hospital') === 'santipur' ? 'selected' : ''}}>Santipur</option>
+                                        @foreach ($list_of_hospitals as $item)
+                                            <option value="{{ $item->id }}" {{ old('hospital_id') ==  $item->id  ? 'selected' : ''}}>{{ $item->name }} : {{ $item->address }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
-                                @error('hospital')
+                                @error('hospital_id')
                                     <div class="text-red-500 mt-2">{{ $message }}</div>
                                 @enderror
                             </div>
