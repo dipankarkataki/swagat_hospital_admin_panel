@@ -46,6 +46,8 @@ class PortfolioController extends Controller
                 'awards' => 'nullable|array',
                 'availableDate' => 'nullable|array',
                 'hospital_id' => 'required|numeric'
+            ],[
+                'hospital_id.required' => 'Please select a hospital.',
             ]);
     
             if($validator->fails()){
@@ -112,6 +114,8 @@ class PortfolioController extends Controller
             'awards' => 'nullable|array',
             'availableDate' => 'nullable|array',
             'hospital_id' => 'required|numeric'
+        ],[
+            'hospital_id.required' => 'Please select a hospital.',
         ]);
 
         if($validator->fails()){
