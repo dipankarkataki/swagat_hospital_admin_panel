@@ -13,14 +13,8 @@
 
     <!-- Core CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/custom-styles.css') }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>
-    <style>
-        .toast-position{
-            position: absolute;
-            top:85px;
-            right:50px;
-        }
-    </style>
 </head>
 
 <body>

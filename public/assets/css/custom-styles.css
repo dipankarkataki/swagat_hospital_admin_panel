@@ -1,0 +1,14 @@
+
+.toast{
+    border-radius:10px;
+    background-color:#fff;
+}
+.toast-position{
+    position: absolute;
+    top:85px;
+    right:50px;
+}
+.invalid-div{
+    border: 2px solid rgb(239 68 68);
+    border-radius: 5px;
+}

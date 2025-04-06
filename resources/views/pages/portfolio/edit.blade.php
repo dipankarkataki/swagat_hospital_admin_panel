@@ -1,18 +1,5 @@
 @extends('layout.main')
 @section('title', "Edit Doctor's Portfolio")
-@section('custom-style')
-    <style>
-        .invalid-div{
-            border: 2px solid rgb(239 68 68);
-            border-radius: 5px;
-        }
-        .toast-position{
-            position: absolute;
-            top:85px;
-            right:50px;
-        }
-    </style>
-@endsection
 @section('content')
     <div class="page-container relative h-full flex flex-auto flex-col px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div class="container mx-auto">

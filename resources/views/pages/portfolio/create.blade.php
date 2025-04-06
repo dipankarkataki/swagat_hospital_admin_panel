@@ -1,18 +1,5 @@
 @extends('layout.main')
 @section('title', "Create Doctor's Portfolio")
-@section('custom-style')
-    <style>
-        .invalid-div{
-            border: 2px solid rgb(239 68 68);
-            border-radius: 5px;
-        }
-        .toast-position{
-            position: absolute;
-            top:85px;
-            right:50px;
-        }
-    </style>
-@endsection
 @section('content')
     <div class="page-container relative h-full flex flex-auto flex-col px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div class="container mx-auto">
@@ -50,11 +37,6 @@
                                             <div class="text-red-500 mt-2">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    {{-- <div class="col-span-2 flex md:justify-end">
-                                        <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white" id="acceptingAppointments" data-status=1>
-                                            Accepting Appointments
-                                        </button>
-                                    </div> --}}
                                 </div>
                             </div>
                             <div class="form-item">
@@ -353,7 +335,7 @@
             </div>
         </div>
     </div>
-
+    
     @if(Session::has('success'))
         <div class="toast-position">
             <div class="toast fade show" id="notificationToastSuccess">
