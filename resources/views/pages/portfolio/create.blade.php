@@ -76,13 +76,16 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Choose Linked Department *</label>
                                 <div>
-                                    <select class="input @error('department') invalid-div @enderror" name="department">
+                                    
+                                    <select class="input @error('department_id') invalid-div @enderror" name="department_id">
                                         <option value="">Choose department</option>
-                                        <option value="gynacology" {{ old('department') === 'gynacology' ? 'selected' : '' }}>Gynachology</option>
-                                        <option value="medicine" {{ old('department') === 'medicine' ? 'selected' : '' }}>Medicine</option>
+                                        
+                                        @foreach ($list_of_departments as $department)
+                                            <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>{{ $department->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
-                                @error('department')
+                                @error('department_id')
                                     <div class="text-red-500 mt-2">{{ $message }}</div>
                                 @enderror
                             </div>

@@ -52,7 +52,7 @@
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Full Name *</label>
-                                <div>
+                                <div>                                    
                                     <input type="text" class="input form-control @error('fullName') input-invalid @enderror" name="fullName" placeholder="e.g Jhon Doe" value="{{ $portfolio->full_name }}">
                                 </div>
                                 @error('fullName')
@@ -87,13 +87,14 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Choose Linked Department *</label>
                                 <div>
-                                    <select class="input @error('department') invalid-div @enderror" name="department">
+                                    <select class="input @error('department_id') invalid-div @enderror" name="department_id">
                                         <option value="">Choose department</option>
-                                        <option value="gynacology" {{ $portfolio->department === 'gynacology' ? 'selected' : '' }}>Gynachology</option>
-                                        <option value="medicine" {{ $portfolio->department === 'medicine' ? 'selected' : '' }}>Medicine</option>
+                                        @foreach ($list_of_departments as $department)
+                                            <option value="{{ $department->id }}" {{ $department->id == $portfolio->department_id ? 'selected' : '' }}>{{ $department->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
-                                @error('department')
+                                @error('department_id')
                                     <div class="text-red-500 mt-2">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -324,14 +325,14 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Assign Hospital *</label>
                                 <div>
-                                    <select class="input @error('hospital') invalid-div @enderror" name="hospital_id">
+                                    <select class="input @error('hospital_id') invalid-div @enderror" name="hospital_id">
                                         <option value="">Choose hospital</option>
                                         @foreach ($list_of_hospitals as $item)
                                             <option value="{{ $item->id }}" {{ $portfolio->hospital_id ==  $item->id  ? 'selected' : ''}}>{{ $item->name }} : {{ $item->address }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                @error('hospital')
+                                @error('hospital_id')
                                     <div class="text-red-500 mt-2">{{ $message }}</div>
                                 @enderror
                             </div>

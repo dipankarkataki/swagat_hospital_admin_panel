@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('email')->unique();
             $table->integer('experience');
-            $table->string('department');
+            $table->unsignedBigInteger('department_id');
             $table->text('languages_speak')->nullable()->default('Assamese');
             $table->text('brief_description');
             $table->json('expertise')->nullable();
@@ -31,6 +31,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->foreign('hospital_id')->references('id')->on('hospitals')->onDelete('cascade');
         });
     }

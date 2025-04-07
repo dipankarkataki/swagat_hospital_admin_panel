@@ -11,12 +11,16 @@ class Portfolio extends Model
     
     protected $table = 'portfolios';
     protected $fillable = [
-        'profile_pic', 'full_name', 'email', 'experience', 'department', 'languages_speak', 'brief_description', 'expertise', 
+        'profile_pic', 'full_name', 'email', 'experience', 'department_id', 'languages_speak', 'brief_description', 'expertise', 
         'membership', 'research', 'awards', 'available_time_slot', 'hospital_id', 'accepting_appointments', 'status'
     ];
 
     public function hospital()
     {
         return $this->belongsTo(Hospital::class, 'hospital_id', 'id');
+    }
+
+    public function departments(){
+        return $this->belongsTo(Department::class, 'department_id', 'id');
     }
 }

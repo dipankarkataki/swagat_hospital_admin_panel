@@ -6,6 +6,7 @@ use App\Models\Portfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Department;
 use App\Models\Hospital;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Session;
@@ -17,7 +18,7 @@ class PortfolioController extends Controller
     public function listOfDoctors(){
 
         try{
-            $get_portfolio = Portfolio::with('hospital')->latest()->get();
+            $get_portfolio = Portfolio::with('hospital', 'departments')->latest()->get();
             return view('pages.portfolio.list_of_doctors')->with(['portfolio' => $get_portfolio]);
         }catch(\Exception $e){
             Log::error('Error occurred at create portfolio function: ' . $e->getMessage());
@@ -28,16 +29,16 @@ class PortfolioController extends Controller
 
     public function createDoctorsPortfolio(Request $request){
         if($request->isMethod('get')){
+            $list_of_departments = Department::where('status', 1)->get();
             $list_of_hospitals = Hospital::where('status', 1)->get();
-            return view('pages.portfolio.create')->with(['list_of_hospitals' => $list_of_hospitals]);
+            return view('pages.portfolio.create')->with(['list_of_hospitals' => $list_of_hospitals, 'list_of_departments' =>  $list_of_departments]);
         }else{
-            
             $validator = Validator::make($request->all(), [
                 'uploadProfilePicture' => 'required|image|mimes:png,jpg,jpeg|max:1024',
                 'fullName' => 'required|string|min:3|max:255',
                 'email' => 'required|email|unique:portfolios,email',
                 'yearsOfExperience' => 'required|numeric',
-                'department' => 'required|string',
+                'department_id' => 'required|numeric',
                 'languagesSpeak' => 'nullable|string',
                 'briefDescription' => 'required|string|min:100',
                 'expertise' => 'nullable|array',
@@ -63,7 +64,7 @@ class PortfolioController extends Controller
                     'full_name' => $request->fullName,
                     'email' => $request->email,
                     'experience' => $request->yearsOfExperience,
-                    'department' => $request->department,
+                    'department_id' => $request->department_id,
                     'languages_speak' => $request->languagesSpeak,
                     'brief_description' => $request->briefDescription,
                     'expertise' => json_encode($request->expertise),
@@ -89,7 +90,8 @@ class PortfolioController extends Controller
             $portfolio_id = decrypt($id);
             $portfolio = Portfolio::find($portfolio_id);
             $list_of_hospitals = Hospital::where('status', 1)->get();
-            return view('pages.portfolio.edit')->with(['portfolio' => $portfolio, 'list_of_hospitals' => $list_of_hospitals]);
+            $list_of_departments = Department::where('status', 1)->get();
+            return view('pages.portfolio.edit')->with(['portfolio' => $portfolio, 'list_of_hospitals' => $list_of_hospitals, 'list_of_departments' => $list_of_departments]);
         }catch(\Exception $e){
             Log::error('Error on portfolio by id function: '.$e->getMessage());
             Session::flash('exception', 'Oops! Something went wrong. Please try later.');
@@ -105,7 +107,7 @@ class PortfolioController extends Controller
             'fullName' => 'required|string|min:3|max:255',
             'email' => 'required|email|unique:portfolios,email,'.$portfolio_id,
             'yearsOfExperience' => 'required|numeric',
-            'department' => 'required|string',
+            'department_id' => 'required|numeric',
             'languagesSpeak' => 'nullable|string',
             'briefDescription' => 'required|string|min:100',
             'expertise' => 'nullable|array',
@@ -135,7 +137,7 @@ class PortfolioController extends Controller
             $portfolio->full_name = $request->fullName;
             $portfolio->email = $request->email;
             $portfolio->experience = $request->yearsOfExperience;
-            $portfolio->department = $request->department;
+            $portfolio->department_id = $request->department_id;
             $portfolio->languages_speak = $request->languagesSpeak;
             $portfolio->brief_description = $request->briefDescription;
             $portfolio->expertise = json_encode($request->expertise);
