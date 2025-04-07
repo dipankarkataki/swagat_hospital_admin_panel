@@ -78,12 +78,14 @@
                                             <a class="hover:text-primary-600 ml-2 rtl:mr-2 font-semibold"href="#?id=1">{{ $item->full_name }}</a>
                                         </div>
                                     </td>
-                                    <td>{{ $item->email }}</td>
+                                    <td>
+                                        <div class="flex items-center">{{ $item->email }}</div>
+                                    </td>
                                     <td>
                                         <div class="flex items-center">{{ $item->department }}</div>
                                     </td>
                                     <td>
-                                        <div class="flex items-center">{{ $item->hospital }}</div>
+                                        <div class="flex items-center">{{ $item->hospital->name }}</div>
                                     </td>
                                     <td>
                                         <div class="flex justify-center items-center">

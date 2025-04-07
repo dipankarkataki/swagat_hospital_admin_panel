@@ -14,4 +14,9 @@ class Portfolio extends Model
         'profile_pic', 'full_name', 'email', 'experience', 'department', 'languages_speak', 'brief_description', 'expertise', 
         'membership', 'research', 'awards', 'available_time_slot', 'hospital_id', 'accepting_appointments', 'status'
     ];
+
+    public function hospital()
+    {
+        return $this->belongsTo(Hospital::class, 'hospital_id', 'id');
+    }
 }

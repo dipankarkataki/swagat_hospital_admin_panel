@@ -153,12 +153,13 @@
                                     `<div class="text-red-500 mt-2">${errors[field][0]}</div>`
                                 );
                             }
+                            $('#submitBtn').prop('disabled', false);
+                            $('#submitBtn').text('Sign In');
                         }
                     }, error:function(xhr){
                         if (xhr) {
                             toastr.error("Oops! Something went wrong. Please try later.");
                         }
-                    },complete:function(){
                         $('#submitBtn').prop('disabled', false);
                         $('#submitBtn').text('Sign In');
                     }

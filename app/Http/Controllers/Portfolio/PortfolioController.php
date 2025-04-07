@@ -17,7 +17,7 @@ class PortfolioController extends Controller
     public function listOfDoctors(){
 
         try{
-            $get_portfolio = Portfolio::where('status', 1)->latest()->get();
+            $get_portfolio = Portfolio::with('hospital')->latest()->get();
             return view('pages.portfolio.list_of_doctors')->with(['portfolio' => $get_portfolio]);
         }catch(\Exception $e){
             Log::error('Error occurred at create portfolio function: ' . $e->getMessage());
@@ -180,20 +180,19 @@ class PortfolioController extends Controller
 
     public function updatePortfolioStatus(Request $request){
         try{
-            $portfolio_id = decrypt($request->portfolio_id);
+            $portfolio_id = decrypt($request->id);
             $portfolio = Portfolio::find($portfolio_id);
             if($portfolio){
                 $portfolio->status = $request->status;
                 $portfolio->save();
-                Session::flash('success', 'Portfolio status updated successfully.');
-                return redirect()->route('portfolio.by.id', ['id' => encrypt($portfolio->id)]);
+                $message = 'Status updated successfully. From '.($request->status == '1' ? 'blocked to active ' : 'active to blocked');
+                return $this->success($message, null, 204);
             }else{
-                Session::flash('exception', 'Portfolio not found.');
-                return redirect()->route('portfolio.by.id', ['id' => encrypt($portfolio->id)]);
+                return $this->error('Failed to update status.', null, 400);
             }
         }catch(\Exception $e){
-            Log::error('Error occurred at update portfolio status function: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'Something went wrong. Please try later.']);
+            Log::error('Error occurred at update status function: ' . $e->getMessage());
+            return $this->error('Oops! Something went wrong. Please try later.', null, 400);
         }
     }
 

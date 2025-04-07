@@ -335,13 +335,23 @@
                                     <div class="text-red-500 mt-2">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-item"><label class="form-label"></label>
+                            <div class="form-item">
                                 <div>
                                     <button class="btn btn-default" type="submit" id="editPortfolioSubmitBtn"> Submit </button>
                                 </div>
                             </div>
                         </div>
                     </form>
+                    <div class="grid border border-gray-950 border-dashed rounded-md p-8">
+                        <div>
+                            <label class="form-label mb-2">Change Account Status:</label>
+                            @if ($portfolio->status == 1)
+                                <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($portfolio->id) }}" data-status=0> Account Active </button> 
+                            @else
+                                <button class="btn btn-md bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($portfolio->id) }}" data-status=1> Account Blocked</button>                                        
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -360,9 +370,14 @@
                 const status = $(this).data('status');
                 const portfolio_id = $(this).data('id');
                 const available_time_slot = @json($portfolio->available_time_slot);
+                const account_status = @json($portfolio->status);
                 
-                if(available_time_slot === '[null]'){
-                    toastr.error('Please set available date and time first!');
+                if(available_time_slot === '[null]' || account_status == 0){
+                    if(account_status == 0){
+                        toastr.error('Account is blocked. Please unblock the account first!');
+                    }else{
+                        toastr.error('Please set available date and time first!');
+                    }
                     $(this).attr('disabled', false).text(button_text);
                 }else{
                     $.ajax({
@@ -391,6 +406,7 @@
                     });
                 }
             });
+            
         });
     </script>
 @endsection

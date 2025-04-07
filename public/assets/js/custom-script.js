@@ -202,6 +202,42 @@ $(document).ready(function(){
             }
         })
     });
+
+
+    //Update Account Status
+    $('.update-account-status').on('click', function(){
+        const button_text = $(this).text();
+        $(this).attr('disabled', true).text('Please wait...');
+        const status = $(this).data('status');
+        const portfolio_id = $(this).data('id');
+        const update_url = $(this).data('url');
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: update_url,
+            type:"POST",
+            data:{
+                'status': status,
+                'id': portfolio_id,
+            },
+            success:function(response){
+                if(response.success === true){
+                    toastr.success(response.message);
+                    setTimeout(() => {
+                        location.reload();  
+                    }, 1000);
+                }
+            },error:function(xhr, status, error){
+                if(xhr){
+                    toastr.error('Oops! Something went wrong. Please try again.');
+                }
+            },complete:function(){
+                $(this).attr('disabled', false).text(button_text);
+            }
+        });
+    });
     
 
 });
