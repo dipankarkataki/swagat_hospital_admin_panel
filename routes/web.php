@@ -28,10 +28,11 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::group(['prefix' => 'hospital'], function(){
         Route::get('list-of-hospitals', [HospitalController::class, 'listOfHospitals'])->name('hospital.list');
-        Route::match(['get', 'post'], 'create-hospital-portfolio', [HospitalController::class, 'createHospital'])->name('hospital.create');
+        Route::match(['get', 'post'], 'create-hospital', [HospitalController::class, 'createHospital'])->name('hospital.create');
         Route::get('hospital-by-id/{id}', [HospitalController::class, 'hospitalById'])->name('hospital.by.id');
-        Route::post('edit-hospital/{id}', [HospitalController::class, 'editHospitalPortfolio'])->name('hospital.edit');
-        Route::get('delete-hospital/{id}', [HospitalController::class, 'deleteHospitalPortfolio'])->name('hospital.delete');
+        Route::post('edit-hospital/{id}', [HospitalController::class, 'editHospital'])->name('hospital.edit');
+        Route::get('delete-hospital/{id}', [HospitalController::class, 'deleteHospital'])->name('hospital.delete');
+        Route::post('update-hospital-status', [HospitalController::class, 'updateHospitalStatus'])->name('hospital.status.update');
     });
     
     Route::get('logout', function(){
