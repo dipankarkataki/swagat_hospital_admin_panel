@@ -37,6 +37,7 @@ class PortfolioController extends Controller
                 'uploadProfilePicture' => 'required|image|mimes:png,jpg,jpeg|max:1024',
                 'fullName' => 'required|string|min:3|max:255',
                 'email' => 'required|email|unique:portfolios,email',
+                'qualification' => 'required|string|min:10',
                 'yearsOfExperience' => 'required|numeric',
                 'department_id' => 'required|numeric',
                 'languagesSpeak' => 'nullable|string',
@@ -63,6 +64,7 @@ class PortfolioController extends Controller
                     'profile_pic' => $image_path,
                     'full_name' => $request->fullName,
                     'email' => $request->email,
+                    'qualification' => $request->qualification,
                     'experience' => $request->yearsOfExperience,
                     'department_id' => $request->department_id,
                     'languages_speak' => $request->languagesSpeak,
@@ -106,6 +108,7 @@ class PortfolioController extends Controller
             'uploadProfilePicture' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
             'fullName' => 'required|string|min:3|max:255',
             'email' => 'required|email|unique:portfolios,email,'.$portfolio_id,
+            'qualification' => 'required|string',
             'yearsOfExperience' => 'required|numeric',
             'department_id' => 'required|numeric',
             'languagesSpeak' => 'nullable|string',
@@ -136,6 +139,7 @@ class PortfolioController extends Controller
     
             $portfolio->full_name = $request->fullName;
             $portfolio->email = $request->email;
+            $portfolio->qualification = $request->qualification;
             $portfolio->experience = $request->yearsOfExperience;
             $portfolio->department_id = $request->department_id;
             $portfolio->languages_speak = $request->languagesSpeak;

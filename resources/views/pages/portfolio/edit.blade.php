@@ -69,6 +69,15 @@
                                 @enderror
                             </div>
                             <div class="form-item">
+                                <label class="form-label mb-2">Qualification *</label>
+                                <div>
+                                    <textarea class="input input-textarea @error('qualification') input-invalid @enderror" name="qualification" placeholder="Enter qualifications of the doctor. e.g MBBS, FRCS, etc."  >{{ $portfolio->qualification }}</textarea>
+                                </div>
+                                @error('qualification')
+                                    <div class="text-red-500 mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-item">
                                 <label class="form-label mb-2">Choose Years of Experience *</label>
                                 <div>
                                     <select class="input @error('yearsOfExperience') invalid-div @enderror" name="yearsOfExperience">
@@ -101,7 +110,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Languages Speak</label>
                                 <div>
-                                    <input type="text" class="input form-control @error('languagesSpeak') input-invalid @enderror" name="languagesSpeak" placeholder="Enter languages separated by comma(,)" value="{{ $portfolio->languages_speak }}">
+                                    <input type="text" class="input form-control @error('languagesSpeak') input-invalid @enderror" name="languagesSpeak" placeholder="Enter languages separated by comma(,)" value="{{ $portfolio->languages_speak ? $portfolio->languages_speak : 'Assamese' }}">
                                 </div>
                                 @error('languagesSpeak')
                                     <div class="text-red-500 mt-2">{{ $message }}</div>
@@ -347,9 +356,9 @@
                         <div>
                             <label class="form-label mb-2">Change Account Status:</label>
                             @if ($portfolio->status == 1)
-                                <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($portfolio->id) }}" data-status=0> Account Active </button> 
+                                <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($portfolio->id) }}" data-status=0> Account Is Active </button> 
                             @else
-                                <button class="btn btn-md bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($portfolio->id) }}" data-status=1> Account Blocked</button>                                        
+                                <button class="btn btn-md bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($portfolio->id) }}" data-status=1> Account Is Blocked</button>                                        
                             @endif
                         </div>
                     </div>

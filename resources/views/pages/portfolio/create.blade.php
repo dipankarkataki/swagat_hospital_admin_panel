@@ -58,6 +58,15 @@
                                 @enderror
                             </div>
                             <div class="form-item">
+                                <label class="form-label mb-2">Qualification *</label>
+                                <div>
+                                    <textarea class="input input-textarea @error('qualification') input-invalid @enderror" name="qualification" placeholder="Enter qualifications of the doctor. e.g MBBS, FRCS, etc."  >{{ old('qualification') }}</textarea>
+                                </div>
+                                @error('qualification')
+                                    <div class="text-red-500 mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-item">
                                 <label class="form-label mb-2">Choose Years of Experience *</label>
                                 <div>
                                     <select class="input @error('yearsOfExperience') invalid-div @enderror" name="yearsOfExperience">
