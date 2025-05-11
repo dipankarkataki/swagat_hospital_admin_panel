@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Frontend\DepartmentController;
 use App\Http\Controllers\Frontend\PortfolioController;
 
 Route::get('/user', function (Request $request) {
@@ -13,4 +14,7 @@ Route::get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'portfolio'], function(){
     Route::get('list', [PortfolioController::class, 'listOfDoctors']);
+});
+Route::group(['prefix' => 'department'], function(){
+    Route::get('list', [DepartmentController::class, 'listOfDepartments']);
 });

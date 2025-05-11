@@ -18,7 +18,7 @@ class PortfolioController extends Controller
             $get_portfolio = Portfolio::with('hospital', 'departments')->latest()->get();
             return $this->success('Portfolio fetched successfully', $get_portfolio, 200);
         }catch(\Exception $e){
-            Log::error('Error occurred at create portfolio function: ' . $e->getMessage());
+            Log::error('Error occurred at Frontend/listOfDoctors function: ' . $e->getMessage());
             return $this->error('Oops! Something went wrong. Failed to fetch doctors portfolio.', null, 500);
         }
         
