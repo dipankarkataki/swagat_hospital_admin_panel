@@ -16,4 +16,9 @@ class Department extends Model
     {
         return $this->hasMany(Portfolio::class, 'department_id', 'id');
     }
+
+    public function getNameAttribute($value)
+    {
+        return ucwords(strtolower($value));
+    }
 }
