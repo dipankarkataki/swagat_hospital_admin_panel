@@ -85,10 +85,10 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Choose Linked Department *</label>
                                 <div>
-                                    
+
                                     <select class="input @error('department_id') invalid-div @enderror" name="department_id">
                                         <option value="">Choose department</option>
-                                        
+
                                         @foreach ($list_of_departments as $department)
                                             <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>{{ $department->name }}</option>
                                         @endforeach
@@ -163,7 +163,7 @@
                                 <div>
                                     <div class="input-group mb-4">
                                         @php $memberships = old('membership', []); @endphp
-                                        <input class="input membership @error('membership') input-invalid @enderror" type="text" name="membership[]" placeholder="e.g Member of Nephrology Association of Karnataka" value="{{ $memberships[0] ?? '' }}">  
+                                        <input class="input membership @error('membership') input-invalid @enderror" type="text" name="membership[]" placeholder="e.g Member of Nephrology Association of Karnataka" value="{{ $memberships[0] ?? '' }}">
                                         <button class="btn btn-solid" id="addMembershipBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -282,7 +282,7 @@
                                 </div>
                             </div>
                             <div class="form-item">
-                                <label class="form-label mb-2">Set Available Date And Time (MM/DD/YYYY)</label>
+                                <label class="form-label mb-2">Set Available Date And Time</label>
                                 <div>
                                     <div class="input-group mb-4">
                                         @php $availableDates = old('availableDate', []); @endphp
@@ -347,6 +347,6 @@
             </div>
         </div>
     </div>
-    
+
     @include('common.session_message')
 @endsection

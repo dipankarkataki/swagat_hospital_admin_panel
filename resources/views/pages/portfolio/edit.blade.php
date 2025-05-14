@@ -52,7 +52,7 @@
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Full Name *</label>
-                                <div>                                    
+                                <div>
                                     <input type="text" class="input form-control @error('fullName') input-invalid @enderror" name="fullName" placeholder="e.g Jhon Doe" value="{{ $portfolio->full_name }}">
                                 </div>
                                 @error('fullName')
@@ -172,7 +172,7 @@
                                 <div>
                                     <div class="input-group mb-4">
                                         @php $memberships = json_decode($portfolio->membership ?? '[]', true) ?? []; @endphp
-                                        <input class="input membership @error('membership') input-invalid @enderror" type="text" name="membership[]" placeholder="e.g Member of Nephrology Association of Karnataka" value="{{ $memberships[0] ?? '' }}">  
+                                        <input class="input membership @error('membership') input-invalid @enderror" type="text" name="membership[]" placeholder="e.g Member of Nephrology Association of Karnataka" value="{{ $memberships[0] ?? '' }}">
                                         <button class="btn btn-solid" id="addMembershipBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -291,10 +291,10 @@
                                 </div>
                             </div>
                             <div class="form-item">
-                                <label class="form-label mb-2">Set Available Date And Time (MM/DD/YYYY)</label>
+                                <label class="form-label mb-2">Set Available Date And Time</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        @php $availableDates =json_decode($portfolio->available_time_slot ?? '[]', true) ?? []; @endphp
+                                        @php $availableDates = json_decode($portfolio->available_time_slot ?? '[]', true) ?? []; @endphp
                                         <input class="input availableDate @error('availableDate') input-invalid @enderror" type="datetime-local" name="availableDate[]" value={{ $availableDates[0] ?? '' }}>
                                         <button class="btn btn-solid" id="addAvailableDateBtn">
                                             <span class="flex items-center justify-center gap-2">
@@ -356,9 +356,9 @@
                         <div>
                             <label class="form-label mb-2">Change Account Status:</label>
                             @if ($portfolio->status == 1)
-                                <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($portfolio->id) }}" data-status=0> Account Is Active </button> 
+                                <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($portfolio->id) }}" data-status=0> Account Is Active </button>
                             @else
-                                <button class="btn btn-md bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($portfolio->id) }}" data-status=1> Account Is Blocked</button>                                        
+                                <button class="btn btn-md bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($portfolio->id) }}" data-status=1> Account Is Blocked</button>
                             @endif
                         </div>
                     </div>
@@ -381,7 +381,7 @@
                 const portfolio_id = $(this).data('id');
                 const available_time_slot = @json($portfolio->available_time_slot);
                 const account_status = @json($portfolio->status);
-                
+
                 if(available_time_slot === '[null]' || account_status == 0){
                     if(account_status == 0){
                         toastr.error('Account is blocked. Please unblock the account first!');
@@ -416,7 +416,7 @@
                     });
                 }
             });
-            
+
         });
     </script>
 @endsection
