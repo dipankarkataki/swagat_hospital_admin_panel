@@ -97,8 +97,8 @@
                 <div class="card card-layout-frame xl:col-span-5">
                     <div class="card-body">
                         <div class="flex items-center justify-between mb-4">
-                            <h4>Leads</h4>
-                            <button class="btn btn-default btn-sm">View All Leads</button>
+                            <h4>Latest Appointments</h4>
+                            <button class="btn btn-default btn-sm">View All</button>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="table-default table-hover">
@@ -223,15 +223,14 @@
                 </div>
                 <div class="card card-layout-frame xl:col-span-2">
                     <div class="card-body">
-                        <h4>Email Sent</h4>
+                        <h4>Online Consultations</h4>
                         <div class="mt-6">
                             <div class="progress flex justify-center circle">
                                 <div class="progress-circle" style="width: 200px;">
                                     <span class="progress-circle-info">
                                         <span class="progress-info circle">
                                             <div>
-                                                <h3 class="font-bold">73%</h3>
-                                                <p>Opened</p>
+                                                <h3 class="font-bold">3650</h3>
                                             </div>
                                         </span>
                                     </span>
@@ -249,7 +248,7 @@
                                 </div>
                             </div>
                             <div class="text-center mt-6">
-                                <p class="font-semibold">Performace</p>
+                                <p class="font-semibold">Monthly</p>
                                 <h4 class="font-bold">Average</h4>
                             </div>
                         </div>

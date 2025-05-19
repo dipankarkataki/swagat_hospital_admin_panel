@@ -24,7 +24,7 @@ class PortfolioController extends Controller
             Log::error('Error occurred at create portfolio function: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Something went wrong. Please try later.'], 'exception');
         }
-        
+
     }
 
     public function createDoctorsPortfolio(Request $request){
@@ -46,12 +46,15 @@ class PortfolioController extends Controller
                 'membership' => 'nullable|array',
                 'research' => 'nullable|array',
                 'awards' => 'nullable|array',
-                'availableDate' => 'nullable|array',
+                'opdDate' => 'nullable|array',
+                'opdStartTime' => 'nullable',
+                'opdEndTime' => 'nullable',
+                // 'availableDate' => 'nullable|array',
                 'hospital_id' => 'required|numeric'
             ],[
                 'hospital_id.required' => 'Please select a hospital.',
             ]);
-    
+
             if($validator->fails()){
                 Log::error('Validator Error'.$validator->errors()->first());
                 return redirect()->route('portfolio.create')->withErrors($validator)->withInput();
@@ -59,7 +62,7 @@ class PortfolioController extends Controller
 
             try{
                 $image_path = $request->file('uploadProfilePicture')->store('portfolio/images');
-    
+
                 Portfolio::create([
                     'profile_pic' => $image_path,
                     'full_name' => $request->fullName,
@@ -73,7 +76,10 @@ class PortfolioController extends Controller
                     'membership' => json_encode($request->membership),
                     'research' => json_encode($request->research),
                     'awards' => json_encode($request->awards),
-                    'available_time_slot' => json_encode($request->availableDate),
+                    'opd_date' => json_encode($request->opdDate),
+                    'opd_start_time' => $request->opdStartTime,
+                    'opd_end_time' => $request->opdEndTime,
+                    // 'available_time_slot' => json_encode($request->availableDate),
                     'hospital_id' => $request->hospital_id,
                     'accepting_appointments' => $request->availableDate[0] ? 1 : 0,
                 ]);
@@ -117,7 +123,10 @@ class PortfolioController extends Controller
             'membership' => 'nullable|array',
             'research' => 'nullable|array',
             'awards' => 'nullable|array',
-            'availableDate' => 'nullable|array',
+            // 'availableDate' => 'nullable|array',
+            'opdDate' => 'nullable|array',
+            'opdStartTime' => 'nullable',
+            'opdEndTime' => 'nullable',
             'hospital_id' => 'required|numeric'
         ],[
             'hospital_id.required' => 'Please select a hospital.',
@@ -129,14 +138,14 @@ class PortfolioController extends Controller
         }
 
         try{
-            
+
             $portfolio = Portfolio::find($portfolio_id);
-            
+
             if($request->hasFile('uploadProfilePicture')){
                 $image_path = $request->file('uploadProfilePicture')->store('portfolio/images');
                 $portfolio->profile_pic = $image_path;
             }
-    
+
             $portfolio->full_name = $request->fullName;
             $portfolio->email = $request->email;
             $portfolio->qualification = $request->qualification;
@@ -148,7 +157,10 @@ class PortfolioController extends Controller
             $portfolio->membership = json_encode($request->membership);
             $portfolio->research = json_encode($request->research);
             $portfolio->awards = json_encode($request->awards);
-            $portfolio->available_time_slot = json_encode($request->availableDate);
+            // $portfolio->available_time_slot = json_encode($request->availableDate);
+            $portfolio->opd_date = json_encode($request->opdDate);
+            $portfolio->opd_start_time = $request->opdStartTime;
+            $portfolio->opd_end_time = $request->opdEndTime;
             $portfolio->hospital_id = $request->hospital_id;
 
             if ($portfolio->save()) {

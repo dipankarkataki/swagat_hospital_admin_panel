@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Portfolio extends Model
 {
     use SoftDeletes;
-    
+
     protected $table = 'portfolios';
     protected $fillable = [
-        'profile_pic', 'full_name', 'email', 'qualification', 'experience', 'department_id', 'languages_speak', 'brief_description', 'expertise', 
-        'membership', 'research', 'awards', 'available_time_slot', 'hospital_id', 'accepting_appointments', 'status'
+        'profile_pic', 'full_name', 'email', 'qualification', 'experience', 'department_id', 'languages_speak', 'brief_description', 'expertise',
+        'membership', 'research', 'awards', 'opd_date', 'opd_start_time', 'opd_end_time', 'available_time_slot', 'hospital_id', 'accepting_appointments', 'status'
     ];
 
     public function hospital()

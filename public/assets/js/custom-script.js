@@ -4,7 +4,7 @@ $(document).ready(function(){
     //Show Toast Notification From Tailwind CSS
     const toastSuccess = $("#notificationToastSuccess");
     const toastError = $("#notificationToastError");
-    
+
     if (toastSuccess.length) {
         toastSuccess.fadeIn().delay(3000).fadeOut();
     }
@@ -123,7 +123,7 @@ $(document).ready(function(){
         $(this).parent(".awards-item").remove();
     });
 
-    
+
     //Add More Functionality For Available Date And Time
     $('#addAvailableDateBtn').on('click', function(e) {
         e.preventDefault();
@@ -131,7 +131,7 @@ $(document).ready(function(){
         $('#availableDateTimeList').append(
             `
                 <div class="input-group mb-4 available-date-item">
-                    <input class="input availableDate" type="datetime-local" name="availableDate[]">
+                    <input class="input opdDate" type="date" name="opdDate[]">
                     <button class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white removeAvailableDateTimeBtn">
                         <span class="flex items-center justify-center gap-2">
                             <span class="text-lg">
@@ -191,7 +191,7 @@ $(document).ready(function(){
                 const confirmBtn = Swal.getConfirmButton();
                 confirmBtn.disabled = true;
                 confirmBtn.innerHTML = 'Deleting...';
-    
+
                 return new Promise((resolve) => {
                     setTimeout(() => {
                         // Redirect after delay
@@ -226,7 +226,7 @@ $(document).ready(function(){
                 if(response.success === true){
                     toastr.success(response.message);
                     setTimeout(() => {
-                        location.reload();  
+                        location.reload();
                     }, 1000);
                 }
             },error:function(xhr, status, error){
@@ -238,6 +238,6 @@ $(document).ready(function(){
             }
         });
     });
-    
+
 
 });
