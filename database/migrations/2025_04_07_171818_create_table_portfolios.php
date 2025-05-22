@@ -13,26 +13,23 @@ return new class extends Migration
     {
         Schema::create('portfolios', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('department_id');
             $table->string('profile_pic');
             $table->string('full_name');
             $table->string('email')->unique();
             $table->integer('experience');
-            $table->unsignedBigInteger('department_id');
-            $table->text('languages_speak')->nullable()->default('Assamese');
+            $table->text('qualification');
+            $table->text('languages_speak')->nullable();
             $table->text('brief_description');
             $table->json('expertise')->nullable();
             $table->json('membership')->nullable();
             $table->json('research')->nullable();
             $table->json('awards')->nullable();
-            $table->json('available_time_slot')->nullable();
-            $table->unsignedBigInteger('hospital_id');
-            $table->boolean('accepting_appointments')->default(1);
             $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
-            $table->foreign('hospital_id')->references('id')->on('hospitals')->onDelete('cascade');
         });
     }
 

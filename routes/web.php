@@ -24,6 +24,9 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('delete-portfolio/{id}', [PortfolioController::class, 'deletePortfolio'])->name('portfolio.delete');
         Route::post('update-portfolio-status', [PortfolioController::class, 'updatePortfolioStatus'])->name('portfolio.status.update');
         Route::post('update-appointment-status', [PortfolioController::class, 'updateAppointmentStatus'])->name('appointment.status.update');
+        Route::group(['prefix' => 'hospital'], function(){
+            Route::match(['get', 'post'], 'assign', [PortfolioController::class, 'assignNewHospital'])->name('portfolio.hospital.assign');
+        });
     });
 
     Route::group(['prefix' => 'hospital'], function(){
@@ -34,7 +37,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('delete-hospital/{id}', [HospitalController::class, 'deleteHospital'])->name('hospital.delete');
         Route::post('update-hospital-status', [HospitalController::class, 'updateHospitalStatus'])->name('hospital.status.update');
     });
-    
+
     Route::get('logout', function(){
         Auth::logout();
         Session::flush();

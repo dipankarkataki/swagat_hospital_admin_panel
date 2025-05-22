@@ -239,5 +239,9 @@ $(document).ready(function(){
         });
     });
 
+    //Multiple Select From Dropdown
+    $('.select-multi-hospital').select2({
+        placeholder: 'Select hospital'
+    });
 
 });

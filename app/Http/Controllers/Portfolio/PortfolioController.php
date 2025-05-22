@@ -30,8 +30,7 @@ class PortfolioController extends Controller
     public function createDoctorsPortfolio(Request $request){
         if($request->isMethod('get')){
             $list_of_departments = Department::where('status', 1)->get();
-            $list_of_hospitals = Hospital::where('status', 1)->get();
-            return view('pages.portfolio.create')->with(['list_of_hospitals' => $list_of_hospitals, 'list_of_departments' =>  $list_of_departments]);
+            return view('pages.portfolio.create')->with(['list_of_departments' =>  $list_of_departments]);
         }else{
             $validator = Validator::make($request->all(), [
                 'uploadProfilePicture' => 'required|image|mimes:png,jpg,jpeg|max:1024',
@@ -46,14 +45,15 @@ class PortfolioController extends Controller
                 'membership' => 'nullable|array',
                 'research' => 'nullable|array',
                 'awards' => 'nullable|array',
-                'opdDate' => 'nullable|array',
-                'opdStartTime' => 'nullable',
-                'opdEndTime' => 'nullable',
-                // 'availableDate' => 'nullable|array',
-                'hospital_id' => 'required|numeric'
-            ],[
-                'hospital_id.required' => 'Please select a hospital.',
-            ]);
+                // 'opdDate' => 'nullable|array',
+                // 'opdStartTime' => 'nullable',
+                // 'opdEndTime' => 'nullable',
+                // 'hospital_id' => 'required|array'
+            ]
+            // ,[
+            //     'hospital_id.required' => 'Please select a hospital.',
+            // ]
+            );
 
             if($validator->fails()){
                 Log::error('Validator Error'.$validator->errors()->first());
@@ -76,12 +76,12 @@ class PortfolioController extends Controller
                     'membership' => json_encode($request->membership),
                     'research' => json_encode($request->research),
                     'awards' => json_encode($request->awards),
-                    'opd_date' => json_encode($request->opdDate),
-                    'opd_start_time' => $request->opdStartTime,
-                    'opd_end_time' => $request->opdEndTime,
+                    // 'opd_date' => json_encode($request->opdDate),
+                    // 'opd_start_time' => $request->opdStartTime,
+                    // 'opd_end_time' => $request->opdEndTime,
                     // 'available_time_slot' => json_encode($request->availableDate),
-                    'hospital_id' => $request->hospital_id,
-                    'accepting_appointments' => $request->availableDate[0] ? 1 : 0,
+                    // 'hospital_id' => $request->hospital_id,
+                    // 'accepting_appointments' => $request->availableDate[0] ? 1 : 0,
                 ]);
                 Session::flash('success', 'Portfolio created successfully.');
                 return redirect()->route('portfolio.create');
@@ -228,6 +228,16 @@ class PortfolioController extends Controller
         }catch(\Exception $e){
             Log::error('Error occurred at update appointment status function: ' . $e->getMessage());
             return $this->success('Oops! Something went wrong. Please try later.', null, 500);
+        }
+    }
+
+    public function assignNewHospital(Request $request){
+        if($request->isMethod('get')){
+            $list_of_hospitals = Hospital::where('status', 1)->get();
+            $list_of_doctors = Portfolio::where('status', 1)->select('id', 'profile_pic', 'full_name')->get();
+            return view('pages.portfolio.hospital.assign-hospital')->with(['list_of_hospitals' => $list_of_hospitals, 'portfolios' => $list_of_doctors]);
+        }else{
+
         }
     }
 }

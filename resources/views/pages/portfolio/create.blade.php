@@ -281,7 +281,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="form-item">
+                            {{-- <div class="form-item">
                                 <label class="form-label mb-2">Set OPD Date</label>
                                 <div>
                                     <div class="input-group mb-4">
@@ -321,7 +321,7 @@
                                         <div class="text-red-500 mt-2">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div>
+                            </div> --}}
                             {{-- <div class="form-item">
                                 <label class="form-label mb-2">Set Available Date And Time</label>
                                 <div>
@@ -363,7 +363,7 @@
                                     @enderror
                                 </div>
                             </div> --}}
-                            <div class="form-item">
+                            {{-- <div class="form-item">
                                 <label class="form-label mb-2">Set OPD Start Time</label>
                                 <div>
                                     <div class="input-group mb-4">
@@ -384,21 +384,20 @@
                                         <div class="text-red-500 mt-2">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label mb-2">Assign Hospital *</label>
-                                <div>
-                                    <select class="input @error('hospital_id') invalid-div @enderror" name="hospital_id">
-                                        <option value="">Choose hospital</option>
+                            </div> --}}
+                            {{-- <div class="form-item">
+                                <label class="form-label mb-2">Assign Hospital &nbsp;<span class="text-xs">( Select multiple if required )</span> *</label>
+                                <div @error('hospital_id') style="border: 2px solid rgb(239 68 68); border-radius: 7px;" @enderror>
+                                    <select class="input select-multi-hospital" name="hospital_id[]" multiple="multiple">
                                         @foreach ($list_of_hospitals as $item)
-                                            <option value="{{ $item->id }}" {{ old('hospital_id') ==  $item->id  ? 'selected' : ''}}>{{ $item->name }} : {{ $item->address }}</option>
+                                            <option value="{{ $item->id }}" {{ (is_array(old('hospital_id')) && in_array($item->id, old('hospital_id'))) ? 'selected' : '' }}>{{ $item->name }} : {{ $item->address }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 @error('hospital_id')
                                     <div class="text-red-500 mt-2">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
                             <div class="form-item"><label class="form-label"></label>
                                 <div>
                                     <button class="btn btn-default" type="submit" id="submitPortfolioBtn">Submit</button>
