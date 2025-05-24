@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\Hospital;
+use App\Models\PortfolioLinkedHospital;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -223,21 +224,45 @@ class PortfolioController extends Controller
                 $portfolio->save();;
                 return $this->success('Appointment status updated successfully.', null, 204);
             }else{
-                return $this->success('Failed to update the appointment status.', null, 400);
+                return $this->error('Failed to update the appointment status.', null, 400);
             }
         }catch(\Exception $e){
             Log::error('Error occurred at update appointment status function: ' . $e->getMessage());
-            return $this->success('Oops! Something went wrong. Please try later.', null, 500);
+            return $this->error('Oops! Something went wrong. Please try later.', null, 500);
         }
     }
 
     public function assignNewHospital(Request $request){
+
         if($request->isMethod('get')){
             $list_of_hospitals = Hospital::where('status', 1)->get();
-            $list_of_doctors = Portfolio::where('status', 1)->select('id', 'profile_pic', 'full_name')->get();
+            $list_of_doctors = Portfolio::where('status', 1)->select('id', 'profile_pic', 'full_name', 'email')->get();
             return view('pages.portfolio.hospital.assign-hospital')->with(['list_of_hospitals' => $list_of_hospitals, 'portfolios' => $list_of_doctors]);
         }else{
+            $validator = Validator::make($request->all(), [
+                'doctor_id' => 'required|numeric',
+                'hospital_id' => 'required|numeric'
+            ]);
 
+            if($validator->fails()){
+                return $this->error('Oops! Validation error : '.$validator->errors()->first(), null, 400);
+            }
+
+            try{
+
+                $check_if_hospital_already_linked = PortfolioLinkedHospital::where('portfolio_id', $request->doctor_id)->where('hospital_id', $request->hospital_id)->exists();
+                if($check_if_hospital_already_linked){
+                    return $this->error('Oops! Hospital already linked. Please select a different hospital.', null, 400);
+                }
+                PortfolioLinkedHospital::create([
+                    'portfolio_id' => $request->doctor_id,
+                    'hospital_id' => $request->hospital_id
+                ]);
+                return $this->success('Great! Hospital assigned successfully', null, 201);
+            }catch(\Exception $e){
+                Log::error('Error occurred at assign new hospital status function: ' . $e->getMessage());
+                return $this->error('Oops! Something went wrong. Please try later.', null, 500);
+            }
         }
     }
 }

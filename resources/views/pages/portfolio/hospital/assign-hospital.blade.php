@@ -8,23 +8,18 @@
             </div>
             <div class="card card-border">
                 <div class="card-body">
-                    <form id="assignNewHospital" method="POST" action="{{ route('portfolio.hospital.assign') }}">
+                    <form id="assignNewHospitalForm">
                         @csrf
                         <div class="form-container">
                             <div class="form-item">
                                 <label class="form-label mb-2">Select Doctor *</label>
                                 <div>
-                                    <select class="input @error('doctor_id') invalid-div @enderror" name="doctor_id">
+                                    <select class="input @error('doctor_id') invalid-div @enderror" name="doctor_id" id="doctor_id">
                                         <option value=""> Choose </option>
 
                                         @foreach ($portfolios as $doctor)
                                             <option value="{{ $doctor->id }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>
-                                                <div class="flex items-center">
-                                                    <span class="avatar avatar-circle w-[30px]" data-avatar-size="30">
-                                                        <img class="avatar-img avatar-circle" src="{{ asset('storage/' . $doctor->profile_pic) }}" loading="lazy">
-                                                    </span>
-                                                    <a class="hover:text-primary-600 ml-2 rtl:mr-2 font-semibold">{{ $doctor->full_name }}</a>
-                                                </div>
+                                                {{ $doctor->full_name }} : ( {{$doctor->email}} )
                                             </option>
                                         @endforeach
                                     </select>
@@ -36,7 +31,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Assign Hospital *</label>
                                 <div>
-                                    <select class="input @error('hospital_id') invalid-div @enderror" name="hospital_id">
+                                    <select class="input @error('hospital_id') invalid-div @enderror" name="hospital_id" id="hospital_id">
                                         <option value="">Choose</option>
 
                                         @foreach ($list_of_hospitals as $hospital)
@@ -50,7 +45,7 @@
                             </div>
                             <div class="form-item"><label class="form-label"></label>
                                 <div>
-                                    <button class="btn btn-default" type="submit" id="submitPortfolioBtn">Submit</button>
+                                    <button class="btn btn-default" type="submit" id="assignHospitalBtn">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -59,6 +54,44 @@
             </div>
         </div>
     </div>
+@endsection
+@section('custom-scripts')
+    <script>
+        $(document).ready(function() {
 
-    @include('common.session_message')
+            //Ajax Call To Update Appointment Application Status
+            $('#assignNewHospitalForm').on('submit', function(e){
+                e.preventDefault();
+
+                const formData = new FormData(this);
+                $('#assignHospitalBtn').attr('disabled', true).text('Please wait...');
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:"{{ route('portfolio.hospital.assign') }}",
+                    type:"POST",
+                    processData: false,
+                    contentType: false,
+                    data:formData,
+                    success:function(response){
+                        if(response.success === true){
+                            toastr.success(response.message);
+                            $('#assignNewHospitalForm')[0].reset();
+                        }else{
+                            toastr.error(response.message);
+                        }
+                    },error:function(xhr, status, error){
+                        if(xhr){
+                            toastr.error('Oops! Something went wrong. Please try again.');
+                            $('#assignHospitalBtn').attr('disabled', false).text('Submit');
+                        }
+                    },complete:function(){
+                        $('#assignHospitalBtn').attr('disabled', false).text('Submit');
+                    }
+                });
+            });
+
+        });
+    </script>
 @endsection
