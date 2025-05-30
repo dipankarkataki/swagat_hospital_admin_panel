@@ -15,9 +15,9 @@ class Portfolio extends Model
         'membership', 'research', 'awards', 'status'
     ];
 
-    public function hospital()
+    public function portfolioLinkedHospital()
     {
-        return $this->belongsTo(Hospital::class, 'hospital_id', 'id');
+        return $this->hasMany(PortfolioLinkedHospital::class, 'portfolio_id', 'id');
     }
 
     public function departments(){

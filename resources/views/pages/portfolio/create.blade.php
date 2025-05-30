@@ -40,7 +40,13 @@
                                 </div>
                             </div>
                             <div class="form-item">
-                                <label class="form-label mb-2">Full Name *</label>
+                                <label class="form-label mb-2">Full Name *
+                                    <span class="cursor-pointer" data-bs-toggle="tooltip" data-bs-title="Please donot enter any initials like Dr, Mr, Mrs, Miss etc.">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-5 h-5" >
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"></path>
+                                        </svg>
+                                    </span>
+                                </label>
                                 <div>
                                     <input type="text" class="input form-control @error('fullName') input-invalid @enderror" name="fullName" placeholder="e.g Jhon Doe" value="{{ old('fullName') }}">
                                 </div>
@@ -60,7 +66,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Qualification *</label>
                                 <div>
-                                    <textarea class="input input-textarea @error('qualification') input-invalid @enderror" name="qualification" placeholder="Enter qualifications of the doctor. e.g MBBS, FRCS, etc."  >{{ old('qualification') }}</textarea>
+                                    <textarea class="input input-textarea @error('qualification') input-invalid @enderror" name="qualification" placeholder="Enter qualifications of the doctor comma separated. e.g MBBS, FRCS, etc."  >{{ old('qualification') }}</textarea>
                                 </div>
                                 @error('qualification')
                                     <div class="text-red-500 mt-2">{{ $message }}</div>

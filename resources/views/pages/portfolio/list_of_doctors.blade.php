@@ -41,7 +41,6 @@
                                 </span>
                                 <div>
                                     <span>Linked Departments</span>
-                                    {{-- @dd($portfolio) --}}
                                     <h3>
                                         <span>{{ $portfolio->isNotEmpty() ?  $portfolio->filter(fn($item) => $item->departments !== null)->count() : 0}}</span>
                                     </h3>
@@ -60,7 +59,7 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Department</th>
-                                <th>Hospital</th>
+                                <th>Hospital Assigned</th>
                                 <th>Accepting Appointments</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -86,7 +85,7 @@
                                         <div class="flex items-center">{{ Str::limit($item->departments->name, 25) }}</div>
                                     </td>
                                     <td>
-                                        <div class="flex items-center">{{ optional($item->hospital)->name ?? 'Not Assigned' }}</div>
+                                        <div class="flex items-center">{{ count($item->portfolioLinkedHospital) > 0 ? 'Yes' : 'No' }}</div>
                                     </td>
                                     <td>
                                         <div class="flex justify-center items-center">

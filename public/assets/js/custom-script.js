@@ -170,9 +170,9 @@ $(document).ready(function(){
         }
     });
 
-    $('#createPortfolioForm').on('submit', function(){
-        $('#submitPortfolioBtn').attr('disabled', true).text('Please wait...');
-    });
+    // $('#createPortfolioForm').on('submit', function(){
+    //     $('#submitPortfolioBtn').attr('disabled', true).text('Please wait...');
+    // });
 
     //Disable delete button on click
     $('.deleteButton').on('click', function(e) {

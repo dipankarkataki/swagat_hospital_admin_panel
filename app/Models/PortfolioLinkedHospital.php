@@ -10,4 +10,8 @@ class PortfolioLinkedHospital extends Model
    protected $fillable = [
     'portfolio_id', 'hospital_id', 'status'
    ];
+
+   public function hospitals(){
+    return $this->belongsTo(Hospital::class, 'hospital_id', 'id');
+   }
 }

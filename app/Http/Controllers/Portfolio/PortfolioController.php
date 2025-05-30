@@ -19,7 +19,7 @@ class PortfolioController extends Controller
     public function listOfDoctors(){
 
         try{
-            $get_portfolio = Portfolio::with('hospital', 'departments')->latest()->get();
+            $get_portfolio = Portfolio::with('portfolioLinkedHospital', 'departments')->latest()->get();
             return view('pages.portfolio.list_of_doctors')->with(['portfolio' => $get_portfolio]);
         }catch(\Exception $e){
             Log::error('Error occurred at create portfolio function: ' . $e->getMessage());
@@ -37,7 +37,7 @@ class PortfolioController extends Controller
                 'uploadProfilePicture' => 'required|image|mimes:png,jpg,jpeg|max:1024',
                 'fullName' => 'required|string|min:3|max:255',
                 'email' => 'required|email|unique:portfolios,email',
-                'qualification' => 'required|string|min:10',
+                'qualification' => 'required|string|min:3',
                 'yearsOfExperience' => 'required|numeric',
                 'department_id' => 'required|numeric',
                 'languagesSpeak' => 'nullable|string',
@@ -105,6 +105,16 @@ class PortfolioController extends Controller
             Log::error('Error on portfolio by id function: '.$e->getMessage());
             Session::flash('exception', 'Oops! Something went wrong. Please try later.');
             return redirect()->route('portfolio.list');
+        }
+    }
+
+    public function getPortfolioLinkedHospitals($id){
+        try{
+            $get_hospitals = PortfolioLinkedHospital::with('hospitals')->where('portfolio_id', $id)->get();
+            return $this->success('Great! Portfolio linked hospitals fetched successfully',  $get_hospitals, 200);
+        }catch(\Exception $e){
+            Log::error('Error occurred at PortfolioController@getPortfolioLinkedHospital: ' . $e->getMessage());
+            return $this->error('Oops! Something went wrong.', null, 500);
         }
     }
 
@@ -263,6 +273,16 @@ class PortfolioController extends Controller
                 Log::error('Error occurred at assign new hospital status function: ' . $e->getMessage());
                 return $this->error('Oops! Something went wrong. Please try later.', null, 500);
             }
+        }
+    }
+
+    public function setOpdDateAndTime(Request $request){
+
+        if($request->isMethod('get')){
+            $list_of_doctors = Portfolio::where('status', 1)->select('id', 'profile_pic', 'full_name', 'email')->get();
+            return view('pages.portfolio.opd-time.opd_time')->with(['portfolios' => $list_of_doctors]);
+        }else{
+
         }
     }
 }

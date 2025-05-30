@@ -60,6 +60,11 @@
                                     <span>Assign New Hospital</span>
                                 </a>
                             </li>
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('portfolio.hospital.set.opd.time') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('portfolio.hospital.set.opd.time') }}">
+                                    <span>Set OPD Date And Time</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="menu-collapse">
