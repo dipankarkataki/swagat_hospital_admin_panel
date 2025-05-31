@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Hospital\HospitalController;
+use App\Http\Controllers\OpdTiming\OpdTimingController;
 use App\Http\Controllers\Portfolio\PortfolioController;
 
 Route::match(['get', 'post',], '/', [LoginController::class, 'login'])->name('login');
@@ -26,7 +27,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('update-appointment-status', [PortfolioController::class, 'updateAppointmentStatus'])->name('appointment.status.update');
         Route::group(['prefix' => 'hospital'], function(){
             Route::match(['get', 'post'], 'assign', [PortfolioController::class, 'assignNewHospital'])->name('portfolio.hospital.assign');
-            Route::match(['get', 'post'], 'set-opd-time', [PortfolioController::class, 'setOpdDateAndTime'])->name('portfolio.hospital.set.opd.time');
+            Route::match(['get', 'post'], 'set-opd-time', [OpdTimingController::class, 'setOpdDateAndTime'])->name('portfolio.hospital.set.opd.time');
             Route::get('linked-portfolio/{id}', [PortfolioController::class, 'getPortfolioLinkedHospitals'])->name('portfolio.linked.hospital');
         });
     });

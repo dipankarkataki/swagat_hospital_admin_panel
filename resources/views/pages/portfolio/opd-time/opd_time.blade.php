@@ -8,13 +8,13 @@
             </div>
             <div class="card card-border">
                 <div class="card-body">
-                    <form>
+                    <form id="setOpdTimingForm" class="skip-global-submit">
                         <div class="form-container">
                             <div class="form-item">
                                 <label class="form-label mb-2">Select Doctor *</label>
                                 <div>
-                                    <select class="input" name="doctor_id" id="selectPortfolio">
-                                        <option value=""> Choose </option>
+                                    <select class="input" name="portfolio_id" id="selectPortfolio">
+                                        <option value="" disabled selected> Choose </option>
 
                                         @foreach ($portfolios as $doctor)
                                             <option value="{{ $doctor->id }}">
@@ -44,9 +44,7 @@
                                 <label class="form-label mb-2">Set OPD Date</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        @php $opdDates = old('opdDate', []); @endphp
-                                        <input class="input opdDate @error('opdDate') input-invalid @enderror"
-                                            type="date" name="opdDate[]" value={{ $opdDates[0] ?? '' }}>
+                                        <input class="input opd_date" type="date" name="opd_date[]" value="">
                                         <button class="btn btn-solid" id="addAvailableDateBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -61,41 +59,17 @@
                                             </span>
                                         </button>
                                     </div>
-                                    @foreach (array_slice($opdDates, 1) as $opdDate)
-                                        <div class="input-group mb-4 available-date-item">
-                                            <input class="input opdDate" type="datetime-local" name="opdDate[]"
-                                                value={{ $opdDate }}>
-                                            <button
-                                                class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white removeAvailableDateTimeBtn">
-                                                <span class="flex items-center justify-center gap-2">
-                                                    <span class="text-lg">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                            aria-hidden="true" class="w-6 h-6">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0">
-                                                            </path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>Del</span>
-                                                </span>
-                                            </button>
-                                        </div>
-                                    @endforeach
-                                    <div id="availableDateTimeList"></div>
-                                    @error('opdDate')
-                                        <div class="text-red-500 mt-2">{{ $message }}</div>
-                                    @enderror
+                                    <div id="opdTimingList"></div>
                                 </div>
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Set OPD Start Time</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        <input class="input opdStartTime @error('opdStartTime') input-invalid @enderror"
-                                            type="time" name="opdStartTime" value={{ old('opdStartTIme') }}>
+                                        <input class="input opd_start_time @error('opd_start_time') input-invalid @enderror"
+                                            type="time" name="opd_start_time" value={{ old('opd_start_time') }}>
                                     </div>
-                                    @error('opdStartTime')
+                                    @error('opd_start_time')
                                         <div class="text-red-500 mt-2">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -104,17 +78,17 @@
                                 <label class="form-label mb-2">Set OPD End Time</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        <input class="input opdEndTime @error('opdEndTime') input-invalid @enderror"
-                                            type="time" name="opdEndTime" value={{ old('opdEndTime') }}>
+                                        <input class="input opd_end_time @error('opd_end_time') input-invalid @enderror"
+                                            type="time" name="opd_end_time" value={{ old('opd_end_time') }}>
                                     </div>
-                                    @error('opdEndTime')
+                                    @error('opd_end_time')
                                         <div class="text-red-500 mt-2">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                             <div class="form-item"><label class="form-label"></label>
                                 <div>
-                                    <button class="btn btn-default" type="submit" id="assignHospitalBtn">Submit</button>
+                                    <button class="btn btn-default" type="submit" id="setOpdTimingBtn">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -133,10 +107,17 @@
             $('#selectPortfolio').on('change', function(e) {
                 clearTimeout(debounceTimer); // Clear previous timer
                 $('#loadingIndicator').show();
+                const hospitalSelect = $('#selectHospital');
+                hospitalSelect.empty(); // Clear previous options
+                hospitalSelect.append('<option value="" >Choose</option>');
 
                 debounceTimer = setTimeout(() => {
                     const doctor_id = e.target.value;
-                    if (!doctor_id) return;
+                    console.log('Doctor ID : ',  doctor_id)
+                    if (!doctor_id){
+                        $('#loadingIndicator').hide();
+                        return;
+                    }
                     const portfolio_linked_hospital_url = `/portfolio/hospital/linked-portfolio/${doctor_id}`;
 
                     $.ajax({
@@ -146,22 +127,14 @@
                             console.log('Selected Doctor :', response)
                             if (response.success === true) {
                                 if (response.data?.length > 0) {
-
-                                    const hospitalSelect = $('#selectHospital');
-                                    hospitalSelect.empty(); // Clear previous options
-                                    hospitalSelect.append('<option value="">Choose</option>');
-
                                     response.data.forEach(hospital => {
                                         const hospitalName = hospital.hospitals?.name || 'Unnamed';
                                         const hospitalId = hospital.hospital_id;
                                         hospitalSelect.append(`<option value="${hospitalId}">${hospitalName}</option>`);
                                     });
-
                                     toastr.success(response.message);
                                 } else {
-                                    const hospitalSelect = $('#selectHospital');
-                                    hospitalSelect.empty();
-                                    hospitalSelect.append('<option value="">Choose</option>');
+                                    hospitalSelect.append(`<option value="">No hospital found :( </option>`);
                                     toastr.error( 'Oops! No hospital is linked with this portfolio. Assign a hospital first to set OPD timings.');
                                 }
                             } else {
@@ -178,6 +151,54 @@
                         }
                     });
                 }, 2000);
+            });
+
+            //Save OPD Timings
+            $('#setOpdTimingForm').on('submit', function(e){
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                // Disable button immediately
+                $('#setOpdTimingBtn').attr('disabled', true).text('Please wait...');
+
+                let hasEmptyDate = false;
+
+                $('.opd_date').each(function() {
+                    if (!$(this).val()) {
+                        hasEmptyDate = true;
+                    }
+                });
+
+                if (hasEmptyDate) {
+                    toastr.error('Please select all OPD dates before submitting.');
+                    $('#setOpdTimingBtn').attr('disabled', false).text('Submit');
+                    return;
+                }
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{route('portfolio.hospital.set.opd.time')}}",
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response){
+                        console.log('OpD Response', response)
+                        if(response.success === true){
+                            toastr.success(response.message);
+                            location.reload();
+                        }else{
+                            toastr.error(response.message);
+                        }
+                    }, error: function(xhr){
+                        if(xhr){
+                            toastr.error('Oops! Something went wrong. Please try again.');
+                        }
+                    },complete: function(){
+                        $('#setOpdTimingBtn').attr('disabled', false).text('Submit');
+                    }
+                });
             });
         });
     </script>

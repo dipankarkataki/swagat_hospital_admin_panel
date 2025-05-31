@@ -124,14 +124,14 @@ $(document).ready(function(){
     });
 
 
-    //Add More Functionality For Available Date And Time
+    //Add More Functionality For OPD Date
     $('#addAvailableDateBtn').on('click', function(e) {
         e.preventDefault();
 
-        $('#availableDateTimeList').append(
+        $('#opdTimingList').append(
             `
                 <div class="input-group mb-4 available-date-item">
-                    <input class="input opdDate" type="date" name="opdDate[]">
+                    <input class="input opd_date" type="date" name="opd_date[]">
                     <button class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white removeAvailableDateTimeBtn">
                         <span class="flex items-center justify-center gap-2">
                             <span class="text-lg">
@@ -164,6 +164,9 @@ $(document).ready(function(){
 
     //Dynamic form submit button
     $(document).on('submit', 'form', function(e){
+
+        if ($(this).hasClass('skip-global-submit')) return;
+
         const submitBtn = $(this).find('button[type="submit"]');
         if (submitBtn.length) {
             submitBtn.attr('disabled', true).text('Please wait...');
