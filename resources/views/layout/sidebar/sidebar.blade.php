@@ -70,8 +70,8 @@
                             <span class="menu-item-text">OPD Schedule</span>
                         </div>
                         <ul style="{{ request()->segment(1) === 'opd' ? 'display:block' : 'display:none' }}">
-                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('portfolio.hospital.assign') ? 'menu-item menu-item-active' : 'menu-item' }}">
-                                <a class="h-full w-full flex items-center" href="{{ route('portfolio.hospital.assign') }}">
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('opd.get.list.of.schedules') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('opd.get.list.of.schedules') }}">
                                     <span>List of Schedules</span>
                                 </a>
                             </li>

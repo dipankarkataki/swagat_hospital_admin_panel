@@ -13,7 +13,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Select Doctor *</label>
                                 <div>
-                                    <select class="input" name="portfolio_id" id="selectPortfolio">
+                                    <select class="input" name="portfolio_id" id="selectPortfolio" required>
                                         <option value="" disabled selected> Choose </option>
 
                                         @foreach ($portfolios as $doctor)
@@ -35,7 +35,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <select class="input" name="hospital_id" id="selectHospital">
+                                    <select class="input" name="hospital_id" id="selectHospital" required>
                                         <option value=""> Choose </option>
                                     </select>
                                 </div>
@@ -44,7 +44,7 @@
                                 <label class="form-label mb-2">Set OPD Date</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        <input class="input opd_date" type="date" name="opd_date[]" value="">
+                                        <input class="input opd_date" type="date" name="opd_date[]" value="" required>
                                         <button class="btn btn-solid" id="addAvailableDateBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -66,24 +66,16 @@
                                 <label class="form-label mb-2">Set OPD Start Time</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        <input class="input opd_start_time @error('opd_start_time') input-invalid @enderror"
-                                            type="time" name="opd_start_time" value={{ old('opd_start_time') }}>
+                                        <input class="input opd_start_time" type="time" name="opd_start_time" required>
                                     </div>
-                                    @error('opd_start_time')
-                                        <div class="text-red-500 mt-2">{{ $message }}</div>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Set OPD End Time</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        <input class="input opd_end_time @error('opd_end_time') input-invalid @enderror"
-                                            type="time" name="opd_end_time" value={{ old('opd_end_time') }}>
+                                        <input class="input opd_end_time" type="time" name="opd_end_time" required>
                                     </div>
-                                    @error('opd_end_time')
-                                        <div class="text-red-500 mt-2">{{ $message }}</div>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="form-item"><label class="form-label"></label>

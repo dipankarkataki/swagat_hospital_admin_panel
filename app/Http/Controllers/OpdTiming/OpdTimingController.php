@@ -15,6 +15,16 @@ class OpdTimingController extends Controller
 {
     use ApiResponse;
 
+    public function listOfSchedules(){
+        try{
+            $get_opd_schedules = OpdTiming::with('hospital', 'portfolio')->latest()->get();
+            return view('pages.opd-schedule.list_of_schedules')->with(['opd_schedules' => $get_opd_schedules]);
+        }catch(\Exception $e){
+            Log::error('Error at OpdTimingController@listOfSchedules :'.$e->getMessage());
+            return back()->withErrors(['error' => 'Oops! Something went wrong while getting OPD schedules. Please try later.'], 'exception');
+        }
+    }
+
     public function setOpdDateAndTime(Request $request){
 
         if($request->isMethod('get')){
