@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OpdTiming;
 
 use App\Http\Controllers\Controller;
+use App\Models\Hospital;
 use App\Models\OpdTiming;
 use App\Models\Portfolio;
 use App\Traits\ApiResponse;
@@ -67,6 +68,23 @@ class OpdTimingController extends Controller
                     return $this->error('Oops! Something went wrong. Please try later.', null, 500);
                 }
             }
+        }
+    }
+
+    public function getOpdScheduleById($id){
+        try{
+            $schedule_id = decrypt($id);
+            $is_schedule_exists = OpdTiming::where('id', $schedule_id)->exists();
+            if(!$is_schedule_exists){
+                return back()->withErrors(['error' => 'Oops! No schedule exists.'], 'exception');
+            }
+
+            $get_schedule = OpdTiming::with('hospital', 'portfolio')->where('id', $schedule_id)->first();
+            $get_hospital_list = Hospital::where('status', 1)->get();
+            return view('pages.opd-schedule.edit_opd_schedule')->with(['opd_schedule' => $get_schedule, 'get_hospital_list' => $get_hospital_list]);
+        }catch(\Exception $e){
+            Log::error('Error at OpdTimingController@getOpdScheduleById :'.$e->getMessage());
+            return back()->withErrors(['error' => 'Oops! Something went wrong while getting OPD schedules By ID. Please try later.'], 'exception');
         }
     }
 }

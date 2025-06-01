@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::group(['prefix' => 'opd'], function(){
         Route::get('list-of-schedules', [OpdTimingController::class, 'listOfSchedules'])->name('opd.get.list.of.schedules');
         Route::match(['get', 'post'], 'set-schedule', [OpdTimingController::class, 'setOpdDateAndTime'])->name('opd.set.schedule');
+        Route::get('schedule-by-id/{id}', [OpdTimingController::class, 'getOpdScheduleById'])->name('opd.get.schedule.by.id');
     });
 
     Route::group(['prefix' => 'hospital'], function(){
