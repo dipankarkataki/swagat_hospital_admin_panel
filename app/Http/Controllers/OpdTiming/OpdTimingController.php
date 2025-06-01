@@ -19,7 +19,7 @@ class OpdTimingController extends Controller
 
         if($request->isMethod('get')){
             $list_of_doctors = Portfolio::where('status', 1)->select('id', 'profile_pic', 'full_name', 'email')->get();
-            return view('pages.portfolio.opd-time.opd_time')->with(['portfolios' => $list_of_doctors]);
+            return view('pages.opd-schedule.set_opd_schedule')->with(['portfolios' => $list_of_doctors]);
         }else{
             $validator = Validator::make($request->all(), [
                 'portfolio_id' => 'required',

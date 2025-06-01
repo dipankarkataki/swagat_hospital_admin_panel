@@ -60,9 +60,24 @@
                                     <span>Assign New Hospital</span>
                                 </a>
                             </li>
-                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('portfolio.hospital.set.opd.time') ? 'menu-item menu-item-active' : 'menu-item' }}">
-                                <a class="h-full w-full flex items-center" href="{{ route('portfolio.hospital.set.opd.time') }}">
-                                    <span>Set OPD Date And Time</span>
+                        </ul>
+                    </li>
+                    <li class="{{ request()->segment(1) === 'opd' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
+                        <div class="menu-collapse-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="menu-item-text">OPD Schedule</span>
+                        </div>
+                        <ul style="{{ request()->segment(1) === 'opd' ? 'display:block' : 'display:none' }}">
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('portfolio.hospital.assign') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('portfolio.hospital.assign') }}">
+                                    <span>List of Schedules</span>
+                                </a>
+                            </li>
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('opd.set.schedule') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('opd.set.schedule') }}">
+                                    <span>Set Schedule</span>
                                 </a>
                             </li>
                         </ul>

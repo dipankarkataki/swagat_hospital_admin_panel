@@ -27,9 +27,13 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('update-appointment-status', [PortfolioController::class, 'updateAppointmentStatus'])->name('appointment.status.update');
         Route::group(['prefix' => 'hospital'], function(){
             Route::match(['get', 'post'], 'assign', [PortfolioController::class, 'assignNewHospital'])->name('portfolio.hospital.assign');
-            Route::match(['get', 'post'], 'set-opd-time', [OpdTimingController::class, 'setOpdDateAndTime'])->name('portfolio.hospital.set.opd.time');
             Route::get('linked-portfolio/{id}', [PortfolioController::class, 'getPortfolioLinkedHospitals'])->name('portfolio.linked.hospital');
         });
+    });
+
+    Route::group(['prefix' => 'opd'], function(){
+        Route::get('list-of-schedules', [OpdTimingController::class, 'listOfSchedules'])->name('opd.get.list.of.schedules');
+        Route::match(['get', 'post'], 'set-schedule', [OpdTimingController::class, 'setOpdDateAndTime'])->name('opd.set.schedule');
     });
 
     Route::group(['prefix' => 'hospital'], function(){

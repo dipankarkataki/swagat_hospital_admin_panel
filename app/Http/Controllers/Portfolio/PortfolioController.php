@@ -135,12 +135,12 @@ class PortfolioController extends Controller
             'research' => 'nullable|array',
             'awards' => 'nullable|array',
             // 'availableDate' => 'nullable|array',
-            'opdDate' => 'nullable|array',
-            'opdStartTime' => 'nullable',
-            'opdEndTime' => 'nullable',
-            'hospital_id' => 'required|numeric'
+            // 'opdDate' => 'nullable|array',
+            // 'opdStartTime' => 'nullable',
+            // 'opdEndTime' => 'nullable',
+            // 'hospital_id' => 'required|numeric'
         ],[
-            'hospital_id.required' => 'Please select a hospital.',
+            // 'hospital_id.required' => 'Please select a hospital.',
         ]);
 
         if($validator->fails()){
@@ -169,10 +169,10 @@ class PortfolioController extends Controller
             $portfolio->research = json_encode($request->research);
             $portfolio->awards = json_encode($request->awards);
             // $portfolio->available_time_slot = json_encode($request->availableDate);
-            $portfolio->opd_date = json_encode($request->opdDate);
-            $portfolio->opd_start_time = $request->opdStartTime;
-            $portfolio->opd_end_time = $request->opdEndTime;
-            $portfolio->hospital_id = $request->hospital_id;
+            // $portfolio->opd_date = json_encode($request->opdDate);
+            // $portfolio->opd_start_time = $request->opdStartTime;
+            // $portfolio->opd_end_time = $request->opdEndTime;
+            // $portfolio->hospital_id = $request->hospital_id;
 
             if ($portfolio->save()) {
                 Session::flash('success', 'Portfolio updated successfully.');

@@ -4,7 +4,7 @@
     <div class="page-container relative h-full flex flex-auto flex-col px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div class="container mx-auto">
             <div class=" mb-4">
-                <h3>Set OPD Timing</h3>
+                <h3>Set OPD Schedule</h3>
             </div>
             <div class="card card-border">
                 <div class="card-body">
@@ -178,7 +178,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{route('portfolio.hospital.set.opd.time')}}",
+                    url: "{{route('opd.set.schedule')}}",
                     type: "POST",
                     data: formData,
                     contentType: false,
