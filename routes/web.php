@@ -26,9 +26,11 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('update-portfolio-status', [PortfolioController::class, 'updatePortfolioStatus'])->name('portfolio.status.update');
         Route::post('update-appointment-status', [PortfolioController::class, 'updateAppointmentStatus'])->name('appointment.status.update');
         Route::group(['prefix' => 'hospital'], function(){
-            Route::get('list-of-linked-portfolios', [PortfolioController::class, 'listOfLinkedPortfolios'])->name('portfolio.linked.hospital.list');
+            Route::get('list-of-linked-hospitals', [PortfolioController::class, 'listOfLinkedHospitals'])->name('portfolio.linked.hospital.list');
             Route::match(['get', 'post'], 'assign', [PortfolioController::class, 'linkHospitalWithPortfolio'])->name('portfolio.hospital.assign');
             Route::get('linked-portfolio-by-id/{id}', [PortfolioController::class, 'getPortfolioLinkedHospitalsById'])->name('portfolio.linked.hospital.by.id');
+            Route::get('edit-linked-hospital/{id}', [PortfolioController::class, 'editLinkedHospital'])->name('portfolio.edit.linked.hospital');
+            Route::post('save-linked-edited-hospital', [PortfolioController::class, 'saveLinkedEditedHospital'])->name('portfolio.save.linked.edited.hospital');
         });
     });
 

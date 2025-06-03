@@ -70,7 +70,7 @@ class HospitalController extends Controller
         }
 
         try{
-            Hospital::create([
+            Hospital::where('id', $request->id)->update([
                 'name' => $request->hospital_name,
                 'address' => $request->hospital_address,
             ]);

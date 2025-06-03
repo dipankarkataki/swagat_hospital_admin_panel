@@ -17,7 +17,6 @@
                 <div class="card-body">
                     <form id="editOpdTimingForm" class="skip-global-submit">
                         <div class="form-container">
-
                             <input class="input" type="hidden" name="opd_timing_id" value="{{encrypt($opd_schedule->id)}}" required>
                             <div class="form-item">
                                 <label class="form-label mb-2">Doctor *</label>
