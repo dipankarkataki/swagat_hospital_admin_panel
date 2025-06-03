@@ -212,7 +212,7 @@ $(document).ready(function(){
         const button_text = $(this).text();
         $(this).attr('disabled', true).text('Please wait...');
         const status = $(this).data('status');
-        const portfolio_id = $(this).data('id');
+        const account_id = $(this).data('id');
         const update_url = $(this).data('url');
 
         $.ajax({
@@ -223,7 +223,7 @@ $(document).ready(function(){
             type:"POST",
             data:{
                 'status': status,
-                'id': portfolio_id,
+                'id': account_id,
             },
             success:function(response){
                 if(response.success === true){

@@ -106,8 +106,8 @@ class OpdTimingController extends Controller
             return $this->error('Oops! Validation error : '. $validator->errors()->first(), null, 400);
         }else{
             try{
-                $opd_id = decrypt($request->opd_timing_id);
-                OpdTiming::where('id', $opd_id)->update([
+                $schedule_id = decrypt($request->opd_timing_id);
+                OpdTiming::where('id', $schedule_id)->update([
                     'opd_date' => json_encode($request->opd_date),
                     'opd_start_time' => $request->opd_start_time,
                     'opd_end_time' => $request->opd_end_time
@@ -119,5 +119,22 @@ class OpdTimingController extends Controller
             }
         }
 
+    }
+
+    public function updateScheduleStatus(Request $request){
+        try{
+            $schedule_id = decrypt($request->id);
+            $is_schedule_exists = OpdTiming::where('id', $schedule_id)->exists();
+            if(!$is_schedule_exists){
+                return $this->error('Oops! Schedule does not exists.', null, 400);
+            }
+            OpdTiming::where('id', $schedule_id)->update([
+                'status' => $request->status
+            ]);
+            return $this->success('Great! Schedule status updated successfully.', null, 200);
+        }catch(\Exception $e){
+            Log::error('Error at OpdTimingController@updateScheduleStatus :'.$e->getMessage());
+            return $this->error('Oops! Something went wrong. Please try later.', null, 500);
+        }
     }
 }

@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::match(['get', 'post'], 'set-schedule', [OpdTimingController::class, 'setOpdDateAndTime'])->name('opd.set.schedule');
         Route::get('schedule-by-id/{id}', [OpdTimingController::class, 'getOpdScheduleById'])->name('opd.get.schedule.by.id');
         Route::post('edit-schedule', [OpdTimingController::class, 'editSchedule'])->name('opd.edit.schedule');
+        Route::post('update-schedule-status', [OpdTimingController::class, 'updateScheduleStatus'])->name('opd.update.schedule.status');
     });
 
     Route::group(['prefix' => 'hospital'], function(){

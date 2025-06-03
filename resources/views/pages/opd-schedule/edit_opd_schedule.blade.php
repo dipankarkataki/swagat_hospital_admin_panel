@@ -115,7 +115,7 @@
                 <div>
                     <label class="form-label mb-2">Change OPD Schedule Status:</label>
                     @if ($opd_schedule->status == 1)
-                        <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($opd_schedule->id) }}" data-status=0>
+                        <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white update-account-status" type="button" data-url="{{ route('opd.update.schedule.status') }}" data-id="{{ encrypt($opd_schedule->id) }}" data-status=0>
                             <span class="flex items-center justify-center gap-2">
                                 <span class="text-lg">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
@@ -126,7 +126,7 @@
                             </span>
                         </button>
                     @else
-                        <button class="btn btn-md bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($opd_schedule->id) }}" data-status=1>
+                        <button class="btn btn-md bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white update-account-status" type="button" data-url="{{ route('opd.update.schedule.status') }}" data-id="{{ encrypt($opd_schedule->id) }}" data-status=1>
                             <span class="flex items-center justify-center gap-2">
                                 <span class="text-lg">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
