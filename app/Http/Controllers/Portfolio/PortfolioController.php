@@ -309,12 +309,12 @@ class PortfolioController extends Controller
                 return $this->error('Oops! Hospital is already linked', null, 400);
             }else{
                 DB::beginTransaction();
-                PortfolioLinkedHospital::where('id', $linked_hosp_id)->update([
-                    'hospital_id' => $request->new_hospital_id
-                ]);
-                OpdTiming::where('portfolio_id', $request->portfolio_id)->where('hospital_id', $request->old_hosp_id)->update([
-                    'hospital_id' => $request->new_hospital_id
-                ]);
+                    PortfolioLinkedHospital::where('id', $linked_hosp_id)->update([
+                        'hospital_id' => $request->new_hospital_id
+                    ]);
+                    OpdTiming::where('portfolio_id', $request->portfolio_id)->where('hospital_id', $request->old_hosp_id)->update([
+                        'hospital_id' => $request->new_hospital_id
+                    ]);
                 DB::commit();
                 return $this->success('Great! Portfolio updated with new hospital successfully.', null, 200);
             }

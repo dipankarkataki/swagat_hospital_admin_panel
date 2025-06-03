@@ -15,8 +15,7 @@
             </div>
             <div class="mb-4">
                 <p>
-                    <span class="text-red-500">Note:</span> If the linked hospital is updated with a new one, all previously linked OPD timings
-                    will automatically be transferred to the new hospital.
+                    <span class="text-red-500">Note:</span> When a hospital is replaced, all its existing OPD timings will be moved to the new hospital, if available.
                 </p>
             </div>
             <div class="card card-border">
