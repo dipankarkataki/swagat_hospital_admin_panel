@@ -14,4 +14,8 @@ class PortfolioLinkedHospital extends Model
    public function hospitals(){
     return $this->belongsTo(Hospital::class, 'hospital_id', 'id');
    }
+
+   public function portfolio(){
+    return $this->belongsTo(Portfolio::class, 'portfolio_id', 'id');
+   }
 }

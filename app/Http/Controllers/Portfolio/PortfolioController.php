@@ -108,16 +108,6 @@ class PortfolioController extends Controller
         }
     }
 
-    public function getPortfolioLinkedHospitals($id){
-        try{
-            $get_hospitals = PortfolioLinkedHospital::with('hospitals')->where('portfolio_id', $id)->get();
-            return $this->success('Great! Portfolio linked hospitals fetched successfully',  $get_hospitals, 200);
-        }catch(\Exception $e){
-            Log::error('Error occurred at PortfolioController@getPortfolioLinkedHospital: ' . $e->getMessage());
-            return $this->error('Oops! Something went wrong.', null, 500);
-        }
-    }
-
     public function editPortfolio(Request $request, $id){
         $portfolio_id = decrypt($id);
 
@@ -242,12 +232,32 @@ class PortfolioController extends Controller
         }
     }
 
-    public function assignNewHospital(Request $request){
+    public function listOfLinkedPortfolios(){
+        try{
+            $get_linked_portfolios = PortfolioLinkedHospital::with('hospitals', 'portfolio')->latest()->get();
+            return view('pages.portfolio.link-hospital.list_of_linked_portfolios')->with(['linked_portfolios' => $get_linked_portfolios]);
+        }catch(\Exception $e){
+            Log::error('Error occurred at get list of linked portfolio function: ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Something went wrong. Please try later.'], 'exception');
+        }
+    }
+
+    public function getPortfolioLinkedHospitalsById($id){
+        try{
+            $get_hospitals = PortfolioLinkedHospital::with('hospitals')->where('portfolio_id', $id)->get();
+            return $this->success('Great! Portfolio linked hospitals fetched successfully',  $get_hospitals, 200);
+        }catch(\Exception $e){
+            Log::error('Error occurred at PortfolioController@getPortfolioLinkedHospital: ' . $e->getMessage());
+            return $this->error('Oops! Something went wrong.', null, 500);
+        }
+    }
+
+    public function linkHospitalWithPortfolio(Request $request){
 
         if($request->isMethod('get')){
             $list_of_hospitals = Hospital::where('status', 1)->get();
             $list_of_doctors = Portfolio::where('status', 1)->select('id', 'profile_pic', 'full_name', 'email')->get();
-            return view('pages.portfolio.hospital.assign-hospital')->with(['list_of_hospitals' => $list_of_hospitals, 'portfolios' => $list_of_doctors]);
+            return view('pages.portfolio.link-hospital.link_with_portfolio')->with(['list_of_hospitals' => $list_of_hospitals, 'portfolios' => $list_of_doctors]);
         }else{
             $validator = Validator::make($request->all(), [
                 'doctor_id' => 'required|numeric',
@@ -262,15 +272,15 @@ class PortfolioController extends Controller
 
                 $check_if_hospital_already_linked = PortfolioLinkedHospital::where('portfolio_id', $request->doctor_id)->where('hospital_id', $request->hospital_id)->exists();
                 if($check_if_hospital_already_linked){
-                    return $this->error('Oops! Hospital already linked. Please select a different hospital.', null, 400);
+                    return $this->error('Oops! Hospital is already linked. Please select a different hospital.', null, 400);
                 }
                 PortfolioLinkedHospital::create([
                     'portfolio_id' => $request->doctor_id,
                     'hospital_id' => $request->hospital_id
                 ]);
-                return $this->success('Great! Hospital assigned successfully', null, 201);
+                return $this->success('Great! Hospital linked successfully', null, 201);
             }catch(\Exception $e){
-                Log::error('Error occurred at assign new hospital status function: ' . $e->getMessage());
+                Log::error('Error occurred at link hospital with portfolio function: ' . $e->getMessage());
                 return $this->error('Oops! Something went wrong. Please try later.', null, 500);
             }
         }

@@ -1,11 +1,11 @@
 @extends('layout.main')
-@section('title', 'List of OPD Schedules')
+@section('title', 'List of Linked Portfolios')
 @section('content')
     {{-- @dd($opd_schedules) --}}
     <div class="page-container relative h-full flex flex-auto flex-col px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div class="container mx-auto">
             <div class=" mb-4">
-                <h3>List of OPD Schedules</h3>
+                <h3>List of Linked Portfolios</h3>
             </div>
             <div class="flex flex-col gap-4">
                 <div class="grid grid-cols-1">
@@ -19,14 +19,12 @@
                                             <th>Doctor</th>
                                             <th>Assigned Hospital</th>
                                             <th>Address</th>
-                                            <th>Available Date Slot</th>
-                                            <th>Available Time Slot</th>
-                                            <th>Schedule Status</th>
+                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($opd_schedules as $index => $item)
+                                        @foreach ($linked_portfolios as $index => $item)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>
@@ -37,14 +35,8 @@
                                                         <a class="hover:text-primary-600 ml-2 rtl:mr-2 font-semibold">{{ $item->portfolio->full_name }}</a>
                                                     </div>
                                                 </td>
-                                                <td>{{ $item->hospital->name }}</td>
-                                                <td>{{ \Str::limit($item->hospital->address, 50) }}</td>
-                                                <td>
-                                                    @foreach(json_decode($item->opd_date, true) as $date)
-                                                        <div>{{ \Carbon\Carbon::parse($date)->format('M-d') }}</div>
-                                                    @endforeach
-                                                </td>
-                                                <td>{{ \Carbon\Carbon::parse($item->opd_start_time)->format('h:i:a') }} to {{ \Carbon\Carbon::parse($item->opd_end_time)->format('h:i:a') }}</td>
+                                                <td>{{ $item->hospitals->name }}</td>
+                                                 <td>{{ $item->hospitals->address }}</td>
                                                 <td>
                                                     @if ($item->status == 1)
                                                         <div class="flex justify-start items-center">

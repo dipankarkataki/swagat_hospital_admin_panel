@@ -22,7 +22,7 @@
                             <svg class="menu-item-icon" stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                             </svg>
-                            <span class="menu-item-text">Hospital</span>
+                            <span class="menu-item-text">Add Hospital</span>
                         </div>
                         <ul style="{{ request()->segment(1) === 'hospital' ? 'display:block' : 'display:none' }}">
                             <li data-menu-item="modern-help-center" class="{{ request()->routeIs('hospital.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
@@ -32,7 +32,7 @@
                             </li>
                             <li data-menu-item="modern-article" class="{{ request()->routeIs('hospital.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
                                 <a class="h-full w-full flex items-center" href="{{ route('hospital.create') }}">
-                                    <span>Create</span>
+                                    <span>Create New</span>
                                 </a>
                             </li>
                         </ul>
@@ -52,19 +52,40 @@
                             </li>
                             <li data-menu-item="modern-project-list" class="{{ request()->routeIs('portfolio.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
                                 <a class="h-full w-full flex items-center" href="{{ route('portfolio.create') }}">
-                                    <span>Create</span>
+                                    <span>Create New</span>
+                                </a>
+                            </li>
+                            {{-- <li data-menu-item="modern-project-list" class="{{ request()->routeIs('portfolio.hospital.assign') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('portfolio.hospital.assign') }}">
+                                    <span>Assign New Hospital</span>
+                                </a>
+                            </li> --}}
+
+                        </ul>
+                    </li>
+                    <li class="{{ request()->segment(2) === 'hospital' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
+                        <div class="menu-collapse-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="menu-item-icon" height="1em" width="1em">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"></path>
+                            </svg>
+                            <span class="menu-item-text">Link Hospital</span>
+                        </div>
+                        <ul style="{{ request()->segment(2) === 'hospital' ? 'display:block' : 'display:none' }}">
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('portfolio.linked.hospital.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('portfolio.linked.hospital.list') }}">
+                                    <span>List of Linked Hospitals</span>
                                 </a>
                             </li>
                             <li data-menu-item="modern-project-list" class="{{ request()->routeIs('portfolio.hospital.assign') ? 'menu-item menu-item-active' : 'menu-item' }}">
                                 <a class="h-full w-full flex items-center" href="{{ route('portfolio.hospital.assign') }}">
-                                    <span>Assign New Hospital</span>
+                                    <span>Link With Portfolio</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <li class="{{ request()->segment(1) === 'opd' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
                         <div class="menu-collapse-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="menu-item-icon" height="1em" width="1em">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                             <span class="menu-item-text">OPD Schedule</span>
