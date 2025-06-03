@@ -1,7 +1,7 @@
 <div class="side-nav side-nav-transparent side-nav-expand">
     <div class="side-nav-header">
         <div class="logo px-6">
-            <img src="{{ asset('assets/img/logo/swagat-logo.png') }}" alt="Swagat logo">
+            {{-- <img src="{{ asset('assets/img/logo/swagat-logo.png') }}" alt="Swagat logo"> --}}
         </div>
     </div>
     <div class="side-nav-content relative side-nav-scroll">

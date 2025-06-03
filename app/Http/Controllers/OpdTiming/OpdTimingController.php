@@ -87,4 +87,37 @@ class OpdTimingController extends Controller
             return back()->withErrors(['error' => 'Oops! Something went wrong while getting OPD schedules By ID. Please try later.'], 'exception');
         }
     }
+
+    public function editSchedule(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'opd_timing_id' => 'required',
+            'opd_date' => 'required|array',
+            'opd_date.*' => 'required|date',
+            'opd_start_time' => 'required',
+            'opd_end_time' => 'required'
+        ],[
+            'opd_date.required' => 'Please set at least one OPD date.',
+            'opd_date.*.required' => 'Each OPD date is required.',
+            'opd_date.*.date' => 'Each OPD date must be a valid date.',
+        ]);
+
+        if($validator->fails()){
+            return $this->error('Oops! Validation error : '. $validator->errors()->first(), null, 400);
+        }else{
+            try{
+                $opd_id = decrypt($request->opd_timing_id);
+                OpdTiming::where('id', $opd_id)->update([
+                    'opd_date' => json_encode($request->opd_date),
+                    'opd_start_time' => $request->opd_start_time,
+                    'opd_end_time' => $request->opd_end_time
+                ]);
+                return $this->success('Great! OPD timings have been updated successfully', null, 200);
+            }catch(\Exception $e){
+                Log::error('Error at OpdTimingController@editSchedule :'.$e->getMessage());
+                return $this->error('Oops! Something went wrong. Please try later.', null, 500);
+            }
+        }
+
+    }
 }

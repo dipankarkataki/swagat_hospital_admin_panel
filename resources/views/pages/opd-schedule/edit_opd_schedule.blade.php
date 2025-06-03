@@ -15,8 +15,10 @@
             </div>
             <div class="card card-border">
                 <div class="card-body">
-                    <form id="setOpdTimingForm" class="skip-global-submit">
+                    <form id="editOpdTimingForm" class="skip-global-submit">
                         <div class="form-container">
+
+                            <input class="input" type="hidden" name="opd_timing_id" value="{{encrypt($opd_schedule->id)}}" required>
                             <div class="form-item">
                                 <label class="form-label mb-2">Doctor *</label>
                                 <div>
@@ -66,7 +68,7 @@
                                         </button>
                                     </div>
                                     @foreach(array_slice($opd_dates, 1) as $opd_date)
-                                        <div class="input-group mb-4 expertise-item">
+                                        <div class="input-group mb-4 available-date-item">
                                             <input class="input opd_date" type="date" name="opd_date[]" value="{{ $opd_date }}" required>
                                             <button class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white removeAvailableDateTimeBtn">
                                                 <span class="flex items-center justify-center gap-2">
@@ -101,7 +103,7 @@
                             </div>
                             <div class="form-item"><label class="form-label"></label>
                                 <div>
-                                    <button class="btn btn-default" type="submit" id="setOpdTimingBtn">Submit</button>
+                                    <button class="btn btn-default" type="submit" id="editOpdTimingBtn">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -147,62 +149,62 @@
 
             let debounceTimer;
             //Get Portfolio Linked Hospitals
-            $('#selectPortfolio').on('change', function(e) {
-                clearTimeout(debounceTimer); // Clear previous timer
-                $('#loadingIndicator').show();
-                const hospitalSelect = $('#selectHospital');
-                hospitalSelect.empty(); // Clear previous options
-                hospitalSelect.append('<option value="" >Choose</option>');
+            // $('#selectPortfolio').on('change', function(e) {
+            //     clearTimeout(debounceTimer); // Clear previous timer
+            //     $('#loadingIndicator').show();
+            //     const hospitalSelect = $('#selectHospital');
+            //     hospitalSelect.empty(); // Clear previous options
+            //     hospitalSelect.append('<option value="" >Choose</option>');
 
-                debounceTimer = setTimeout(() => {
-                    const doctor_id = e.target.value;
-                    console.log('Doctor ID : ',  doctor_id)
-                    if (!doctor_id){
-                        $('#loadingIndicator').hide();
-                        return;
-                    }
-                    const portfolio_linked_hospital_url = `/portfolio/hospital/linked-portfolio/${doctor_id}`;
+            //     debounceTimer = setTimeout(() => {
+            //         const doctor_id = e.target.value;
+            //         console.log('Doctor ID : ',  doctor_id)
+            //         if (!doctor_id){
+            //             $('#loadingIndicator').hide();
+            //             return;
+            //         }
+            //         const portfolio_linked_hospital_url = `/portfolio/hospital/linked-portfolio/${doctor_id}`;
 
-                    $.ajax({
-                        url: portfolio_linked_hospital_url,
-                        type: "GET",
-                        success: function(response) {
-                            console.log('Selected Doctor :', response)
-                            if (response.success === true) {
-                                if (response.data?.length > 0) {
-                                    response.data.forEach(hospital => {
-                                        const hospitalName = hospital.hospitals?.name || 'Unnamed';
-                                        const hospitalId = hospital.hospital_id;
-                                        hospitalSelect.append(`<option value="${hospitalId}">${hospitalName}</option>`);
-                                    });
-                                    toastr.success(response.message);
-                                } else {
-                                    hospitalSelect.append(`<option value="">No hospital found :( </option>`);
-                                    toastr.error( 'Oops! No hospital is linked with this portfolio. Assign a hospital first to set OPD timings.');
-                                }
-                            } else {
-                                toastr.error(response.message);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            if (xhr) {
-                                toastr.error('Oops! Something went wrong. Please try again.');
-                            }
-                        },
-                        complete: function() {
-                            $('#loadingIndicator').hide();
-                        }
-                    });
-                }, 2000);
-            });
+            //         $.ajax({
+            //             url: portfolio_linked_hospital_url,
+            //             type: "GET",
+            //             success: function(response) {
+            //                 console.log('Selected Doctor :', response)
+            //                 if (response.success === true) {
+            //                     if (response.data?.length > 0) {
+            //                         response.data.forEach(hospital => {
+            //                             const hospitalName = hospital.hospitals?.name || 'Unnamed';
+            //                             const hospitalId = hospital.hospital_id;
+            //                             hospitalSelect.append(`<option value="${hospitalId}">${hospitalName}</option>`);
+            //                         });
+            //                         toastr.success(response.message);
+            //                     } else {
+            //                         hospitalSelect.append(`<option value="">No hospital found :( </option>`);
+            //                         toastr.error( 'Oops! No hospital is linked with this portfolio. Assign a hospital first to set OPD timings.');
+            //                     }
+            //                 } else {
+            //                     toastr.error(response.message);
+            //                 }
+            //             },
+            //             error: function(xhr, status, error) {
+            //                 if (xhr) {
+            //                     toastr.error('Oops! Something went wrong. Please try again.');
+            //                 }
+            //             },
+            //             complete: function() {
+            //                 $('#loadingIndicator').hide();
+            //             }
+            //         });
+            //     }, 2000);
+            // });
 
             //Save OPD Timings
-            $('#setOpdTimingForm').on('submit', function(e){
+            $('#editOpdTimingForm').on('submit', function(e){
                 e.preventDefault();
                 const formData = new FormData(this);
 
                 // Disable button immediately
-                $('#setOpdTimingBtn').attr('disabled', true).text('Please wait...');
+                $('#editOpdTimingBtn').attr('disabled', true).text('Please wait...');
 
                 let hasEmptyDate = false;
 
@@ -221,7 +223,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{route('opd.set.schedule')}}",
+                    url: "{{route('opd.edit.schedule')}}",
                     type: "POST",
                     data: formData,
                     contentType: false,
@@ -239,7 +241,7 @@
                             toastr.error('Oops! Something went wrong. Please try again.');
                         }
                     },complete: function(){
-                        $('#setOpdTimingBtn').attr('disabled', false).text('Submit');
+                        $('#editOpdTimingBtn').attr('disabled', false).text('Submit');
                     }
                 });
             });
