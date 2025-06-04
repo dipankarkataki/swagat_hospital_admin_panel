@@ -327,12 +327,18 @@ class PortfolioController extends Controller
 
     public function updateLinkedHospitalStatus(Request $request){
         try{
+            $linked_hosp_id = decrypt($request->id);
             DB::beginTransaction();
-            PortfolioLinkedHospital::where('id', $request->linked_hosp_id)->update([
-                'status' => $request->status
-            ]);
-            // OpdTiming::where('id', )
+                PortfolioLinkedHospital::where('id', $linked_hosp_id)->update([
+                    'status' => $request->status
+                ]);
+                OpdTiming::where('portfolio_linked_hospital_id', $linked_hosp_id)->update([
+                    'status' => $request->status
+                ]);
+            DB::commit();
+            return $this->success('Great! Status updated successfully', null, 200);
         }catch(\Exception $e){
+            DB::rollBack();
             Log::error('Error occurred at PortfolioController@updateLinkedHospitalStatus: ' . $e->getMessage());
             return $this->error('Oops! Something went wrong', null, 500);
         }
