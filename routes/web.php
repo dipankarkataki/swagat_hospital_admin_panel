@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth'], function(){
             Route::get('linked-portfolio-by-id/{id}', [PortfolioController::class, 'getPortfolioLinkedHospitalsById'])->name('portfolio.linked.hospital.by.id');
             Route::get('edit-linked-hospital/{id}', [PortfolioController::class, 'editLinkedHospital'])->name('portfolio.edit.linked.hospital');
             Route::post('save-linked-edited-hospital', [PortfolioController::class, 'saveLinkedEditedHospital'])->name('portfolio.save.linked.edited.hospital');
+            Route::post('update-linked-hospital-status', [PortfolioController::class, 'updateLinkedHospitalStatus'])->name('portfolio.update.linked.hospital.status');
         });
     });
 
@@ -46,7 +47,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('list-of-hospitals', [HospitalController::class, 'listOfHospitals'])->name('hospital.list');
         Route::match(['get', 'post'], 'create-hospital', [HospitalController::class, 'createHospital'])->name('hospital.create');
         Route::get('hospital-by-id/{id}', [HospitalController::class, 'hospitalById'])->name('hospital.by.id');
-        Route::post('edit-hospital/{id}', [HospitalController::class, 'editHospital'])->name('hospital.edit');
+        Route::post('edit-hospital', [HospitalController::class, 'editHospital'])->name('hospital.edit');
         Route::get('delete-hospital/{id}', [HospitalController::class, 'deleteHospital'])->name('hospital.delete');
         Route::post('update-hospital-status', [HospitalController::class, 'updateHospitalStatus'])->name('hospital.status.update');
     });

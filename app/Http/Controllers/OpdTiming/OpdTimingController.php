@@ -33,6 +33,7 @@ class OpdTimingController extends Controller
             return view('pages.opd-schedule.set_opd_schedule')->with(['portfolios' => $list_of_doctors]);
         }else{
             $validator = Validator::make($request->all(), [
+                'linked_portfolio_id' => 'required',
                 'portfolio_id' => 'required',
                 'hospital_id' => 'required',
                 'opd_date' => 'required|array',
@@ -40,6 +41,7 @@ class OpdTimingController extends Controller
                 'opd_start_time' => 'required',
                 'opd_end_time' => 'required'
             ],[
+                'linked_portfolio_id' => 'Missing already linked hospital id.',
                 'portfolio_id' => 'Please select a doctor to get the linked hospitals.',
                 'hospital_id' => 'Please select a hospital to set the OPD timings.',
                 'opd_date.required' => 'Please set at least one OPD date.',
@@ -56,6 +58,7 @@ class OpdTimingController extends Controller
                         return $this->error('Oops! OPD timings already exist. Please edit them to update the schedule.', null, 400);
                     }
                     OpdTiming::create([
+                        'portfolio_linked_hospital_id' => $request->linked_portfolio_id,
                         'portfolio_id' => $request->portfolio_id,
                         'hospital_id' => $request->hospital_id,
                         'opd_date' => json_encode($request->opd_date),

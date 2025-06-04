@@ -9,7 +9,13 @@
             <div class="card card-border">
                 <div class="card-body">
                     <form id="setOpdTimingForm" class="skip-global-submit">
+
                         <div class="form-container">
+                            <div class="form-item">
+                                <div>
+                                    <input class="input" type="hidden" name="linked_portfolio_id" value="" id="linked_portfolio_id">
+                                </div>
+                            </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Select Doctor *</label>
                                 <div>
@@ -122,7 +128,9 @@
                                     response.data.forEach(hospital => {
                                         const hospitalName = hospital.hospitals?.name || 'Unnamed';
                                         const hospitalId = hospital.hospital_id;
+                                        const linked_portfolio_id = hospital.id;
                                         hospitalSelect.append(`<option value="${hospitalId}">${hospitalName}</option>`);
+                                        $('#linked_portfolio_id').val(linked_portfolio_id);
                                     });
                                     toastr.success(response.message);
                                 } else {

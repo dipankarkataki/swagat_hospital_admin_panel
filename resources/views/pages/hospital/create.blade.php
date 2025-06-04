@@ -78,7 +78,7 @@
                         }
                     },complete:function(){
                         $('#submitHospitalBtn').prop('disabled', false);
-                        $('#submitHospitalBtn').text('Sign In');
+                        $('#submitHospitalBtn').text('Submit');
                     }
                 });
             });

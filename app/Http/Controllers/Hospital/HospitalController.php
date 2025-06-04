@@ -22,34 +22,34 @@ class HospitalController extends Controller
     public function createHospital(Request $request){
         if($request->isMethod('get')){
             return view('pages.hospital.create');
-        }
-
-        $validator = Validator::make($request->all(), [
-            'hospital_name' => 'required|string|max:255',
-            'hospital_address' => 'required|string|max:255',
-        ]);
-
-        if($validator->fails()){
-            Log::error('Validation Error :'. $validator->errors());
-            return $this->error('Validation Error', $validator->errors(), 422);
-        }
-
-        try{
-            Hospital::create([
-                'name' => $request->hospital_name,
-                'address' => $request->hospital_address,
+        }else{
+            $validator = Validator::make($request->all(), [
+                'hospital_name' => 'required|string|max:255',
+                'hospital_address' => 'required|string|max:255',
             ]);
-            return $this->success('Hospital created successfully', null, 201);
-        }catch(\Exception $e){
-            Log::error('Error creating hospital: '.$e->getMessage());
-            return $this->error('Error creating hospital', null, 500);
+
+            if($validator->fails()){
+                Log::error('Validation Error :'. $validator->errors());
+                return $this->error('Validation Error', $validator->errors(), 422);
+            }else{
+                try{
+                    Hospital::create([
+                        'name' => $request->hospital_name,
+                        'address' => $request->hospital_address,
+                    ]);
+                    return $this->success('Hospital created successfully', null, 201);
+                }catch(\Exception $e){
+                    Log::error('Error creating hospital: '.$e->getMessage());
+                    return $this->error('Error creating hospital', null, 500);
+                }
+            }
         }
     }
 
     public function hospitalById($id){
         try{
             $hospital_id = decrypt($id);
-            $hospital = Hospital::find($hospital_id);
+            $hospital = Hospital::where('id', $hospital_id)->first();
             return view('pages.hospital.edit')->with(['hospital' => $hospital]);
         }catch(\Exception $e){
             Log::error('Error on hospital by id function: '.$e->getMessage());
@@ -60,6 +60,7 @@ class HospitalController extends Controller
 
     public function editHospital(Request $request){
         $validator = Validator::make($request->all(), [
+            'hospital_id' => 'required',
             'hospital_name' => 'required|string|max:255',
             'hospital_address' => 'required|string|max:255',
         ]);
@@ -67,17 +68,17 @@ class HospitalController extends Controller
         if($validator->fails()){
             Log::error('Validation Error :'. $validator->errors());
             return $this->error('Validation Error', $validator->errors(), 422);
-        }
-
-        try{
-            Hospital::where('id', $request->id)->update([
-                'name' => $request->hospital_name,
-                'address' => $request->hospital_address,
-            ]);
-            return $this->success('Hospital details edited successfully', null, 204);
-        }catch(\Exception $e){
-            Log::error('Error editing hospital details: '.$e->getMessage());
-            return $this->error('Error editing hospital details', null, 500);
+        }else{
+            try{
+                Hospital::where('id', $request->hospital_id)->update([
+                    'name' => $request->hospital_name,
+                    'address' => $request->hospital_address,
+                ]);
+                return $this->success('Hospital details edited successfully', null, 204);
+            }catch(\Exception $e){
+                Log::error('Error editing hospital details: '.$e->getMessage());
+                return $this->error('Error editing hospital details', null, 500);
+            }
         }
     }
 
@@ -103,15 +104,11 @@ class HospitalController extends Controller
     public function updateHospitalStatus(Request $request){
         try{
             $hospital_id = decrypt($request->id);
-            $hospital = Hospital::find($hospital_id);
-            if($hospital){
-                $hospital->status = $request->status;
-                $hospital->save();
-                $message = 'Status updated successfully. From '.($request->status == '1' ? 'blocked to active ' : 'active to blocked');
-                return $this->success($message, null, 204);
-            }else{
-                return $this->error('Failed to update status.', null, 400);
-            }
+            Hospital::where('id', $hospital_id)->update([
+               'status' => $request->status
+            ]);
+            $message = 'Status updated successfully. From '.($request->status == '1' ? 'blocked to active ' : 'active to blocked');
+            return $this->success($message, null, 204);
         }catch(\Exception $e){
             Log::error('Error occurred at update status function: ' . $e->getMessage());
             return $this->error('Oops! Something went wrong. Please try later.', null, 400);

@@ -324,4 +324,17 @@ class PortfolioController extends Controller
             return $this->error('Oops! Something went wrong', null, 500);
         }
     }
+
+    public function updateLinkedHospitalStatus(Request $request){
+        try{
+            DB::beginTransaction();
+            PortfolioLinkedHospital::where('id', $request->linked_hosp_id)->update([
+                'status' => $request->status
+            ]);
+            // OpdTiming::where('id', )
+        }catch(\Exception $e){
+            Log::error('Error occurred at PortfolioController@updateLinkedHospitalStatus: ' . $e->getMessage());
+            return $this->error('Oops! Something went wrong', null, 500);
+        }
+    }
 }
