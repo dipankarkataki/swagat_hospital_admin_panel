@@ -75,7 +75,7 @@
                         console.log('Response ==> ', response)
                         if(response.success === true){
                            toastr.success(response.message);
-                        //    location.reload();
+                           location.reload();
                         }else{
                             toastr.error(response.message);
                             const errors = response.data;

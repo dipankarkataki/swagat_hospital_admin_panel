@@ -187,7 +187,7 @@
                         console.log('OpD Response', response)
                         if(response.success === true){
                             toastr.success(response.message);
-                            location.reload();
+                            $('#setOpdTimingForm')[0].reset();
                         }else{
                             toastr.error(response.message);
                         }

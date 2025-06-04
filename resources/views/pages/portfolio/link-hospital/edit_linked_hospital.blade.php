@@ -20,7 +20,7 @@
             </div>
             <div class="card card-border">
                 <div class="card-body">
-                    <form id="editHospitalForm">
+                    <form id="editLinkedHospitalForm">
                         @csrf
                         <div class="form-container">
                             <div>
@@ -50,7 +50,7 @@
                             </div>
                             <div class="form-item"><label class="form-label"></label>
                                 <div>
-                                    <button class="btn btn-default" type="submit" id="editHospitalBtn">Submit</button>
+                                    <button class="btn btn-default" type="submit" id="editLinkedHospitalBtn">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -90,12 +90,12 @@
     <script>
         $(document).ready(function() {
 
-            //Ajax Call To Update Appointment Application Status
-            $('#editHospitalForm').on('submit', function(e){
+            //Ajax Call To Edit Linked Hospital
+            $('#editLinkedHospitalForm').on('submit', function(e){
                 e.preventDefault();
 
                 const formData = new FormData(this);
-                $('#editHospitalBtn').attr('disabled', true).text('Please wait...');
+                $('#editLinkedHospitalBtn').attr('disabled', true).text('Please wait...');
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -108,17 +108,17 @@
                     success:function(response){
                         if(response.success === true){
                             toastr.success(response.message);
-                            // location.reload();
+                            location.reload();
                         }else{
                             toastr.error(response.message);
                         }
                     },error:function(xhr, status, error){
                         if(xhr){
                             toastr.error('Oops! Something went wrong. Please try again.');
-                            $('#editHospitalBtn').attr('disabled', false).text('Submit');
+                            $('#editLinkedHospitalBtn').attr('disabled', false).text('Submit');
                         }
                     },complete:function(){
-                        $('#editHospitalBtn').attr('disabled', false).text('Submit');
+                        $('#editLinkedHospitalBtn').attr('disabled', false).text('Submit');
                     }
                 });
             });

@@ -312,7 +312,7 @@ class PortfolioController extends Controller
                     PortfolioLinkedHospital::where('id', $linked_hosp_id)->update([
                         'hospital_id' => $request->new_hospital_id
                     ]);
-                    OpdTiming::where('portfolio_id', $request->portfolio_id)->where('hospital_id', $request->old_hosp_id)->update([
+                    OpdTiming::where('portfolio_linked_hospital_id', $linked_hosp_id)->update([
                         'hospital_id' => $request->new_hospital_id
                     ]);
                 DB::commit();
