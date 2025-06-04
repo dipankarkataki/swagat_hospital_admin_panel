@@ -14,7 +14,7 @@ class PortfolioRecentEventsController extends Controller
         if($request->isMethod('get')){
             try{
                 $portfolio_list = Portfolio::where('status', 1)->latest()->get();
-                return view('portfolio.recent-events.create_event')->with(['portfolio_list' => $portfolio_list]);
+                return view('pages.portfolio.recent-events.create_events')->with(['portfolio_list' => $portfolio_list]);
             }catch(\Exception $e){
                 Log::error('Error occurred at createEvent function GET METHOD: ' . $e->getMessage());
                 Session::flash('exception', 'Something went wrong while redirecting to Create Event page. Please try later.');

@@ -69,7 +69,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url:"{{ route('portfolio.hospital.assign') }}",
+                    url:"{{ route('linked.hospital.create') }}",
                     type:"POST",
                     processData: false,
                     contentType: false,

@@ -26,17 +26,19 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('delete-portfolio/{id}', [PortfolioController::class, 'deletePortfolio'])->name('portfolio.delete');
         Route::post('update-portfolio-status', [PortfolioController::class, 'updatePortfolioStatus'])->name('portfolio.status.update');
         Route::post('update-appointment-status', [PortfolioController::class, 'updateAppointmentStatus'])->name('appointment.status.update');
-        Route::group(['prefix' => 'hospital'], function(){
-            Route::get('list-of-linked-hospitals', [PortfolioController::class, 'listOfLinkedHospitals'])->name('portfolio.linked.hospital.list');
-            Route::match(['get', 'post'], 'assign', [PortfolioController::class, 'linkHospitalWithPortfolio'])->name('portfolio.hospital.assign');
-            Route::get('linked-portfolio-by-id/{id}', [PortfolioController::class, 'getPortfolioLinkedHospitalsById'])->name('portfolio.linked.hospital.by.id');
-            Route::get('edit-linked-hospital/{id}', [PortfolioController::class, 'editLinkedHospital'])->name('portfolio.edit.linked.hospital');
-            Route::post('save-linked-edited-hospital', [PortfolioController::class, 'saveLinkedEditedHospital'])->name('portfolio.save.linked.edited.hospital');
-            Route::post('update-linked-hospital-status', [PortfolioController::class, 'updateLinkedHospitalStatus'])->name('portfolio.update.linked.hospital.status');
-        });
-        Route::group(['prefix' => 'recent-events'], function(){
-            Route::match(['get', 'post'], 'create-event', [PortfolioRecentEventsController::class, 'createEvent'])->name('portfolio.recent.events.create');
-        });
+    });
+
+    Route::group(['prefix' => 'link-hospital'], function(){
+        Route::get('list-of-linked-hospitals', [PortfolioController::class, 'listOfLinkedHospitals'])->name('linked.hospital.list');
+        Route::match(['get', 'post'], 'create', [PortfolioController::class, 'linkHospitalWithPortfolio'])->name('linked.hospital.create');
+        Route::get('linked-hospital-by-id/{id}', [PortfolioController::class, 'getPortfolioLinkedHospitalsById'])->name('linked.hospital.by.id');
+        Route::get('edit-linked-hospital/{id}', [PortfolioController::class, 'editLinkedHospital'])->name('linked.hospital.edit.get');
+        Route::post('save-linked-edited-hospital', [PortfolioController::class, 'saveLinkedEditedHospital'])->name('linked.hospital.edit.save');
+        Route::post('update-linked-hospital-status', [PortfolioController::class, 'updateLinkedHospitalStatus'])->name('linked.hospital.update.status');
+    });
+
+    Route::group(['prefix' => 'recent-events'], function(){
+        Route::match(['get', 'post'], 'create-event', [PortfolioRecentEventsController::class, 'createEvent'])->name('recent.events.create');
     });
 
     Route::group(['prefix' => 'opd'], function(){

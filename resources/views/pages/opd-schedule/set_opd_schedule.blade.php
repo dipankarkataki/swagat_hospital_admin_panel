@@ -116,7 +116,7 @@
                         $('#loadingIndicator').hide();
                         return;
                     }
-                    const portfolio_linked_hospital_url = `/portfolio/hospital/linked-portfolio-by-id/${doctor_id}`;
+                    const portfolio_linked_hospital_url = `/link-hospital/linked-hospital-by-id/${doctor_id}`;
 
                     $.ajax({
                         url: portfolio_linked_hospital_url,
