@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Hospital\HospitalController;
 use App\Http\Controllers\OpdTiming\OpdTimingController;
 use App\Http\Controllers\Portfolio\PortfolioController;
+use App\Http\Controllers\Portfolio\RecentEvents\PortfolioRecentEventsController;
 
 Route::match(['get', 'post',], '/', [LoginController::class, 'login'])->name('login');
 
@@ -32,6 +33,9 @@ Route::group(['middleware' => 'auth'], function(){
             Route::get('edit-linked-hospital/{id}', [PortfolioController::class, 'editLinkedHospital'])->name('portfolio.edit.linked.hospital');
             Route::post('save-linked-edited-hospital', [PortfolioController::class, 'saveLinkedEditedHospital'])->name('portfolio.save.linked.edited.hospital');
             Route::post('update-linked-hospital-status', [PortfolioController::class, 'updateLinkedHospitalStatus'])->name('portfolio.update.linked.hospital.status');
+        });
+        Route::group(['prefix' => 'recent-events'], function(){
+            Route::match(['get', 'post'], 'create-event', [PortfolioRecentEventsController::class, 'createEvent'])->name('portfolio.recent.events.create');
         });
     });
 
