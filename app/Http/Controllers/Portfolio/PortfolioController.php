@@ -79,12 +79,6 @@ class PortfolioController extends Controller
                     'membership' => json_encode($request->membership),
                     'research' => json_encode($request->research),
                     'awards' => json_encode($request->awards),
-                    // 'opd_date' => json_encode($request->opdDate),
-                    // 'opd_start_time' => $request->opdStartTime,
-                    // 'opd_end_time' => $request->opdEndTime,
-                    // 'available_time_slot' => json_encode($request->availableDate),
-                    // 'hospital_id' => $request->hospital_id,
-                    // 'accepting_appointments' => $request->availableDate[0] ? 1 : 0,
                 ]);
                 Session::flash('success', 'Portfolio created successfully.');
                 return redirect()->route('portfolio.create');
