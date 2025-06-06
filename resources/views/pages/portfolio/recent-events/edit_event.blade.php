@@ -3,8 +3,15 @@
 @section('content')
     <div class="page-container relative h-full flex flex-auto flex-col px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div class="container mx-auto">
-            <div class=" mb-4">
-                <h3>Edit Event</h3>
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-4">
+                    <a href="{{route('recent.events.get.list')}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"></path>
+                        </svg>
+                    </a>
+                    <h3>Edit Event</h3>
+                </div>
             </div>
             <div class="card card-border">
                 <div class="card-body">
@@ -52,11 +59,11 @@
                                         <input class="upload-input draggable" id="eventPicture" name="event_picture" type="file">
                                     </div>
                                     <div class="text-center">
-                                        <svg id="uploadImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        {{-- <svg id="uploadImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                                        </svg>
+                                        </svg> --}}
                                         <div class="flex flex-row justify-center items-center">
-                                            <img id="imagePreview" src="" alt="Image Preview" style="display:none; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                            <img id="imagePreview" src="{{ asset('storage/' . $event_details->media_link) }}" alt="Image Preview" style="display:block; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
                                         </div>
                                         <p class="font-semibold">
                                             <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
@@ -74,11 +81,11 @@
                                             <input class="upload-input draggable" id="eventVideoThumbnail" name="event_video_thumbnail" type="file">
                                         </div>
                                         <div class="text-center">
-                                            <svg id="uploadThumbnailImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            {{-- <svg id="uploadThumbnailImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                                            </svg>
+                                            </svg> --}}
                                             <div class="flex flex-row justify-center items-center">
-                                                <img id="thumbnailImagePreview" src="" alt="Image Preview" style="display:none; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                                <img id="thumbnailImagePreview" src="{{ asset('storage/' . $event_details->media_thumbnail_link) }}" alt="Image Preview" style="display:block; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
                                             </div>
                                             <p class="font-semibold">
                                                 <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
@@ -95,11 +102,11 @@
                                             <input class="upload-input draggable" id="eventVideo" name="event_video" type="file">
                                         </div>
                                         <div class="text-center">
-                                            <svg id="uploadVideoSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            {{-- <svg id="uploadVideoSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                 <path stroke-linecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"></path>
-                                            </svg>
+                                            </svg> --}}
                                             <div class="flex flex-row justify-center items-center">
-                                                <video id="videoPreview" src="" alt="Video Preview" style="display:none; max-width: 350px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;" controls></video>
+                                                <video id="videoPreview" src="{{ asset('storage/' . $event_details->media_link) }}" alt="Video Preview" style="display:block; max-width: 350px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;" controls></video>
                                             </div>
                                             <p class="font-semibold">
                                                 <span class="text-gray-800 dark:text-white">Drop your video here, or</span>
