@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::group(['prefix' => 'recent-events'], function(){
         Route::match(['get', 'post'], 'create-event', [PortfolioRecentEventsController::class, 'createEvent'])->name('recent.events.create');
+        Route::get('list-of-events', [PortfolioRecentEventsController::class, 'listOfEvents'])->name('recent.events.get.list');
     });
 
     Route::group(['prefix' => 'opd'], function(){

@@ -76,4 +76,15 @@ class PortfolioRecentEventsController extends Controller
             }
         }
     }
+
+    public function listOfEvents(){
+        try{
+            $get_all_events = PortfolioRecentEvents::where('status', 1)->latest()->get();
+            return view('pages.portfolio.recent-events.all_events')->with(['all_events' =>  $get_all_events]);
+        }catch(\Exception $e){
+            Log::error('Error at PortfolioRecentEventsController@listOfEvents while opening page: '.$e->getMessage());
+            // Session::flash('exception', 'Oops! Something went wrong. Please try later.');
+            // return redirect()->route('hospital.list');
+        }
+    }
 }

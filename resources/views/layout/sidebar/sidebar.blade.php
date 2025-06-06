@@ -85,11 +85,11 @@
                             <span class="menu-item-text">Recent Events</span>
                         </div>
                         <ul style="{{ request()->segment(1) === 'recent-events' ? 'display:block' : 'display:none' }}">
-                            {{-- <li data-menu-item="modern-project-list" class="{{ request()->routeIs('linked.hospital.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
-                                <a class="h-full w-full flex items-center" href="{{ route('linked.hospital.list') }}">
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('recent.events.get.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('recent.events.get.list') }}">
                                     <span>List of Events</span>
                                 </a>
-                            </li> --}}
+                            </li>
                             <li data-menu-item="modern-project-list" class="{{ request()->routeIs('recent.events.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
                                 <a class="h-full w-full flex items-center" href="{{ route('recent.events.create') }}">
                                     <span>Create Event</span>
