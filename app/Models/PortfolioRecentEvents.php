@@ -8,6 +8,6 @@ class PortfolioRecentEvents extends Model
 {
     protected $table = "portfolio_recent_events";
     protected $fillable = [
-        'portfolio_id', 'title', 'description', 'media_type', 'media_thumbnail_link', 'media_link', 'status'
+        'portfolio_id', 'title', 'description', 'event_date', 'media_type', 'media_thumbnail_link', 'media_link', 'status'
     ];
 }

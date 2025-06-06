@@ -64,6 +64,7 @@ class PortfolioRecentEventsController extends Controller
                         'portfolio_id' => $request->portfolio_id,
                         'title' => $request->event_title,
                         'description' => $request->event_description,
+                        'event_date' => $request->event_date,
                         'media_type' => $request->media_type,
                         'media_thumbnail_link' => $thumbnail_path,
                         'media_link' => $media_path

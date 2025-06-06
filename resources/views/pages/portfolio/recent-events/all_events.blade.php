@@ -34,8 +34,10 @@
                                 <thead>
                                     <tr>
                                         <th>Sl No.</th>
-                                        <th>Name</th>
-                                        <th>Address</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Event Date</th>
+                                        <th>Media Type</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -49,7 +51,9 @@
                                                     <span class="font-semibold">{{ $event->title }}</span>
                                                 </div>
                                             </td>
-                                            <td>{{ $event->description }}</td>
+                                            <td>{{ \Str::limit($event->description, 100) }}</td>
+                                            <td>{{$event->event_date ?? 'Not Set'}}</td>
+                                            <td>{{ $event->media_type }}</td>
                                             <td>
                                                 @if ($event->status == 1)
                                                     <div class="flex justify-center items-center">

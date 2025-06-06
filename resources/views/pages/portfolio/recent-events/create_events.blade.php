@@ -25,7 +25,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Event Title *</label>
                                 <div>
-                                    <input class="input" name="event_title" id="event_title" placeholder="e.g Blood donation campaining" required>
+                                    <input class="input" type="text" name="event_title" id="event_title" placeholder="e.g Blood donation campaining" required>
                                 </div>
                             </div>
                             <div class="form-item">
@@ -33,6 +33,12 @@
                                 <div>
                                     <textarea class="input input-textarea" name="event_description" id="event_description" placeholder="write here..." maxlength="200"></textarea>
                                     <span class="ml-1 text-xs">Maximum allowed characters 200.</span>
+                                </div>
+                            </div>
+                            <div class="form-item">
+                                <label class="form-label mb-2">Event Date</label>
+                                <div>
+                                    <input class="input" type="date" name="event_date" id="event_date">
                                 </div>
                             </div>
                             <div class="form-item">
