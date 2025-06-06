@@ -43,49 +43,27 @@
                                 </div>
                             </div>
                             <div class="form-item">
-                                <label class="form-label mb-2">Select Media Type *</label>
+                                <label class="form-label mb-2">Media Type *</label>
                                 <div>
-                                    <select class="input" name="media_type" id="media_type" required>
-                                        <option value=""> Choose </option>
-                                        <option value="picture" {{$event_details->media_type == 'picture' ? 'selected' : null}}>Image</option>
-                                        <option value="video" {{$event_details->media_type == 'video' ? 'selected' : null}}>Video</option>
-                                    </select>
+                                    <input class="input" type="text" id="media_type" name="{{$event_details->media_type}}" id="event_date" value="{{$event_details->media_type}}" readonly required>
                                 </div>
                             </div>
-                            <div class="form-item" id="media_type_picture" style="{{$event_details->media_type == 'picture' ? 'display:block' : 'display:none'}}">
-                                <label class="form-label mb-2">Add Event Picture</label>
-                                <div class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]">
-                                    <div>
-                                        <input class="upload-input draggable" id="eventPicture" name="event_picture" type="file">
+                            @if ($event_details->media_type == 'picture')
+                                <div class="form-item" id="media_type_picture">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="form-label mb-2">Add Event Picture</label>
+                                        {{-- <button class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white btn-xs">Remove Image</button> --}}
                                     </div>
-                                    <div class="text-center">
-                                        {{-- <svg id="uploadImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                                        </svg> --}}
-                                        <div class="flex flex-row justify-center items-center">
-                                            <img id="imagePreview" src="{{ asset('storage/' . $event_details->media_link) }}" alt="Image Preview" style="display:block; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
-                                        </div>
-                                        <p class="font-semibold">
-                                            <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
-                                            <span class="text-blue-500">browse</span>
-                                        </p>
-                                        <p class="mt-1 opacity-60 dark:text-white">Support: jpeg, png</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="media_type_video" style="{{$event_details->media_type == 'video' ? 'display:block' : 'display:none' }}">
-                                <div class="form-item">
-                                    <label class="form-label mb-2">Add Event Video Thumbnail</label>
                                     <div class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]">
                                         <div>
-                                            <input class="upload-input draggable" id="eventVideoThumbnail" name="event_video_thumbnail" type="file">
+                                            <input class="upload-input draggable" id="eventPicture" name="event_picture" type="file">
                                         </div>
                                         <div class="text-center">
-                                            {{-- <svg id="uploadThumbnailImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            {{-- <svg id="uploadImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                                             </svg> --}}
                                             <div class="flex flex-row justify-center items-center">
-                                                <img id="thumbnailImagePreview" src="{{ asset('storage/' . $event_details->media_thumbnail_link) }}" alt="Image Preview" style="display:block; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                                <img id="imagePreview" src="{{ asset('storage/' . $event_details->media_link) }}" alt="Image Preview" style="display:block; max-width: 400px; max-height:200px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
                                             </div>
                                             <p class="font-semibold">
                                                 <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
@@ -95,28 +73,60 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-item">
-                                    <label class="form-label mb-2">Add Event Video</label>
-                                    <div class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]">
-                                        <div>
-                                            <input class="upload-input draggable" id="eventVideo" name="event_video" type="file">
+                            @else
+                                <div id="media_type_video">
+                                    <div class="form-item">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <label class="form-label mb-2">Add Event Video Thumbnail</label>
+                                            {{-- <button class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white btn-xs">Remove Image</button> --}}
                                         </div>
-                                        <div class="text-center">
-                                            {{-- <svg id="uploadVideoSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                <path stroke-linecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"></path>
-                                            </svg> --}}
-                                            <div class="flex flex-row justify-center items-center">
-                                                <video id="videoPreview" src="{{ asset('storage/' . $event_details->media_link) }}" alt="Video Preview" style="display:block; max-width: 350px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;" controls></video>
+                                        <div class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]">
+                                            <div>
+                                                <input class="upload-input draggable" id="eventVideoThumbnail" name="event_video_thumbnail" type="file">
                                             </div>
-                                            <p class="font-semibold">
-                                                <span class="text-gray-800 dark:text-white">Drop your video here, or</span>
-                                                <span class="text-blue-500">browse</span>
-                                            </p>
-                                            <p class="mt-1 opacity-60 dark:text-white">Support: mp4, avi</p>
+                                            <div class="text-center">
+                                                {{-- <svg id="uploadThumbnailImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                                </svg> --}}
+                                                <div class="flex flex-row justify-center items-center">
+                                                    <img id="thumbnailImagePreview" src="{{ asset('storage/' . $event_details->media_thumbnail_link) }}" alt="Image Preview" style="display:block; max-width: 400px; max-height:200px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                                </div>
+                                                <p class="font-semibold">
+                                                    <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
+                                                    <span class="text-blue-500">browse</span>
+                                                </p>
+                                                <p class="mt-1 opacity-60 dark:text-white">Support: jpeg, png</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <label class="form-label mb-2">Add Event Video</label>
+                                            {{-- <button class="btn bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white btn-xs">Remove Video</button> --}}
+                                        </div>
+                                        <div class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]">
+                                            <div>
+                                                <input class="upload-input draggable" id="eventVideo" name="event_video" type="file">
+                                            </div>
+                                            <div class="text-center">
+                                                {{-- <svg id="uploadVideoSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                    <path stroke-linecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"></path>
+                                                </svg> --}}
+                                                <div class="flex flex-row justify-center items-center">
+                                                    <video id="videoPreview" src="{{ asset('storage/' . $event_details->media_link) }}" alt="Video Preview" style="display:block; max-width: 400px; max-height:200px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;" controls></video>
+                                                </div>
+                                                <p class="font-semibold">
+                                                    <span class="text-gray-800 dark:text-white">Drop your video here, or</span>
+                                                    <span class="text-blue-500">browse</span>
+                                                </p>
+                                                <p class="mt-1 opacity-60 dark:text-white">Support: mp4, avi</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
+
+
                             <div class="progress line" id="progressBar" style="display: none;">
                                 <div class="progress-wrapper">
                                     <div class="progress-inner">
@@ -132,6 +142,12 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+            <div class="card card-border mt-4">
+                <div class="card-body">
+                    <label class="form-label mb-2">Delete Event:</label>
+                    <button class="btn btn-md bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($event_details->id) }}" data-status=1> Delete</button>
                 </div>
             </div>
         </div>
@@ -162,33 +178,52 @@
 
             // Preview Event Picture Before Upload
             $('#eventPicture').on('change', function(e) {
-                var reader = new FileReader();
-                reader.onload = function(event) {
-                    $('#uploadImgSvg').hide();
-                    $('#imagePreview').attr('src', event.target.result).show();
-                };
-                reader.readAsDataURL(this.files[0]);
+                const file = this.files[0];
+                const file_type = file.type.split('/')[0];
+
+                if(file && file_type == 'image'){
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        $('#uploadImgSvg').hide();
+                        $('#imagePreview').attr('src', event.target.result).show();
+                    };
+                    reader.readAsDataURL(file);
+                }else{
+                    toastr.error('Oops! Not a valid image format');
+                }
             });
 
             // Preview Event Thumbnail Before Upload
             $('#eventVideoThumbnail').on('change', function(e) {
-                var reader = new FileReader();
-                reader.onload = function(event) {
-                    $('#uploadThumbnailImgSvg').hide();
-                    $('#thumbnailImagePreview').attr('src', event.target.result).show();
-                };
-                reader.readAsDataURL(this.files[0]);
+
+                const file = this.files[0];
+                const file_type = file.type.split('/')[0];
+
+                if(file && file_type == 'image'){
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        $('#uploadThumbnailImgSvg').hide();
+                        $('#thumbnailImagePreview').attr('src', event.target.result).show();
+                    };
+                    reader.readAsDataURL(file);
+                }else{
+                    toastr.error('Oops! Not a valid image format');
+                }
             });
 
             //Preview Video before upload
             $('#eventVideo').on('change', function(e) {
-                var file = this.files[0];
-                if (file) {
-                    var videoUrl = URL.createObjectURL(file);
+                const file = this.files[0];
+                const file_type = file.type.split('/')[0];
+
+                if (file && file_type == 'video') {
+                    const videoUrl = URL.createObjectURL(file);
                     $('#uploadVideoSvg').hide();
                     $('#videoPreview')
                         .attr('src', videoUrl)
                         .show();
+                }else{
+                    toastr.error('Oops! Not a valid video format');
                 }
             });
 
@@ -264,7 +299,6 @@
                     },
                     success: function(response){
                         if(response.success === true){
-                            console.log('Response', response);
                             toastr.success(response.message);
                             $('#createEventForm')[0].reset();
                         }else{

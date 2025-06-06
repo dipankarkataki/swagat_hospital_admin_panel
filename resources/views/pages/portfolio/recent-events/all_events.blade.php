@@ -30,7 +30,7 @@
                 <div class="card card-layout-frame">
                     <div class="card-body">
                         <div class="overflow-x-auto">
-                            <table id="hospitalDataTable" class="table-default table-hover">
+                            <table id="allEventsTable" class="table-default table-hover">
                                 <thead>
                                     <tr>
                                         <th>Sl No.</th>
@@ -51,7 +51,7 @@
                                                     <span class="font-semibold">{{ $event->title }}</span>
                                                 </div>
                                             </td>
-                                            <td>{{ \Str::limit($event->description, 100) }}</td>
+                                            <td>{{ \Str::limit($event->description, 100) ?? 'N/A' }}</td>
                                             <td>{{$event->event_date ?? 'Not Set'}}</td>
                                             <td>{{ $event->media_type }}</td>
                                             <td>
@@ -70,19 +70,20 @@
                                             <td>
                                                 <div class="flex justify-end text-lg gap-2">
                                                     <a href="{{ route('recent.events.get.by.id', ['id' => encrypt($event->id)]) }}">
-                                                        <span class="cursor-pointer p-2 hover:text-indigo-600 editButton">
+                                                        <span class="flex gap-1 items-center cursor-pointer text-sm font-semibold hover:text-indigo-600 editButton" data-bs-toggle="tooltip" data-bs-title="Edit Event">
                                                             <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                                             </svg>
+                                                            Edit
                                                         </span>
                                                     </a>
-                                                    <a href="{{ route('recent.events.get.by.id', ['id' => encrypt($event->id)]) }}" class="deleteButton">
+                                                    {{-- <a href="{{ route('recent.events.get.by.id', ['id' => encrypt($event->id)]) }}" class="deleteButton">
                                                         <span class="cursor-pointer p-2 hover:text-red-500">
                                                             <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                                             </svg>
                                                         </span>
-                                                    </a>
+                                                    </a> --}}
                                                 </div>
                                             </td>
                                         </tr>
@@ -99,6 +100,6 @@
 @endsection
 @section('custom-scripts')
     <script>
-        $('#hospitalDataTable').DataTable();
+        $('#allEventsTable').DataTable();
     </script>
 @endsection
