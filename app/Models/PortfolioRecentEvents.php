@@ -10,4 +10,8 @@ class PortfolioRecentEvents extends Model
     protected $fillable = [
         'portfolio_id', 'title', 'description', 'event_date', 'media_type', 'media_thumbnail_link', 'media_link', 'status'
     ];
+
+    public function portfolio(){
+        return $this->belongsTo(Portfolio::class, 'portfolio_id', 'id');
+    }
 }

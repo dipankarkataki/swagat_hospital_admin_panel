@@ -88,4 +88,14 @@ class PortfolioRecentEventsController extends Controller
             // return redirect()->route('hospital.list');
         }
     }
+
+    public function getEventById($id){
+        $event_id = decrypt($id);
+        try{
+            $event_details = PortfolioRecentEvents::with('portfolio')->where('id', $event_id)->first();
+            return view('pages.portfolio.recent-events.edit_event')->with(['event_details' => $event_details]);
+        }catch(\Exception $e){
+            Log::error('Error at PortfolioRecentEventsController@editEvent :'.$e->getMessage());
+        }
+    }
 }
