@@ -113,10 +113,10 @@
                             <div class="progress line" id="progressBar" style="display: none;">
                                 <div class="progress-wrapper">
                                     <div class="progress-inner">
-                                        <div class="progress-bg h-2 bg-green-700" style="width: 0%;"></div>
+                                        <div class="progress-bg h-2 bg-primary-600" id="progressBg" style="width: 0%;"></div>
                                     </div>
                                 </div>
-                                <span class="progress-info line ml-3" id="progressBarData"></span>
+                                <span class="progress-info line" id="progressBarData">30%</span>
                             </div>
                             <div class="form-item"><label class="form-label"></label>
                                 <div>
@@ -195,17 +195,38 @@
 
                 const media_type = $('#media_type').val();
 
+                const MAX_IMAGE_SIZE = 1024 * 1024; // 1MB in bytes
+                const MAX_VIDEO_SIZE = 3024 * 1024; // 3MB in bytes
+
                 if(media_type === 'picture'){
                     const file = $('#eventPicture')[0].files[0];
                     if(file){
+                        if (file.size > MAX_IMAGE_SIZE) {
+                            toastr.error('Image size should not exceed 1MB.');
+                            $('#submitEventBtn').prop('disabled', false).text('Submit');
+                            return;
+                        }
                         formData.append('event_picture', file);
                     }
                 }else{
                     const thumbnail = $('#eventVideoThumbnail')[0].files[0];
                     const video = $('#eventVideo')[0].files[0];
                     if(thumbnail && video){
+                        if (thumbnail.size > MAX_IMAGE_SIZE) {
+                            toastr.error('Thumbnail image size should not exceed 1MB.');
+                            $('#submitEventBtn').prop('disabled', false).text('Submit');
+                            return;
+                        }
+
+                        if (video.size > MAX_VIDEO_SIZE) {
+                            toastr.error('Video size should not exceed 3MB.');
+                            $('#submitEventBtn').prop('disabled', false).text('Submit');
+                            return;
+                        }
+
                         formData.append('event_video_thumbnail', thumbnail);
                         formData.append('event_video', video);
+
                     }else{
                         toastr.error('Please add both thumbnail and video');
                         $('#submitEventBtn').prop('disabled', false).text('Submit');
@@ -227,7 +248,7 @@
                         xhr.upload.addEventListener("progress", function (evt) {
                             if (evt.lengthComputable) {
                                 var percentComplete = Math.round((evt.loaded / evt.total) * 100);
-                                $('.progress-bg').css('width', percentComplete + '%');
+                                $('#progressBg').css('width', percentComplete + '%');
                                 $('#progressBarData').text('Uploading ' + percentComplete + '%');
                                 $('#progressBar').show();
                             }
@@ -249,7 +270,7 @@
                     }, complete: function(){
                         setTimeout(() => {
                             $('#progressBar').fadeOut('slow'); // Smooth fade out
-                            $('.progress-bg').css('width', '0%');
+                            $('#progressBg').css('width', '0%');
                             $('#progressBarData').text('Upload Complete ✅');
                             $('#submitEventBtn').prop('disabled', false).text('Submit');
                             location.reload();
@@ -257,8 +278,6 @@
                     }
                 });
             });
-
-
         });
     </script>
 @endsection
