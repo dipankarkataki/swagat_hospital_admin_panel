@@ -15,8 +15,9 @@
             </div>
             <div class="card card-border">
                 <div class="card-body">
-                    <form id="createEventForm" enctype="multipart/form-data" class="skip-global-submit">
+                    <form id="editEventForm" enctype="multipart/form-data" class="skip-global-submit">
                         <div class="form-container">
+                            <input type="hidden" name="recentEventId" value="{{encrypt($event_details->id)}}">
                             <div class="form-item">
                                 <label class="form-label mb-2">Select Doctor *</label>
                                 <div>
@@ -45,7 +46,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Media Type *</label>
                                 <div>
-                                    <input class="input" type="text" id="media_type" name="{{$event_details->media_type}}" id="event_date" value="{{$event_details->media_type}}" readonly required>
+                                    <input class="input" type="text" id="media_type" name="media_type" value="{{$event_details->media_type}}" readonly required>
                                 </div>
                             </div>
                             @if ($event_details->media_type == 'picture')
@@ -125,8 +126,6 @@
                                     </div>
                                 </div>
                             @endif
-
-
                             <div class="progress line" id="progressBar" style="display: none;">
                                 <div class="progress-wrapper">
                                     <div class="progress-inner">
@@ -147,7 +146,7 @@
             <div class="card card-border mt-4">
                 <div class="card-body">
                     <label class="form-label mb-2">Delete Event:</label>
-                    <button class="btn btn-md bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white update-account-status" type="button" data-url="{{ route('portfolio.status.update') }}" data-id="{{ encrypt($event_details->id) }}" data-status=1> Delete</button>
+                    <button id="deleteItemButton" class="btn btn-md bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white" type="button" data-url="{{ route('recent.events.delete') }}" data-eventid="{{ encrypt($event_details->id) }}" data-returnurl="{{route('recent.events.get.list')}}">Delete</button>
                 </div>
             </div>
         </div>
@@ -157,24 +156,24 @@
     <script>
         $(document).ready(function(){
             //Toggle content based on media type
-            $('#media_type').on('change', function(e){
-                const media = e.target.value;
-                if (!media) {
-                    toastr.error('Please select a valid option.');
-                    $('#media_type_picture, #media_type_video').hide();
-                    return;
-                }
+            // $('#media_type').on('change', function(e){
+            //     const media = e.target.value;
+            //     if (!media) {
+            //         toastr.error('Please select a valid option.');
+            //         $('#media_type_picture, #media_type_video').hide();
+            //         return;
+            //     }
 
-                if (media === 'picture') {
-                    $('#media_type_picture').show();
-                    $('#media_type_video').hide();
-                } else if (media === 'video') {
-                    $('#media_type_picture').hide();
-                    $('#media_type_video').show();
-                } else {
-                    $('#media_type_picture, #media_type_video').hide();
-                }
-            });
+            //     if (media === 'picture') {
+            //         $('#media_type_picture').show();
+            //         $('#media_type_video').hide();
+            //     } else if (media === 'video') {
+            //         $('#media_type_picture').hide();
+            //         $('#media_type_video').show();
+            //     } else {
+            //         $('#media_type_picture, #media_type_video').hide();
+            //     }
+            // });
 
             // Preview Event Picture Before Upload
             $('#eventPicture').on('change', function(e) {
@@ -228,7 +227,7 @@
             });
 
             //Create Event
-            $('#createEventForm').on('submit', function(e){
+            $('#editEventForm').on('submit', function(e){
                 e.preventDefault();
 
                 $('#submitEventBtn').prop('disabled', true).text('Please wait...');
@@ -248,31 +247,28 @@
                             $('#submitEventBtn').prop('disabled', false).text('Submit');
                             return;
                         }
-                        formData.append('event_picture', file);
+                        formData.append('event_picture', file ?? null);
                     }
                 }else{
                     const thumbnail = $('#eventVideoThumbnail')[0].files[0];
                     const video = $('#eventVideo')[0].files[0];
-                    if(thumbnail && video){
+
+                    if(thumbnail){
                         if (thumbnail.size > MAX_IMAGE_SIZE) {
                             toastr.error('Thumbnail image size should not exceed 1MB.');
                             $('#submitEventBtn').prop('disabled', false).text('Submit');
                             return;
                         }
+                        formData.append('event_video_thumbnail', thumbnail);
+                    }
 
+                    if(video){
                         if (video.size > MAX_VIDEO_SIZE) {
                             toastr.error('Video size should not exceed 3MB.');
                             $('#submitEventBtn').prop('disabled', false).text('Submit');
                             return;
                         }
-
-                        formData.append('event_video_thumbnail', thumbnail);
                         formData.append('event_video', video);
-
-                    }else{
-                        toastr.error('Please add both thumbnail and video');
-                        $('#submitEventBtn').prop('disabled', false).text('Submit');
-                        return;
                     }
                 }
 
@@ -280,7 +276,7 @@
                     headers:{
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url:"{{route('recent.events.create')}}",
+                    url:"{{route('recent.events.edit')}}",
                     type:"POST",
                     data: formData,
                     contentType: false,
@@ -298,9 +294,10 @@
                         return xhr;
                     },
                     success: function(response){
+                        console.log('Response from Server : ', response)
                         if(response.success === true){
                             toastr.success(response.message);
-                            $('#createEventForm')[0].reset();
+                            $('#editEventForm')[0].reset();
                         }else{
                             toastr.error(response.message);
                         }
@@ -316,6 +313,58 @@
                             $('#submitEventBtn').prop('disabled', false).text('Submit');
                             location.reload();
                         }, 2000);
+                    }
+                });
+            });
+
+            //Delete Event
+            $('#deleteItemButton').on('click', function(e){
+                e.preventDefault();
+                const deleteUrl = $(this).data('url');
+                const event_id = $(this).data('eventid');
+                const returnurl = $(this).data('returnurl');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                    preConfirm: () => {
+                        const confirmBtn = Swal.getConfirmButton();
+                        confirmBtn.disabled = true;
+                        confirmBtn.innerHTML = 'Deleting...';
+
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                // Redirect after delay
+                                 $.ajax({
+                                        headers:{
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        url:deleteUrl,
+                                        type:"POST",
+                                        data: {
+                                            'event_id' : event_id
+                                        },
+                                        success: function(response){
+                                            if(response.success === true){
+                                                toastr.success(response.message);
+                                                window.location.href = returnurl;
+                                            }else{
+                                                toastr.error(response.message);
+                                            }
+                                        }, error: function(xhr){
+                                            if (xhr) {
+                                                toastr.error("Oops! Something went wrong. Please try later.");
+                                            }
+                                        }
+                                    });
+                                resolve(); // closes the swal after redirection
+                            }, 1000);
+                        });
                     }
                 });
             });

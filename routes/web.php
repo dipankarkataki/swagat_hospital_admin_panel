@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('list-of-events', [PortfolioRecentEventsController::class, 'listOfEvents'])->name('recent.events.get.list');
         Route::get('get-event-by-id/{id}', [PortfolioRecentEventsController::class, 'getEventById'])->name('recent.events.get.by.id');
         Route::post('edit-event', [PortfolioRecentEventsController::class, 'editEvent'])->name('recent.events.edit');
+        Route::post('delete-event', [PortfolioRecentEventsController::class, 'deleteEvent'])->name('recent.events.delete');
     });
 
     Route::group(['prefix' => 'opd'], function(){

@@ -98,4 +98,68 @@ class PortfolioRecentEventsController extends Controller
             Log::error('Error at PortfolioRecentEventsController@editEvent :'.$e->getMessage());
         }
     }
+
+    public function editEvent(Request $request){
+        $validator = Validator::make($request->all(), [
+            'portfolio_id' => 'required',
+            'event_title' => 'required',
+            'media_type' => 'required',
+            'event_picture' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
+            'event_video_thumbnail' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
+            'event_video' => 'nullable|file|mimes:mp4,avi|max:3024',
+        ]);
+
+        if($validator->fails()){
+            return $this->error('Oops! Validation Error : '.$validator->errors()->first(), null, 400);
+        }else{
+            try{
+
+
+                $event_id = decrypt($request->recentEventId);
+
+                $event_details = PortfolioRecentEvents::where('id', $event_id)->first();
+
+                $media_path = $event_details->media_link;
+                $thumbnail_path = $event_details->media_thumbnail_link;
+
+                $hasPicture = $request->hasFile('event_picture');
+                $hasThumbnail = $request->hasFile('event_video_thumbnail');
+                $hasVideo = $request->hasFile('event_video');
+
+                if($hasPicture){
+                    $media_path = $request->file('event_picture')->store('recent_events/images');
+                    $thumbnail_path = null;
+                }
+                if($hasThumbnail){
+                    $thumbnail_path = $request->file('event_video_thumbnail')->store('recent_events/thumbnail/images');
+                }
+                if($hasVideo){
+                    $media_path = $request->file('event_video')->store('recent_events/videos');
+                }
+
+                PortfolioRecentEvents::where('id', $event_id)->update([
+                    'title' => $request->event_title,
+                    'description' => $request->event_description,
+                    'event_date' => $request->event_date,
+                    'media_thumbnail_link' => $thumbnail_path,
+                    'media_link' => $media_path
+                ]);
+                return $this->success('Great! Event created successfully', null, 201);
+            }catch(\Exception $e){
+                Log::error('Error at PortfolioRecentEventsController@editEvent : '. $e->getMessage().'. At line no : '.$e->getLine());
+                return $this->error('Oops! Something went wrong while editing event. Please try later.', null, 500);
+            }
+        }
+    }
+
+    public function deleteEvent(Request $request){
+        try{
+            $event_id = decrypt($request->event_id);
+            PortfolioRecentEvents::where('id', $event_id)->delete();
+            return $this->success('Great! Event deleted successfully', null, 200);
+        }catch(\Exception $e){
+            Log::error('Error at PortfolioRecentEventsController@deleteEvent : '. $e->getMessage().'. At line no : '.$e->getLine());
+            return $this->error('Oops! Something went wrong while deleting event. Please try later.', null, 500);
+        }
+    }
 }
