@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Hospital\HospitalController;
+use App\Http\Controllers\LabTest\LabTestCategoryController;
+use App\Http\Controllers\LabTest\LabTestController;
 use App\Http\Controllers\OpdTiming\OpdTimingController;
 use App\Http\Controllers\Portfolio\PortfolioController;
 use App\Http\Controllers\Portfolio\RecentEvents\PortfolioRecentEventsController;
@@ -43,6 +45,19 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('get-event-by-id/{id}', [PortfolioRecentEventsController::class, 'getEventById'])->name('recent.events.get.by.id');
         Route::post('edit-event', [PortfolioRecentEventsController::class, 'editEvent'])->name('recent.events.edit');
         Route::post('delete-event', [PortfolioRecentEventsController::class, 'deleteEvent'])->name('recent.events.delete');
+    });
+
+    Route::group(['prefix' => 'lab-test'], function(){
+        Route::match(['get', 'post'], 'create-test', [LabTestController::class, 'createLabTest'])->name('lab.test.create');
+    });
+
+    Route::group(['prefix' => 'lab-test-category'], function(){
+        Route::match(['get', 'post'], 'create-category', [LabTestCategoryController::class, 'createLabTestCategory'])->name('lab.test.category.create');
+        Route::get('list-of-categories', [LabTestCategoryController::class, 'listOfCategories'])->name('lab.test.category.list');
+        Route::get('test-category-by-id/{id}', [LabTestCategoryController::class, 'getCategoryById'])->name('lab.test.category.get.by.id');
+        Route::post('edit-test-category', [LabTestCategoryController::class, 'editLabTestCategory'])->name('lab.test.category.edit');
+        Route::post('update-category-status', [LabTestCategoryController::class, 'updateCategoryStatus'])->name('lab.test.category.update.status');
+        Route::get('delete-test-category/{id}', [LabTestCategoryController::class, 'deleteTestCategory'])->name('lab.test.category.delete');
     });
 
     Route::group(['prefix' => 'opd'], function(){
