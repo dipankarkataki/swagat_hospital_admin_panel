@@ -13,4 +13,8 @@ class LabTest extends Model
     protected $fillable = [
         'lab_test_category_id', 'name', 'description', 'price', 'status'
     ];
+
+    public function labTestCategory(){
+        return $this->belongsTo(LabTestCategory::class, 'lab_test_category_id', 'id');
+    }
 }

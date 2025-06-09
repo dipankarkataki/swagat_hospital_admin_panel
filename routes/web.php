@@ -50,6 +50,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::group(['prefix' => 'lab-test'], function(){
         Route::match(['get', 'post'], 'create-test', [LabTestController::class, 'createLabTest'])->name('lab.test.create');
         Route::get('list-of-test', [LabTestController::class, 'listOfTest'])->name('lab.test.get.list');
+        Route::get('lab-test-by-id/{id}', [LabTestController::class, 'getLabTestById'])->name('lab.test.get.by.id');
+        Route::post('edit-lab-test', [LabTestController::class, 'editLabTest'])->name('lab.test.edit');
+        Route::post('update-lab-test-status', [LabTestController::class, 'updateLabTestStatus'])->name('lab.test.update.status');
+        Route::get('delete-lab-test/{id}', [LabTestController::class, 'deleteLabTest'])->name('lab.test.delete');
     });
 
     Route::group(['prefix' => 'lab-test-category'], function(){

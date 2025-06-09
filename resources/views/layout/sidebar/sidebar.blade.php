@@ -227,11 +227,11 @@
                             <span class="menu-item-text">Lab Test</span>
                         </div>
                         <ul style="{{ request()->segment(1) === 'lab-test' ? 'display:block' : 'display:none' }}">
-                            {{-- <li data-menu-item="modern-project-list" class="{{ request()->routeIs('lab.test.category.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
-                                <a class="h-full w-full flex items-center" href="{{ route('lab.test.category.list') }}">
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('lab.test.get.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('lab.test.get.list') }}">
                                     <span>List of Tests</span>
                                 </a>
-                            </li> --}}
+                            </li>
                             <li data-menu-item="modern-project-list" class="{{ request()->routeIs('lab.test.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
                                 <a class="h-full w-full flex items-center" href="{{ route('lab.test.create') }}">
                                     <span>Create Test</span>
