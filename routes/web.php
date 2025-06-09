@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::group(['prefix' => 'lab-test'], function(){
         Route::match(['get', 'post'], 'create-test', [LabTestController::class, 'createLabTest'])->name('lab.test.create');
+        Route::get('list-of-test', [LabTestController::class, 'listOfTest'])->name('lab.test.get.list');
     });
 
     Route::group(['prefix' => 'lab-test-category'], function(){

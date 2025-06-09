@@ -195,7 +195,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="{{ request()->segment(1) === 'opd' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
+                    <li class="{{ request()->segment(1) === 'lab-test-category' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
                         <div class="menu-collapse-item">
                             <svg class="menu-item-icon" stroke="currentColor" fill="none" stroke-width="1.5"
                                 viewBox="0 0 24 24" height="1em" width="1em"
@@ -213,6 +213,28 @@
                             <li data-menu-item="modern-project-list" class="{{ request()->routeIs('lab.test.category.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
                                 <a class="h-full w-full flex items-center" href="{{ route('lab.test.category.create') }}">
                                     <span>Create Category</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="{{ request()->segment(1) === 'lab-test' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
+                        <div class="menu-collapse-item">
+                            <svg class="menu-item-icon" stroke="currentColor" fill="none" stroke-width="1.5"
+                                viewBox="0 0 24 24" height="1em" width="1em"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z"></path>
+                            </svg>
+                            <span class="menu-item-text">Lab Test</span>
+                        </div>
+                        <ul style="{{ request()->segment(1) === 'lab-test' ? 'display:block' : 'display:none' }}">
+                            {{-- <li data-menu-item="modern-project-list" class="{{ request()->routeIs('lab.test.category.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('lab.test.category.list') }}">
+                                    <span>List of Tests</span>
+                                </a>
+                            </li> --}}
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('lab.test.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('lab.test.create') }}">
+                                    <span>Create Test</span>
                                 </a>
                             </li>
                         </ul>

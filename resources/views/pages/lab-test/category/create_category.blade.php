@@ -23,7 +23,8 @@
                                 </div>
                                 <div class="error-message"></div>
                             </div>
-                            <div class="form-item"><label class="form-label"></label>
+                            <div class="form-item">
+                                <label class="form-label"></label>
                                 <div>
                                     <button class="btn btn-default" type="submit" id="submitCategoryBtn">Submit</button>
                                 </div>
