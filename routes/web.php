@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Hospital\HospitalController;
 use App\Http\Controllers\LabTest\LabTestCategoryController;
 use App\Http\Controllers\LabTest\LabTestController;
+use App\Http\Controllers\LabTest\LabTestPackageController;
 use App\Http\Controllers\OpdTiming\OpdTimingController;
 use App\Http\Controllers\Portfolio\PortfolioController;
 use App\Http\Controllers\Portfolio\RecentEvents\PortfolioRecentEventsController;
@@ -18,6 +19,15 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::group(['prefix' => 'dashboard'], function(){
         Route::get('', [DashboardController::class, 'index'])->name('dashboard.index');
+    });
+
+    Route::group(['prefix' => 'hospital'], function(){
+        Route::get('list-of-hospitals', [HospitalController::class, 'listOfHospitals'])->name('hospital.list');
+        Route::match(['get', 'post'], 'create-hospital', [HospitalController::class, 'createHospital'])->name('hospital.create');
+        Route::get('hospital-by-id/{id}', [HospitalController::class, 'hospitalById'])->name('hospital.by.id');
+        Route::post('edit-hospital', [HospitalController::class, 'editHospital'])->name('hospital.edit');
+        Route::get('delete-hospital/{id}', [HospitalController::class, 'deleteHospital'])->name('hospital.delete');
+        Route::post('update-hospital-status', [HospitalController::class, 'updateHospitalStatus'])->name('hospital.status.update');
     });
 
     Route::group(['prefix' => 'portfolio'], function(){
@@ -47,13 +57,12 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('delete-event', [PortfolioRecentEventsController::class, 'deleteEvent'])->name('recent.events.delete');
     });
 
-    Route::group(['prefix' => 'lab-test'], function(){
-        Route::match(['get', 'post'], 'create-test', [LabTestController::class, 'createLabTest'])->name('lab.test.create');
-        Route::get('list-of-test', [LabTestController::class, 'listOfTest'])->name('lab.test.get.list');
-        Route::get('lab-test-by-id/{id}', [LabTestController::class, 'getLabTestById'])->name('lab.test.get.by.id');
-        Route::post('edit-lab-test', [LabTestController::class, 'editLabTest'])->name('lab.test.edit');
-        Route::post('update-lab-test-status', [LabTestController::class, 'updateLabTestStatus'])->name('lab.test.update.status');
-        Route::get('delete-lab-test/{id}', [LabTestController::class, 'deleteLabTest'])->name('lab.test.delete');
+    Route::group(['prefix' => 'opd'], function(){
+        Route::get('list-of-schedules', [OpdTimingController::class, 'listOfSchedules'])->name('opd.get.list.of.schedules');
+        Route::match(['get', 'post'], 'set-schedule', [OpdTimingController::class, 'setOpdDateAndTime'])->name('opd.set.schedule');
+        Route::get('schedule-by-id/{id}', [OpdTimingController::class, 'getOpdScheduleById'])->name('opd.get.schedule.by.id');
+        Route::post('edit-schedule', [OpdTimingController::class, 'editSchedule'])->name('opd.edit.schedule');
+        Route::post('update-schedule-status', [OpdTimingController::class, 'updateScheduleStatus'])->name('opd.update.schedule.status');
     });
 
     Route::group(['prefix' => 'lab-test-category'], function(){
@@ -65,21 +74,17 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('delete-test-category/{id}', [LabTestCategoryController::class, 'deleteTestCategory'])->name('lab.test.category.delete');
     });
 
-    Route::group(['prefix' => 'opd'], function(){
-        Route::get('list-of-schedules', [OpdTimingController::class, 'listOfSchedules'])->name('opd.get.list.of.schedules');
-        Route::match(['get', 'post'], 'set-schedule', [OpdTimingController::class, 'setOpdDateAndTime'])->name('opd.set.schedule');
-        Route::get('schedule-by-id/{id}', [OpdTimingController::class, 'getOpdScheduleById'])->name('opd.get.schedule.by.id');
-        Route::post('edit-schedule', [OpdTimingController::class, 'editSchedule'])->name('opd.edit.schedule');
-        Route::post('update-schedule-status', [OpdTimingController::class, 'updateScheduleStatus'])->name('opd.update.schedule.status');
+    Route::group(['prefix' => 'lab-test'], function(){
+        Route::match(['get', 'post'], 'create-test', [LabTestController::class, 'createLabTest'])->name('lab.test.create');
+        Route::get('list-of-test', [LabTestController::class, 'listOfTest'])->name('lab.test.get.list');
+        Route::get('lab-test-by-id/{id}', [LabTestController::class, 'getLabTestById'])->name('lab.test.get.by.id');
+        Route::post('edit-lab-test', [LabTestController::class, 'editLabTest'])->name('lab.test.edit');
+        Route::post('update-lab-test-status', [LabTestController::class, 'updateLabTestStatus'])->name('lab.test.update.status');
+        Route::get('delete-lab-test/{id}', [LabTestController::class, 'deleteLabTest'])->name('lab.test.delete');
     });
 
-    Route::group(['prefix' => 'hospital'], function(){
-        Route::get('list-of-hospitals', [HospitalController::class, 'listOfHospitals'])->name('hospital.list');
-        Route::match(['get', 'post'], 'create-hospital', [HospitalController::class, 'createHospital'])->name('hospital.create');
-        Route::get('hospital-by-id/{id}', [HospitalController::class, 'hospitalById'])->name('hospital.by.id');
-        Route::post('edit-hospital', [HospitalController::class, 'editHospital'])->name('hospital.edit');
-        Route::get('delete-hospital/{id}', [HospitalController::class, 'deleteHospital'])->name('hospital.delete');
-        Route::post('update-hospital-status', [HospitalController::class, 'updateHospitalStatus'])->name('hospital.status.update');
+    Route::group(['prefix' => 'lab-test-package'], function(){
+        Route::match(['get', 'post'], 'create-test-package', [LabTestPackageController::class, 'createTestPackage'])->name('lab.test.package.create');
     });
 
     Route::get('logout', function(){
