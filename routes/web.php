@@ -85,6 +85,7 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::group(['prefix' => 'lab-test-package'], function(){
         Route::match(['get', 'post'], 'create-test-package', [LabTestPackageController::class, 'createTestPackage'])->name('lab.test.package.create');
+        Route::get('lab-test-by-category/{id}', [LabTestPackageController::class, 'getLabTestByCategory'])->name('lab.package.test.get.by.category');
     });
 
     Route::get('logout', function(){

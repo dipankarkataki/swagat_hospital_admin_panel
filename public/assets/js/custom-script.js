@@ -173,6 +173,7 @@ $(document).ready(function(){
         }
     });
 
+
     // $('#createPortfolioForm').on('submit', function(){
     //     $('#submitPortfolioBtn').attr('disabled', true).text('Please wait...');
     // });
@@ -240,6 +241,10 @@ $(document).ready(function(){
                 $(this).attr('disabled', false).text(button_text);
             }
         });
+    });
+
+    $('.select-lab-test').select2({
+        placeholder: "Choose"
     });
 
 });

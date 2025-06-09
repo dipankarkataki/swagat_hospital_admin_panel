@@ -22,11 +22,13 @@
                                     <select class="input" name="portfolio_id" id="selectPortfolio" required>
                                         <option value="" disabled selected> Choose </option>
 
-                                        @foreach ($portfolios as $doctor)
+                                        @forelse ($portfolios as $doctor)
                                             <option value="{{ $doctor->id }}">
                                                 {{ $doctor->full_name }} : [ {{ $doctor->email }} ]
                                             </option>
-                                        @endforeach
+                                        @empty
+                                            <option value="" disabled>Create portfolio first</option>
+                                        @endforelse
                                     </select>
                                 </div>
                             </div>
