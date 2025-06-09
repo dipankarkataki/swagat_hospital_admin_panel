@@ -65,4 +65,13 @@ class LabTestPackageController extends Controller
             return $this->error('Oops! Something went wrong. Please try later.', null, 500 );
         }
     }
+
+    public function getListOfPackages(){
+        try{
+            $all_lab_test_packages = LabTestPackage::with('labTestCategory')->latest()->get();
+            return view('pages.lab-test.package.list_of_packages')->with(['all_lab_test_packages' => $all_lab_test_packages]);
+        }catch(\Exception $e){
+            Log::error('Error at LabTestPackageController@getListOfPackages :'.$e->getMessage().'. At line no: '.$e->getLine());
+        }
+    }
 }

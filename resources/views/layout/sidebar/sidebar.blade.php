@@ -249,11 +249,11 @@
                             <span class="menu-item-text">Lab Test Package</span>
                         </div>
                         <ul style="{{ request()->segment(1) === 'lab-test-package' ? 'display:block' : 'display:none' }}">
-                            {{-- <li data-menu-item="modern-project-list" class="{{ request()->routeIs('lab.test.get.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
-                                <a class="h-full w-full flex items-center" href="{{ route('lab.test.get.list') }}">
-                                    <span>List of Tests</span>
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('lab.package.test.get.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('lab.package.test.get.list') }}">
+                                    <span>List of Packages</span>
                                 </a>
-                            </li> --}}
+                            </li>
                             <li data-menu-item="modern-project-list" class="{{ request()->routeIs('lab.test.package.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
                                 <a class="h-full w-full flex items-center" href="{{ route('lab.test.package.create') }}">
                                     <span>Create Package</span>
