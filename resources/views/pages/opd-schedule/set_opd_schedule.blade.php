@@ -11,10 +11,8 @@
                     <form id="setOpdTimingForm" class="skip-global-submit">
 
                         <div class="form-container">
-                            <div class="form-item">
-                                <div>
-                                    <input class="input" type="hidden" name="linked_portfolio_id" value="" id="linked_portfolio_id">
-                                </div>
+                            <div>
+                                <input class="input" type="hidden" name="linked_portfolio_id" value="" id="linked_portfolio_id">
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Select Doctor *</label>
@@ -189,7 +187,7 @@
                         console.log('OpD Response', response)
                         if(response.success === true){
                             toastr.success(response.message);
-                            $('#setOpdTimingForm')[0].reset();
+                            location.reload();
                         }else{
                             toastr.error(response.message);
                         }
