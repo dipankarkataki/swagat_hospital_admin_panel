@@ -129,4 +129,17 @@ class LabTestPackageController extends Controller
             }
         }
     }
+
+    public function updateLabTestPackageStatus(Request $request){
+        try{
+            $package_id = decrypt($request->id);
+            LabTestPackage::where('id', $package_id)->update([
+                'status' => $request->status
+            ]);
+            return $this->success('Great! Package status updated successfully', null, 200);
+        }catch(\Exception $e){
+            Log::error('Error at LabTestPackageController@updateLabTestPackageStatus :'.$e->getMessage().'. At line no: '.$e->getLine());
+            return $this->error('Oops! Something went wrong', null, 500);
+        }
+    }
 }
