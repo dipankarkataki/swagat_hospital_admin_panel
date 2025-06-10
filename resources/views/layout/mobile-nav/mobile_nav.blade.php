@@ -336,6 +336,28 @@
                                             </li>
                                         </ul>
                                     </li>
+                                    <li class="{{ request()->segment(1) === 'lab-test-package' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
+                                        <div class="menu-collapse-item">
+                                            <svg class="menu-item-icon" stroke="currentColor" fill="none" stroke-width="1.5"
+                                                viewBox="0 0 24 24" height="1em" width="1em"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"></path>
+                                            </svg>
+                                            <span class="menu-item-text">Lab Test Package</span>
+                                        </div>
+                                        <ul style="{{ request()->segment(1) === 'lab-test-package' ? 'display:block' : 'display:none' }}">
+                                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('lab.package.test.get.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                                <a class="h-full w-full flex items-center" href="{{ route('lab.package.test.get.list') }}">
+                                                    <span>List of Packages</span>
+                                                </a>
+                                            </li>
+                                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('lab.test.package.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                                <a class="h-full w-full flex items-center" href="{{ route('lab.test.package.create') }}">
+                                                    <span>Create Package</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </div>
                         </nav>

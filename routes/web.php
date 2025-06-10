@@ -87,6 +87,9 @@ Route::group(['middleware' => 'auth'], function(){
         Route::match(['get', 'post'], 'create-test-package', [LabTestPackageController::class, 'createTestPackage'])->name('lab.test.package.create');
         Route::get('lab-test-by-category/{id}', [LabTestPackageController::class, 'getLabTestByCategory'])->name('lab.package.test.get.by.category');
         Route::get('list-of-packages', [LabTestPackageController::class, 'getListOfPackages'])->name('lab.package.test.get.list');
+        Route::get('delete-lab-test-package/{id}', [LabTestPackageController::class, 'deleteLabTestPackage'])->name('lab.package.test.delete');
+        Route::get('lab-test-package-by-id/{id}', [LabTestPackageController::class, 'labTestPackageById'])->name('lab.package.test.get.by.id');
+        Route::post('edit-test-package', [LabTestPackageController::class, 'editLabTestPackage'])->name('lab.package.test.edit');
     });
 
     Route::get('logout', function(){

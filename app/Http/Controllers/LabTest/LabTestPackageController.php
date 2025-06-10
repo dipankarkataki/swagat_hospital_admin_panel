@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\LabTest;
 
+use App\Models\LabTest;
+use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use App\Models\LabTestPackage;
 use App\Models\LabTestCategory;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\LabTest;
-use App\Models\LabTestPackage;
-use App\Traits\ApiResponse;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class LabTestPackageController extends Controller
@@ -72,6 +73,60 @@ class LabTestPackageController extends Controller
             return view('pages.lab-test.package.list_of_packages')->with(['all_lab_test_packages' => $all_lab_test_packages]);
         }catch(\Exception $e){
             Log::error('Error at LabTestPackageController@getListOfPackages :'.$e->getMessage().'. At line no: '.$e->getLine());
+        }
+    }
+
+    public function deleteLabTestPackage($id){
+        try{
+            $package_id = decrypt($id);
+            LabTestPackage::where('id', $package_id)->delete();
+            Session::flash('success', 'Package deleted successfully.');
+            return redirect()->route('lab.package.test.get.list');
+        }catch(\Exception $e){
+            Log::error('Error at LabTestPackageController@deleteLabTestPackage :'.$e->getMessage().'. At line no: '.$e->getLine());
+            Session::flash('exception', 'Something went wrong. Please try later.');
+            return redirect()->route('lab.package.test.get.list');
+        }
+    }
+
+    public function labTestPackageById($id){
+        try{
+            $get_package_id = decrypt($id);
+            $package_details = LabTestPackage::with('labTestCategory')->where('id', $get_package_id)->first();
+            $all_lab_test = LabTest::where('lab_test_category_id',  $package_details->lab_test_category_id)->where('status', 1)->latest()->get();
+            return view('pages.lab-test.package.edit_package')->with(['all_lab_test' => $all_lab_test, 'package_details' => $package_details]);
+        }catch(\Exception $e){
+            Log::error('Error at LabTestPackageController@labTestPackageById :'.$e->getMessage().'. At line no: '.$e->getLine());
+        }
+    }
+
+    public function editLabTestPackage(Request $request){
+        $validator = Validator::make($request->all(), [
+            'package_id' => 'required',
+            'package_name' => 'required',
+            'lab_test_id' => 'required',
+            'package_desc' => 'required',
+            'package_amount' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return $this->error('Oops! Validation Error: '.$validator->errors()->first(), null, 400);
+        }else{
+            try{
+                $package_id = decrypt($request->package_id);
+                LabTestPackage::where('id', $package_id)->update([
+                    'name' => $request->package_name,
+                    'description' => $request->package_desc,
+                    'lab_test_id' => json_encode($request->lab_test_id),
+                    'full_price' => $request->package_amount,
+                    'discount' => $request->package_discount,
+                    'discounted_price' => $request->package_discounted_amount
+                ]);
+                return $this->success('Great! Lab test package created successfully', null, 201);
+            }catch(\Exception $e){
+                Log::error('Error at LabTestPackageController@createTestPackage -- Method POST ---'.$e->getMessage().'. At line no: '.$e->getLine());
+                return $this->error('Oops! Something went wrong. Please try later', null, 500);
+            }
         }
     }
 }
