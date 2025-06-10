@@ -85,8 +85,29 @@
                             </span>
                             <div>
                                 <div class="flex gap-1.5 items-end mb-2">
-                                    <h3 class="font-bold leading-none">12</h3>
+                                    <h3 class="font-bold leading-none">{{$total_lab_tests}}</h3>
                                     <p class="font-semibold">Lab Tests</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-layout-frame">
+                    <div class="card-body">
+                        <div class="flex items-center gap-4">
+                            <span
+                                class="avatar avatar-rounded bg-pink-100 text-pink-600 dark:bg-pink-500/20 dark:text-pink-100 avatar-lg text-3xl"
+                                data-avatar-size="55">
+                                <span class="avatar-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" height="1em" width="1em">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"></path>
+                                    </svg>
+                                </span>
+                            </span>
+                            <div>
+                                <div class="flex gap-1.5 items-end mb-2">
+                                    <h3 class="font-bold leading-none">{{$total_lab_tests_package}}</h3>
+                                    <p class="font-semibold">Lab Tests Packages</p>
                                 </div>
                             </div>
                         </div>
