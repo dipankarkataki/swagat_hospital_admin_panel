@@ -23,6 +23,6 @@ class PortfolioLinkedHospital extends Model
     }
 
     public function opdTimings(){
-        return $this->hasMany(OpdTiming::class, 'portfolio_id', 'id');
+        return $this->hasMany(OpdTiming::class, 'portfolio_id', 'portfolio_id');
     }
 }

@@ -25,16 +25,18 @@
                                         <input class="upload-input draggable" id="hospital_image" name="hospital_image" type="file">
                                     </div>
                                     <div class="text-center">
-                                        <svg id="uploadImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                                        </svg>
+
                                         @if ($hospital->image != null)
                                             <div class="flex flex-row justify-center items-center">
-                                                <img id="imageFromDB" src="{{ asset('assets/storage/'.$hospital->image) }}" alt="Image Preview" style="max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                                <img id="imageFromDB" src="{{ asset('storage/'.$hospital->image) }}" alt="Image Preview" style="max-width: 350px; max-height:200px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
                                             </div>
+                                        @else
+                                            <svg id="uploadImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                            </svg>
                                         @endif
                                         <div class="flex flex-row justify-center items-center">
-                                            <img id="imagePreview" src="{{ asset('assets/storage/'.$hospital->image) }}" alt="Image Preview" style="display:none; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                            <img id="imagePreview" src="#" alt="Image Preview" style="display:none; max-width: 350px; max-height:200px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
                                         </div>
                                         <p class="font-semibold">
                                             <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
@@ -94,10 +96,52 @@
     <script>
         $(document).ready(function() {
 
+
+            // Preview Event Picture Before Upload
+            $('#hospital_image').on('change', function(e) {
+
+                const file = this.files[0];
+                const file_type = file.type.split('/')[0];
+                const MAX_IMAGE_SIZE = 1024 * 1024;
+
+                if(file && file_type == 'image'){
+
+                    if (file.size > MAX_IMAGE_SIZE) {
+                        toastr.error('Image size should not exceed 1MB.');
+                        $('#submitHospitalBtn').prop('disabled', false).text('Submit');
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        $('#uploadImgSvg').hide();
+                        $('#imagePreview').attr('src', event.target.result).show();
+                    };
+                    reader.readAsDataURL(file);
+                }else{
+                    toastr.error('Oops! Not a valid image format');
+                }
+            });
+
             $('#editHospitalForm').on('submit', function(e){
                 e.preventDefault();
 
+                const MAX_IMAGE_SIZE = 1024 * 1024;
+                const hospital_image = $('#hospital_image')[0].files[0];
+
+                if (hospital_image && hospital_image.size > MAX_IMAGE_SIZE) {
+                    toastr.error('Image size should not exceed 1MB.');
+                    $('#submitHospitalBtn').prop('disabled', false).text('Submit');
+                    return;
+                }
+
                 const formData = new FormData(this);
+
+                if(hospital_image){
+                    formData.append('hospital_image', hospital_image);
+                }
+
+
                 $.ajax({
                     headers:{
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
