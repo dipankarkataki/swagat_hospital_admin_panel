@@ -24,7 +24,9 @@ class HospitalController extends Controller
             return view('pages.hospital.create');
         }else{
             $validator = Validator::make($request->all(), [
+                'hospital_image' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
                 'hospital_name' => 'required|string|max:255',
+                'hospital_phone' => 'required',
                 'hospital_address' => 'required|string|max:255',
             ]);
 
@@ -33,8 +35,14 @@ class HospitalController extends Controller
                 return $this->error('Validation Error', $validator->errors(), 422);
             }else{
                 try{
+                    $image_path = '';
+                    if($request->hasFile('hospital_image')){
+                        $image_path = $request->file('hospital_image')->store('hospital/images');
+                    }
                     Hospital::create([
+                        'image' =>  $image_path,
                         'name' => $request->hospital_name,
+                        'phone' => $request->hospital_phone,
                         'address' => $request->hospital_address,
                     ]);
                     return $this->success('Hospital created successfully', null, 201);
@@ -60,8 +68,10 @@ class HospitalController extends Controller
 
     public function editHospital(Request $request){
         $validator = Validator::make($request->all(), [
+            'hospital_image' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
             'hospital_id' => 'required',
             'hospital_name' => 'required|string|max:255',
+            'hospital_phone' => 'required',
             'hospital_address' => 'required|string|max:255',
         ]);
 
@@ -70,8 +80,15 @@ class HospitalController extends Controller
             return $this->error('Validation Error', $validator->errors(), 422);
         }else{
             try{
+                $image_path = '';
+                if($request->hasFile('hospital_image')){
+                    $image_path = $request->file('hospital_image')->store('hospital/images');
+                }
+
                 Hospital::where('id', $request->hospital_id)->update([
+                    'image' =>  $image_path,
                     'name' => $request->hospital_name,
+                    'phone' => $request->hospital_phone,
                     'address' => $request->hospital_address,
                 ]);
                 return $this->success('Hospital details edited successfully', null, 204);

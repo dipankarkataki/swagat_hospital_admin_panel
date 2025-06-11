@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\DepartmentController;
+use App\Http\Controllers\Frontend\HospitalController;
 use App\Http\Controllers\Frontend\LabTestController;
 use App\Http\Controllers\Frontend\PortfolioController;
 
@@ -13,8 +14,13 @@ Route::get('/user', function (Request $request) {
 
 /* Public Routes */
 
+Route::group(['prefix' => 'hospital'], function(){
+    Route::get('list-of-hospitals', [HospitalController::class, 'getListOfHospitals']);
+});
+
 Route::group(['prefix' => 'portfolio'], function(){
-    Route::get('list', [PortfolioController::class, 'listOfDoctors']);
+    Route::get('get-by-linked-hospital/{id}', [PortfolioController::class, 'getByLinkedHospital']);
+    Route::get('get-by-id/{id}', [PortfolioController::class, 'getPortfolioById']);
 });
 Route::group(['prefix' => 'department'], function(){
     Route::get('list', [DepartmentController::class, 'listOfDepartments']);

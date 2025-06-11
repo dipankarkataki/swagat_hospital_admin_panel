@@ -19,9 +19,45 @@
                         <div class="form-container">
                             <input type="hidden" class="input" name="hospital_id" id="hospital_id" value="{{ $hospital->id }}" readonly>
                             <div class="form-item">
+                                <label class="form-label mb-2">Hospital Picture *</label>
+                                <div class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]" @error('hospital_image') style="border: 2px dashed rgb(239 68 68)" @enderror>
+                                    <div>
+                                        <input class="upload-input draggable" id="hospital_image" name="hospital_image" type="file">
+                                    </div>
+                                    <div class="text-center">
+                                        <svg id="uploadImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                        </svg>
+                                        @if ($hospital->image != null)
+                                            <div class="flex flex-row justify-center items-center">
+                                                <img id="imageFromDB" src="{{ asset('assets/storage/'.$hospital->image) }}" alt="Image Preview" style="max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                            </div>
+                                        @endif
+                                        <div class="flex flex-row justify-center items-center">
+                                            <img id="imagePreview" src="{{ asset('assets/storage/'.$hospital->image) }}" alt="Image Preview" style="display:none; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                        </div>
+                                        <p class="font-semibold">
+                                            <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
+                                            <span class="text-blue-500">browse</span>
+                                        </p>
+                                        <p class="mt-1 opacity-60 dark:text-white">Support: jpeg, png</p>
+                                    </div>
+                                </div>
+                                @error('hospital_image')
+                                    <div class="text-red-500 mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-item">
                                 <label class="form-label mb-2">Hospital Name *</label>
                                 <div>
                                     <input type="text" class="input" name="hospital_name" id="hospital_name" placeholder="e.g New ward hospital" value="{{ $hospital->name }}">
+                                </div>
+                                <div class="error-message"></div>
+                            </div>
+                            <div class="form-item">
+                                <label class="form-label mb-2">Hospital Phone *</label>
+                                <div>
+                                    <input type="text" class="input" name="hospital_phone" id="hospital_phone" placeholder="e.g 7896023141" value="{{ $hospital->phone }}">
                                 </div>
                                 <div class="error-message"></div>
                             </div>

@@ -23,4 +23,13 @@ class Portfolio extends Model
     public function departments(){
         return $this->belongsTo(Department::class, 'department_id', 'id');
     }
+
+    //Pivot Table Connecting Portfolio to Hospital Via Portfolio Linked Table
+    public function hospitals(){
+        return $this->belongsToMany(Hospital::class, 'portfolio_linked_hospitals');
+    }
+
+    public function opdTimings(){
+        return $this->hasMany(OpdTiming::class, 'portfolio_id', 'id');
+    }
 }

@@ -21,4 +21,8 @@ class PortfolioLinkedHospital extends Model
     public function portfolio(){
         return $this->belongsTo(Portfolio::class, 'portfolio_id', 'id');
     }
+
+    public function opdTimings(){
+        return $this->hasMany(OpdTiming::class, 'portfolio_id', 'id');
+    }
 }
