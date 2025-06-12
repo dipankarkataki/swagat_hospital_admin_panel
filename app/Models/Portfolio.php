@@ -32,4 +32,8 @@ class Portfolio extends Model
     public function opdTimings(){
         return $this->hasMany(OpdTiming::class, 'portfolio_id', 'id');
     }
+
+    public function recentEvents(){
+        return $this->hasMany(PortfolioRecentEvents::class, 'portfolio_id', 'id');
+    }
 }

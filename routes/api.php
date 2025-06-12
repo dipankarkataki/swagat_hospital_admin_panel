@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\DepartmentController;
 use App\Http\Controllers\Frontend\HospitalController;
 use App\Http\Controllers\Frontend\LabTestController;
+use App\Http\Controllers\Frontend\PhoneNumberController;
 use App\Http\Controllers\Frontend\PortfolioController;
 
 Route::get('/user', function (Request $request) {
@@ -30,4 +31,11 @@ Route::group(['prefix' => 'lab-test'], function(){
     Route::get('categories', [LabTestController::class, 'getLabTestCategories']);
     Route::get('list-of-tests-by-category/{id}', [LabTestController::class, 'listOfTestByCategory']);
     Route::get('lab-test-details-by-id/{id}', [LabTestController::class, 'labTestDetailsById']);
+});
+
+Route::group(['prefix' => 'guest'], function(){
+    Route::group(['prefix' => 'phone-number'], function(){
+        Route::post('send-otp', [PhoneNumberController::class, 'sendOTP']);
+        Route::post('verify-otp', [PhoneNumberController::class, 'verifyOTP']);
+    });
 });
