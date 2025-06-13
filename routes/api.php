@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\AppointmentBookingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\DepartmentController;
@@ -35,7 +36,12 @@ Route::group(['prefix' => 'lab-test'], function(){
 
 Route::group(['prefix' => 'guest'], function(){
     Route::group(['prefix' => 'phone-number'], function(){
-        Route::post('send-otp', [PhoneNumberController::class, 'sendOTP']);
+        Route::post('send-otp', [PhoneNumberController::class, 'sendOTP'])->middleware('throttle:1,1');
         Route::post('verify-otp', [PhoneNumberController::class, 'verifyOTP']);
     });
+});
+
+Route::group(['prefix' => 'booking'], function(){
+    Route::post('save-booking-details', [AppointmentBookingController::class, 'saveBookingDetails']);
+    Route::post('generate-booking-pdf', [AppointmentBookingController::class, 'generateBookingPdf']);
 });

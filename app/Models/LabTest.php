@@ -19,6 +19,6 @@ class LabTest extends Model
     }
 
     public function labTestPackage(){
-        return $this->belongsTo(LabTestCategory::class, 'lab_test_category_id', 'id');
+        return $this->belongsTo(LabTestPackage::class, 'lab_test_category_id', 'lab_test_category_id');
     }
 }

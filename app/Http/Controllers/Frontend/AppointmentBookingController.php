@@ -1,0 +1,131 @@
+<?php
+
+namespace App\Http\Controllers\Frontend;
+
+use App\Traits\ApiResponse;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\AppointmentBooking;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Models\Department;
+use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
+class AppointmentBookingController extends Controller
+{
+    use ApiResponse;
+
+    public function saveBookingDetails(Request $request){
+        $validator = Validator::make($request->all(), [
+            'portfolio_id' => 'required',
+            'hospital_id' => 'required',
+            'full_name' => 'required',
+            'email' => 'required|email|unique:appointment_bookings,email',
+            'phone' => 'required',
+            'zipcode' => 'required|digits:6',
+            'dob' => 'required',
+            'gender' => 'required',
+            'appointment_date' => 'required',
+            'appointment_time' => 'required',
+            'appointment_mode' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return $this->error('Oops! Validation Error: '.$validator->errors()->first(),
+            null, 400);
+        }else{
+            try{
+                DB::beginTransaction();
+
+                $latestBooking = AppointmentBooking::withTrashed()->latest('id')->first();
+                $nextNumber = $latestBooking ? $latestBooking->id + 1 : 1;
+
+                $formattedNumber = str_pad($nextNumber, 5, '0', STR_PAD_LEFT); // 00001, 00002, etc.
+                $bookingId = 'BK-SWGH-OFL-'.now()->format('ymd').'-'.$formattedNumber;
+
+                    AppointmentBooking::create([
+                        'booking_id' => $bookingId,
+                        'portfolio_id' => $request->portfolio_id,
+                        'hospital_id' => $request->hospital_id,
+                        'full_name' => $request->full_name,
+                        'email' => $request->email,
+                        'phone' => $request->phone,
+                        'zipcode' => $request->zipcode,
+                        'dob' => $request->dob,
+                        'gender' => $request->gender,
+                        'appointment_date' => $request->appointment_date,
+                        'appointment_time' => $request->appointment_time,
+                        'appointment_mode' => $request->appointment_mode
+                    ]);
+                    $get_booking_details = AppointmentBooking::with('hospital', 'portfolio')->where('portfolio_id', $request->portfolio_id)->where('hospital_id', $request->hospital_id)->first();
+                    $pdf_data = [];
+                    if($get_booking_details != null){
+
+                        $get_department = Department::where('id', $get_booking_details->portfolio->department_id)->first();
+                        $pdf_data = [
+                            'hospital_name' => $get_booking_details->hospital->name,
+                            'hospital_address' => $get_booking_details->hospital->address,
+                            'hospital_phone' => $get_booking_details->hospital->phone,
+                            'doctor_name' => $get_booking_details->portfolio->full_name,
+                            'department' => $get_department->name,
+                            'booking_id' => $get_booking_details->booking_id,
+                            'opd_date' => $get_booking_details->appointment_date,
+                            'opd_time' => $get_booking_details->appointment_time,
+                            'opd_mode' => $get_department->appointment_mode,
+                            'patient_full_name' => $get_booking_details->full_name,
+                            'patient_email' => $get_booking_details->email,
+                            'patient_phone' => $get_booking_details->phone,
+                            'dob' => $get_booking_details->dob,
+                            'gender' => $get_booking_details->gender,
+                            'zipcode' => $get_booking_details->zipcode,
+                            'created_at' => $get_booking_details->created_at,
+                        ];
+                    }
+
+                    $pdf = Pdf::loadView('pages.appointment-booking.generate_pdf', $pdf_data);
+
+                    $fileName = 'booking_' . time() . '.pdf';
+                    $path = 'booking/offline/pdf/' . $fileName;
+                    Storage::disk('public')->put($path, $pdf->output());
+                    $publicUrl = asset('storage/' . $path);
+
+                    AppointmentBooking::with('hospital', 'portfolio')->where('id', $get_booking_details->id)->update([
+                        'booking_pdf_link' => $publicUrl
+                    ]);
+
+                DB::commit();
+
+                return $this->success('Great! Appointment booked successfully', $publicUrl, 201);
+            }catch(\Exception $e){
+                DB::rollBack();
+                Log::error('Error at AppointmentBookingController@saveBookingDetails :----:'.$e->getMessage().'. At line no :---:'.$e->getLine());
+                return $this->error('Oops! Something went wrong. Please try later', null, 500);
+            }
+        }
+    }
+
+    public function generateBookingPdf(Request $request){
+        $validator = Validator::make($request->all(), [
+            'portfolio_id' => 'required'
+        ]);
+        if($validator->fails()){
+            return $this->error('Oops! Validation Error: '.$validator->errors()->first(), null, 400);
+        }else{
+            try{
+                $get_booking_details = AppointmentBooking::with('hospital', 'portfolio')->where('portfolio_id', $request->portfolio_id)->first();
+                return $this->success('Great! PDF generated successfully', $get_booking_details, 200);
+                $data = [
+                    'doctor_name' => $get_booking_details->portfolio->full_name,
+
+                ];
+
+            }catch(\Exception $e){
+                Log::error('Error at AppointmentBookingController@generateBookingPdf :----: '.$e->getMessage().'. At line no :----: '.$e->getLine());
+                return $this->error('Oops! Something went wrong. Please try later', null, 500);
+            }
+        }
+    }
+}

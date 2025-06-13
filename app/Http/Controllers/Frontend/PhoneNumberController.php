@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponse;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -26,17 +27,9 @@ class PhoneNumberController extends Controller
             try{
                 $phone = $request->guest_phone_no;
                 $key = 'otp_'.$phone;
-                $cooldownKey = 'otp_last_sent_'.$phone;
-
-                $lastSent = Cache::get($cooldownKey);
-
-                if ($lastSent && now()->diffInSeconds($lastSent) < 60) {
-                    return $this->error('Please wait at least 60 seconds before requesting a new OTP.', null, 400);
-                }
 
                 $otp = random_int(100000, 999999);
                 Cache::put($key, $otp, now()->addMinutes(10));
-                Cache::put($cooldownKey, now(), now()->addMinutes(10));
 
                 // $api_key = '4682186920A022';
                 // $contacts = $request->guest_phone_no;

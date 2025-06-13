@@ -93,6 +93,10 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('update-lab-test-package-status', [LabTestPackageController::class, 'updateLabTestPackageStatus'])->name('lab.package.test.update.status');
     });
 
+    Route::get('view-pdf', function(){
+        return view('pages.appointment-booking.generate_pdf');
+    });
+
     Route::get('logout', function(){
         Auth::logout();
         Session::flush();
