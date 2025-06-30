@@ -14,7 +14,7 @@
         }
         .booking-details-pdf{
             /* background-color: aliceblue; */
-            width: 900px;
+            width: 800px;
             position: absolute;
             left: 50%;
             transform: translate(-50%);
@@ -47,16 +47,13 @@
             align-items: center;
             padding:10px 30px;
         }
-
         .created-at-div p{
            font-size: 14px;
            font-weight: 500;
         }
-
         .created-at-div .note-text{
             color: crimson;
         }
-
         .booking-details-pdf .content{
             padding: 10px 30px;
         }
