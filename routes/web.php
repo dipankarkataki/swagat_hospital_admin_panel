@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Academic\AcademicAnnouncementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -91,6 +92,11 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('lab-test-package-by-id/{id}', [LabTestPackageController::class, 'labTestPackageById'])->name('lab.package.test.get.by.id');
         Route::post('edit-lab-test-package', [LabTestPackageController::class, 'editLabTestPackage'])->name('lab.package.test.edit');
         Route::post('update-lab-test-package-status', [LabTestPackageController::class, 'updateLabTestPackageStatus'])->name('lab.package.test.update.status');
+    });
+
+    Route::group(['prefix' => 'academic-announcement'], function(){
+        Route::get('list-of-announcements', [AcademicAnnouncementController::class, 'listOfAnnouncements'])->name('academic.announcements.get.list');
+        Route::match(['get', 'post'],'create-announcements', [AcademicAnnouncementController::class, 'createAnnouncements'])->name('academic.announcements.create');
     });
 
     Route::get('view-pdf', function(){
