@@ -7,6 +7,7 @@ use App\Models\AcademicAnnouncement;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class AcademicAnnouncementController extends Controller
@@ -84,6 +85,19 @@ class AcademicAnnouncementController extends Controller
                 Log::error('Error at AcademicAnnouncementController@editAnnouncement ::: --- ::: '.$e->getMessage().'. At Line no ::: --- ::: '.$e->getLine());
                 return $this->error('Oops! Something went wrong', null, 500);
             }
+        }
+    }
+
+    public function deleteAnnouncement($id){
+        try{
+            $announcement_id = decrypt($id);
+            AcademicAnnouncement::where('id', $announcement_id)->delete();
+            Session::flash('success', 'Announcement deleted successfully.');
+            return redirect()->route('academic.announcements.get.list');
+        }catch(\Exception $e){
+            Log::error('Error at LabTestController@deleteLabTest :'.$e->getMessage().'. At line no: '.$e->getLine());
+            Session::flash('exception', 'Something went wrong. Please try later.');
+            return redirect()->route('academic.announcements.get.list');
         }
     }
 }
