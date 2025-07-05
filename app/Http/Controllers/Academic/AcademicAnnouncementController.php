@@ -60,4 +60,30 @@ class AcademicAnnouncementController extends Controller
            Log::error('Error at AcademicAnnouncementController@getAnnouncementById ::: --- ::: '.$e->getMessage().'. At Line no ::: --- ::: '.$e->getLine());
         }
     }
+
+    public function editAnnouncement(Request $request){
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'type' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return $this->error('Oops! Validation Error :: '.$validator->errors()->first(), null, 400);
+        }else{
+            try{
+                $announcement_id = decrypt($request->announcement_id);
+                AcademicAnnouncement::where('id', $announcement_id)->update([
+                    'name' => $request->title,
+                    'type' => $request->type,
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
+                    'description' => $request->description
+                ]);
+                return $this->success('Great! Announcement edited successfully', null, 200);
+            }catch(\Exception $e){
+                Log::error('Error at AcademicAnnouncementController@editAnnouncement ::: --- ::: '.$e->getMessage().'. At Line no ::: --- ::: '.$e->getLine());
+                return $this->error('Oops! Something went wrong', null, 500);
+            }
+        }
+    }
 }

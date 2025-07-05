@@ -1,16 +1,28 @@
 @extends('layout.main')
 @section('title', "Edit Academic Announcement")
 @section('content')
-    {{-- @dd($announcement_details) --}}
     <div class="page-container relative h-full flex flex-auto flex-col px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div class="container mx-auto">
-            <div class=" mb-4">
-                <h3>Edit Academic Announcement</h3>
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-4">
+                    <a href="{{route('academic.announcements.get.list')}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"></path>
+                        </svg>
+                    </a>
+                    <h3>Edit Academic Announcement</h3>
+                </div>
             </div>
             <div class="card card-border">
                 <div class="card-body">
                     <form id="editAnnouncementForm">
+
                         <div class="form-container">
+                            <div class="form-item">
+                                <div>
+                                    <input type="hidden" class="input form-control" name="announcement_id" value="{{encrypt($announcement_details->id)}}">
+                                </div>
+                            </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Announcement Title *</label>
                                 <div>
@@ -80,15 +92,15 @@
                     headers:{
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('academic.announcements.create') }}",
+                    url: "{{ route('academic.announcement.edit') }}",
                     type: "POST",
                     data: formData,
                     contentType: false,
                     processData: false,
                     success:function(response){
                         if(response.success === true){
-                           toastr.success(response.message);
-                           $('#editAnnouncementForm')[0].reset();
+                            toastr.success(response.message);
+                            location.reload();
                         }else{
                             toastr.error(response.message);
                             const errors = response.data;
