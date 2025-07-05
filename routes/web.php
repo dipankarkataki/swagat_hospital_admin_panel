@@ -97,6 +97,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::group(['prefix' => 'academic-announcement'], function(){
         Route::get('list-of-announcements', [AcademicAnnouncementController::class, 'listOfAnnouncements'])->name('academic.announcements.get.list');
         Route::match(['get', 'post'],'create-announcements', [AcademicAnnouncementController::class, 'createAnnouncements'])->name('academic.announcements.create');
+        Route::get('get-announcement-by-id/{id}', [AcademicAnnouncementController::class, 'getAnnouncementById'])->name('academic.announcement.get.by.id');
     });
 
     Route::get('view-pdf', function(){

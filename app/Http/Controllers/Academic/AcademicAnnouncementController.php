@@ -50,4 +50,14 @@ class AcademicAnnouncementController extends Controller
             }
         }
     }
+
+    public function getAnnouncementById($id){
+        try{
+            $announcement_id = decrypt($id);
+            $get_announcement_details = AcademicAnnouncement::where('id', $announcement_id)->first();
+            return view('pages.academic.edit_announcement')->with(['announcement_details' => $get_announcement_details]);
+        }catch(\Exception $e){
+           Log::error('Error at AcademicAnnouncementController@getAnnouncementById ::: --- ::: '.$e->getMessage().'. At Line no ::: --- ::: '.$e->getLine());
+        }
+    }
 }

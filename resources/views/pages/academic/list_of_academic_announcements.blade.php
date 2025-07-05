@@ -50,10 +50,27 @@
                                                     <span class="font-semibold">{{ $announcement->name }}</span>
                                                 </div>
                                             </td>
-                                            <td class="capitalize">{{ $announcement->type }}</td>
-                                            <td>{{ $announcement->start_date }}</td>
-                                            <td>{{ $announcement->end_date }}</td>
-                                            <td>{{ \Str::limit($announcement->description,100) }}</td>
+                                            <td>
+                                                @if ($announcement->type == 'upcoming')
+                                                    <div class="flex justify-center items-center">
+                                                        <span class="badge-dot bg-cyan-500"></span>
+                                                        <span class="ml-2 rtl:mr-2 capitalize">{{ $announcement->type }}</span>
+                                                    </div>
+                                                @elseif($announcement->type == 'ongoing')
+                                                    <div class="flex justify-center items-center">
+                                                        <span class="badge-dot bg-emerald-500"></span>
+                                                        <span class="ml-2 rtl:mr-2 capitalize">{{ $announcement->type }}</span>
+                                                    </div>
+                                                @else
+                                                    <div class="flex justify-center items-center">
+                                                        <span class="badge-dot bg-red-500"></span>
+                                                        <span class="ml-2 rtl:mr-2 capitalize">{{ $announcement->type }}</span>
+                                                    </div>
+                                                @endif
+                                            </td>
+                                            <td>{{ $announcement->start_date ?? '-----'}}</td>
+                                            <td>{{ $announcement->end_date ?? '-----'}}</td>
+                                            <td>{{ \Str::limit($announcement->description,100) ?? '-----' }}</td>
                                             <td>
                                                 @if ($announcement->status == 1)
                                                     <div class="flex justify-center items-center">
@@ -69,7 +86,7 @@
                                             </td>
                                             <td>
                                                 <div class="flex justify-end text-lg gap-2">
-                                                    <a href="{{ route('hospital.by.id', ['id' => encrypt($announcement->id)]) }}">
+                                                    <a href="{{ route('academic.announcement.get.by.id', ['id' => encrypt($announcement->id)]) }}">
                                                         <span class="cursor-pointer p-2 hover:text-indigo-600 editButton">
                                                             <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
