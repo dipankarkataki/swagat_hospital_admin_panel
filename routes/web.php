@@ -11,6 +11,7 @@ use App\Http\Controllers\LabTest\LabTestCategoryController;
 use App\Http\Controllers\LabTest\LabTestController;
 use App\Http\Controllers\LabTest\LabTestPackageController;
 use App\Http\Controllers\OpdTiming\OpdTimingController;
+use App\Http\Controllers\PopupManager\PopupController;
 use App\Http\Controllers\Portfolio\PortfolioController;
 use App\Http\Controllers\Portfolio\RecentEvents\PortfolioRecentEventsController;
 
@@ -101,6 +102,11 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('edit-announcement', [AcademicAnnouncementController::class, 'editAnnouncement'])->name('academic.announcement.edit');
         Route::get('delete-announcement/{id}', [AcademicAnnouncementController::class, 'deleteAnnouncement'])->name('academic.announcement.delete');
         Route::post('update-announcement-status', [AcademicAnnouncementController::class, 'updateAnnouncementStatus'])->name('academic.announcement.update.status');
+    });
+
+    Route::group(['prefix' => 'popup-manager'], function(){
+        Route::get('list-of-popup', [PopupController::class, 'listofCreativePopup'])->name('popup.manager.list');
+        Route::match(['get', 'post'],'create-popup', [PopupController::class, 'createCreativePopup'])->name('popup.manager.create');
     });
 
     Route::get('view-pdf', function(){

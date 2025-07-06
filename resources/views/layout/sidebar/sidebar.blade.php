@@ -261,7 +261,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="{{ request()->segment(1) === 'recent-events' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
+                    <li class="{{ request()->segment(1) === 'academic-announcement' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
                         <div class="menu-collapse-item">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" height="1em" width="1em" class="menu-item-icon">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"></path>
@@ -281,21 +281,21 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="{{ request()->segment(1) === 'recent-events' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
+                    <li class="{{ request()->segment(1) === 'popup-manager' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
                         <div class="menu-collapse-item">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" height="1em" width="1em" class="menu-item-icon">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m0 0a2.246 2.246 0 00-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0121 12v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6c0-.98.626-1.813 1.5-2.122"></path>
                             </svg>
                             <span class="menu-item-text">Pop-up Manager</span>
                         </div>
-                        <ul style="{{ request()->segment(1) === 'recent-events' ? 'display:block' : 'display:none' }}">
-                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('recent.events.get.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
-                                <a class="h-full w-full flex items-center" href="{{ route('recent.events.get.list') }}">
+                        <ul style="{{ request()->segment(1) === 'popup-manager' ? 'display:block' : 'display:none' }}">
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('popup.manager.list') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('popup.manager.list') }}">
                                     <span>List of Pop-up's</span>
                                 </a>
                             </li>
-                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('recent.events.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
-                                <a class="h-full w-full flex items-center" href="{{ route('recent.events.create') }}">
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('popup.manager.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('popup.manager.create') }}">
                                     <span>Create</span>
                                 </a>
                             </li>
