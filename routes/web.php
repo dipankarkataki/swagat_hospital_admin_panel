@@ -100,6 +100,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('get-announcement-by-id/{id}', [AcademicAnnouncementController::class, 'getAnnouncementById'])->name('academic.announcement.get.by.id');
         Route::post('edit-announcement', [AcademicAnnouncementController::class, 'editAnnouncement'])->name('academic.announcement.edit');
         Route::get('delete-announcement/{id}', [AcademicAnnouncementController::class, 'deleteAnnouncement'])->name('academic.announcement.delete');
+        Route::post('update-announcement-status', [AcademicAnnouncementController::class, 'updateAnnouncementStatus'])->name('academic.announcement.update.status');
     });
 
     Route::get('view-pdf', function(){

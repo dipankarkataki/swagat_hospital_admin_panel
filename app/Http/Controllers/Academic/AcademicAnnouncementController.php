@@ -95,9 +95,22 @@ class AcademicAnnouncementController extends Controller
             Session::flash('success', 'Announcement deleted successfully.');
             return redirect()->route('academic.announcements.get.list');
         }catch(\Exception $e){
-            Log::error('Error at LabTestController@deleteLabTest :'.$e->getMessage().'. At line no: '.$e->getLine());
+            Log::error('Error at  AcademicAnnouncementController@deleteAnnouncement :'.$e->getMessage().'. At line no: '.$e->getLine());
             Session::flash('exception', 'Something went wrong. Please try later.');
             return redirect()->route('academic.announcements.get.list');
+        }
+    }
+
+    public function updateAnnouncementStatus(Request $request){
+        try{
+            $announcement_id = decrypt($request->id);
+            AcademicAnnouncement::where('id', $announcement_id)->update([
+                'status' => $request->status
+            ]);
+            return $this->success('Great! Announcement status updated successfully', null, 200);
+        }catch(\Exception $e){
+            Log::error('Error at AcademicAnnouncementController@updateAnnouncementStatus :'.$e->getMessage().'. At line no: '.$e->getLine());
+            return $this->error('Oops! Something went wrong', null, 500);
         }
     }
 }

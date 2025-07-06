@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\AcademicController;
 use App\Http\Controllers\Frontend\AppointmentBookingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,7 @@ Route::group(['prefix' => 'portfolio'], function(){
     Route::get('get-by-linked-hospital/{id}', [PortfolioController::class, 'getByLinkedHospital']);
     Route::get('get-by-id/{id}', [PortfolioController::class, 'getPortfolioById']);
 });
+
 Route::group(['prefix' => 'department'], function(){
     Route::get('list', [DepartmentController::class, 'listOfDepartments']);
 });
@@ -44,4 +46,8 @@ Route::group(['prefix' => 'guest'], function(){
 Route::group(['prefix' => 'booking'], function(){
     Route::post('save-booking-details', [AppointmentBookingController::class, 'saveBookingDetails']);
     Route::post('generate-booking-pdf', [AppointmentBookingController::class, 'generateBookingPdf']);
+});
+
+Route::group(['prefix' => 'academic'], function(){
+    Route::get('list-of-announcements', [AcademicController::class, 'listOfAnnouncements']);
 });

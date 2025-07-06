@@ -70,6 +70,16 @@
                             </div>
                         </div>
                     </form>
+                    <div class="grid border border-gray-950 border-dashed rounded-md p-8">
+                        <div>
+                            <label class="form-label mb-2">Change Status:</label>
+                            @if ($announcement_details->status == 1)
+                                <button class="btn bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white update-account-status" type="button" data-url="{{ route('academic.announcement.update.status') }}" data-id="{{ encrypt($announcement_details->id) }}" data-status=0> Announcement Active </button>
+                            @else
+                                <button class="btn btn-md bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white update-account-status" type="button" data-url="{{ route('academic.announcement.update.status') }}" data-id="{{ encrypt($announcement_details->id) }}" data-status=1> Announcement Blocked</button>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
