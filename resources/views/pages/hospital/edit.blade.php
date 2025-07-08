@@ -115,6 +115,7 @@
                     const reader = new FileReader();
                     reader.onload = function(event) {
                         $('#uploadImgSvg').hide();
+                        $('#imageFromDB').hide();
                         $('#imagePreview').attr('src', event.target.result).show();
                     };
                     reader.readAsDataURL(file);

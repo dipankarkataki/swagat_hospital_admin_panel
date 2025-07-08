@@ -107,6 +107,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::group(['prefix' => 'popup-manager'], function(){
         Route::get('list-of-popup', [PopupController::class, 'listofCreativePopup'])->name('popup.manager.list');
         Route::match(['get', 'post'],'create-popup', [PopupController::class, 'createCreativePopup'])->name('popup.manager.create');
+        Route::get('get-popup-by-id/{id}', [PopupController::class, 'getCreativePopupById'])->name('popup.manager.creative.get.by.id');
+        Route::post('edit-popup', [PopupController::class, 'editCreativePopup'])->name('popup.manager.edit');
+        Route::get('delete-popup/{id}', [PopupController::class, 'deleteCreativePopup'])->name('popup.manager.delete');
+        Route::post('update-popup-status', [PopupController::class, 'updateCreativePopupStatus'])->name('popup.manager.update.status');
     });
 
     Route::get('view-pdf', function(){

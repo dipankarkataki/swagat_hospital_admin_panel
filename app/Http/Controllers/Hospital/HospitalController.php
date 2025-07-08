@@ -80,18 +80,27 @@ class HospitalController extends Controller
             return $this->error('Validation Error', $validator->errors(), 422);
         }else{
             try{
-                $image_path = '';
-                if($request->hasFile('hospital_image')){
-                    $image_path = $request->file('hospital_image')->store('hospital/images');
-                }
 
-                Hospital::where('id', $request->hospital_id)->update([
-                    'image' =>  $image_path,
-                    'name' => $request->hospital_name,
-                    'phone' => $request->hospital_phone,
-                    'address' => $request->hospital_address,
-                ]);
-                return $this->success('Hospital details edited successfully', null, 204);
+                $hospital_details = Hospital::where('id', $request->hospital_id)->first();
+                if($hospital_details == null){
+                    return $this->error('Oops! Hospital doesnot exists', null, 404);
+                }else{
+
+                    $image_path = '';
+                    if($request->hasFile('hospital_image')){
+                        $image_path = $request->file('hospital_image')->store('hospital/images');
+                    }else{
+                        $image_path = $hospital_details->image;
+                    }
+
+                    Hospital::where('id', $request->hospital_id)->update([
+                        'image' =>  $image_path,
+                        'name' => $request->hospital_name,
+                        'phone' => $request->hospital_phone,
+                        'address' => $request->hospital_address,
+                    ]);
+                    return $this->success('Hospital details edited successfully', null, 204);
+                }
             }catch(\Exception $e){
                 Log::error('Error editing hospital details: '.$e->getMessage());
                 return $this->error('Error editing hospital details', null, 500);

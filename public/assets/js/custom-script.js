@@ -232,13 +232,16 @@ $(document).ready(function(){
                     setTimeout(() => {
                         location.reload();
                     }, 1000);
+                }else{
+                    toastr.error(response.message);
+                    $('.update-account-status').attr('disabled', false).text(button_text);
                 }
             },error:function(xhr, status, error){
                 if(xhr){
                     toastr.error('Oops! Something went wrong. Please try again.');
                 }
             },complete:function(){
-                $(this).attr('disabled', false).text(button_text);
+                $('.update-account-status').attr('disabled', false).text(button_text);
             }
         });
     });
