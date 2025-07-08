@@ -74,7 +74,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Discounted Amount</label>
                                 <div class="mb-4">
-                                    <input class="input amount-input" type="text" name="package_discounted_amount"  id="package_discounted_amount" placeholder="e.g. 999.23" readonly>
+                                    <input class="input amount-input" type="text" name="package_discounted_amount"  id="package_discounted_amount" placeholder="Enter discount to calculate the value" readonly>
                                 </div>
                             </div>
                             <div class="form-item">

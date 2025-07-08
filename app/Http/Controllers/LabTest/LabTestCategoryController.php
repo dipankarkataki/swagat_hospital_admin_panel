@@ -29,7 +29,7 @@ class LabTestCategoryController extends Controller
             }
         }else{
             $validator = Validator::make($request->all(), [
-                'category_name' => 'required|string|max:200'
+                'category_name' => 'required|string|max:30'
             ]);
 
             if($validator->fails()){
@@ -77,7 +77,7 @@ class LabTestCategoryController extends Controller
     public function editLabTestCategory(Request $request){
         $validator = Validator::make($request->all(), [
             'category_id' => 'required',
-            'category_name' => 'required'
+            'category_name' => 'required|string|max:30'
         ]);
 
         if($validator->fails()){
@@ -86,8 +86,15 @@ class LabTestCategoryController extends Controller
             try{
                 $category_id = decrypt($request->category_id);
 
+                $normalizedSlug = $this->normalizeCategoryName($request->category_name);
+                $category_exists = LabTestCategory::where('slug', $normalizedSlug)->exists();
+                if ($category_exists) {
+                    return $this->error('Oops! A similar category already exists.', null, 400);
+                }
+
                 LabTestCategory::where('id', $category_id)->update([
-                    'name' => $request->category_name
+                    'name' => $request->category_name,
+                    'slug' => $normalizedSlug,
                 ]);
                 return $this->success('Great! Lab test category updated successfully', null, 200);
             }catch(\Exception $e){

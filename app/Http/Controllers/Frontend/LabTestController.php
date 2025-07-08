@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\LabTest;
 use App\Models\LabTestCategory;
+use App\Models\LabTestPackage;
 
 class LabTestController extends Controller
 {
@@ -22,16 +23,6 @@ class LabTestController extends Controller
             return $this->error('Oops! Something went wrong.', null, 500);
         }
     }
-
-    // public function listOfTestByCategory($id){
-    //     try{
-    //         $list_of_test = LabTest::with('labTestCategory', 'labTestPackage')->where('lab_test_category_id', $id)->where('status', 1)->latest()->get();
-    //         return $this->success('Great! Lab tests by category fetched successfully', $list_of_test, 200);
-    //     }catch(\Exception $e){
-    //         Log::error('Error occurred at Frontend/LabTestController@listOfTestByCategory : ' . $e->getMessage().'. At line no: '.$e->getLine());
-    //         return $this->error('Oops! Something went wrong.', null, 500);
-    //     }
-    // }
 
     public function listOfSingleTestByCategory($category_id){
         try{
@@ -50,6 +41,16 @@ class LabTestController extends Controller
         }catch(\Exception $e){
             Log::error('Error occurred at Frontend/LabTestController@labTestDetailsById : ' . $e->getMessage().'. At line no: '.$e->getLine());
             return $this->error('Oops! Something went wrong.', null, 500);
+        }
+    }
+
+    public function listOfPackageByCategory($category_id){
+        try{
+            $list_of_packages = LabTestPackage::where('lab_test_category_id', $category_id)->where('status', 1)->latest()->get();
+            return $this->success('Great! Package by category fetched successfully', $list_of_packages, 200);
+        }catch(\Exception $e){
+            Log::error('Error occurred at Frontend/LabTestController@listOfPackageByCategory : ' . $e->getMessage().'. At line no: '.$e->getLine());
+            return $this->error('Oops! Something went wrong', null, 500);
         }
     }
 }

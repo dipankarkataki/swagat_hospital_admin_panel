@@ -34,7 +34,7 @@
                                 <thead>
                                     <tr>
                                         <th>Sl No.</th>
-                                        <th>Package Name</th>
+                                        <th>Name</th>
                                         <th>Description</th>
                                         <th>Category</th>
                                         <th>Included Tests</th>
@@ -54,7 +54,7 @@
                                                     <span class="font-semibold">{{ $item->name }}</span>
                                                 </div>
                                             </td>
-                                            <td>{{ $item->description ?? 'N/A' }}</td>
+                                            <td>{{ \Str::limit($item->description, 50) ?? 'N/A' }}</td>
                                             <td>{{ $item->labTestCategory->name}}</td>
                                             <td>{{ count(json_decode($item->lab_test_id))}}</td>
                                             <td>{{ $item->full_price}}</td>
