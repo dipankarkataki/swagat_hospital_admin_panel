@@ -53,7 +53,7 @@
                                             </td>
                                             <td>{{ $item->description ?? 'N/A' }}</td>
                                             <td>{{ $item->price}}</td>
-                                            <td>{{ $item->labTestCategory->name}}</td>
+                                            <td>{{ optional($item->labTestCategory)->name}}</td>
                                             <td>
                                                 @if ($item->status == 1)
                                                     <div class="flex justify-center items-center">

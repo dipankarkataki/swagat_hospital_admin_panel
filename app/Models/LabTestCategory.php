@@ -10,5 +10,5 @@ class LabTestCategory extends Model
     use SoftDeletes;
 
     protected $table = 'lab_test_categories';
-    protected $fillable = [ 'name', 'status' ];
+    protected $fillable = [ 'name', 'slug', 'status' ];
 }

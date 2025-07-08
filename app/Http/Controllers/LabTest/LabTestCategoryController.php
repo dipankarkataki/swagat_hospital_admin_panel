@@ -16,6 +16,10 @@ class LabTestCategoryController extends Controller
 {
     use ApiResponse;
 
+    private function normalizeCategoryName($name){
+        return strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $name));
+    }
+
     public function createLabTestCategory(Request $request){
         if($request->isMethod('get')){
             try{
@@ -25,15 +29,21 @@ class LabTestCategoryController extends Controller
             }
         }else{
             $validator = Validator::make($request->all(), [
-                'category_name' => 'required'
+                'category_name' => 'required|string|max:200'
             ]);
 
             if($validator->fails()){
                 return $this->error('Oops! Validation Error: '.$validator->errors()->first(), null, 400);
             }else{
                 try{
+                    $normalizedSlug = $this->normalizeCategoryName($request->category_name);
+                    $category_exists = LabTestCategory::where('slug', $normalizedSlug)->exists();
+                    if ($category_exists) {
+                        return $this->error('Oops! A similar category already exists.', null, 400);
+                    }
                     LabTestCategory::create([
-                        'name' => $request->category_name
+                        'name' => $request->category_name,
+                        'slug' => $normalizedSlug,
                     ]);
                     return $this->success('Great! Lab test category added successfully', null, 201);
                 }catch(\Exception $e){
