@@ -369,7 +369,7 @@
                                             </li>
                                             <li data-menu-item="modern-project-list" class="{{ request()->routeIs('academic.announcements.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
                                                 <a class="h-full w-full flex items-center" href="{{ route('academic.announcements.create') }}">
-                                                    <span>Create</span>
+                                                    <span>Create Announcement</span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -389,7 +389,7 @@
                                             </li>
                                             <li data-menu-item="modern-project-list" class="{{ request()->routeIs('popup.manager.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
                                                 <a class="h-full w-full flex items-center" href="{{ route('popup.manager.create') }}">
-                                                    <span>Create</span>
+                                                    <span>Create Creative Pop-up</span>
                                                 </a>
                                             </li>
                                         </ul>
