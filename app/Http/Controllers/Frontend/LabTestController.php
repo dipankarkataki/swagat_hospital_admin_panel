@@ -23,9 +23,19 @@ class LabTestController extends Controller
         }
     }
 
-    public function listOfTestByCategory($id){
+    // public function listOfTestByCategory($id){
+    //     try{
+    //         $list_of_test = LabTest::with('labTestCategory', 'labTestPackage')->where('lab_test_category_id', $id)->where('status', 1)->latest()->get();
+    //         return $this->success('Great! Lab tests by category fetched successfully', $list_of_test, 200);
+    //     }catch(\Exception $e){
+    //         Log::error('Error occurred at Frontend/LabTestController@listOfTestByCategory : ' . $e->getMessage().'. At line no: '.$e->getLine());
+    //         return $this->error('Oops! Something went wrong.', null, 500);
+    //     }
+    // }
+
+    public function listOfSingleTestByCategory($category_id){
         try{
-            $list_of_test = LabTest::with('labTestCategory', 'labTestPackage')->where('lab_test_category_id', $id)->where('status', 1)->latest()->get();
+            $list_of_test = LabTest::with('labTestCategory')->where('lab_test_category_id', $category_id)->where('status', 1)->latest()->get();
             return $this->success('Great! Lab tests by category fetched successfully', $list_of_test, 200);
         }catch(\Exception $e){
             Log::error('Error occurred at Frontend/LabTestController@listOfTestByCategory : ' . $e->getMessage().'. At line no: '.$e->getLine());
