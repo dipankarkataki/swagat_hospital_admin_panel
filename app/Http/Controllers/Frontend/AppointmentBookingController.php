@@ -46,6 +46,8 @@ class AppointmentBookingController extends Controller
                     $formattedNumber = str_pad($nextNumber, 5, '0', STR_PAD_LEFT); // 00001, 00002, etc.
                     $bookingId = 'BK-SWGH-OFL-'.now()->format('ymd').'-'.$formattedNumber;
 
+                    $logo_path = 'assets/img/logo/swagat-logo-old.png';
+
                     AppointmentBooking::create([
                         'booking_id' => $bookingId,
                         'portfolio_id' => $request->portfolio_id,
@@ -82,12 +84,13 @@ class AppointmentBookingController extends Controller
                             'gender' => $get_booking_details->gender,
                             'zipcode' => $get_booking_details->zipcode,
                             'created_at' => $get_booking_details->created_at,
+                            'logo_path' => $logo_path
                         ];
                     }
 
                     $pdf = Pdf::loadView('pages.appointment-booking.generate_pdf', $pdf_data);
 
-                    $fileName = 'booking_' . time() . '.pdf';
+                    $fileName = 'booking_' . $bookingId . '.pdf';
                     $path = 'booking/offline/pdf/' . $fileName;
                     Storage::disk('public')->put($path, $pdf->output());
                     $publicUrl = asset('storage/' . $path);
@@ -97,6 +100,8 @@ class AppointmentBookingController extends Controller
                     ]);
 
                     $pdf_data['download_link'] = $publicUrl;
+
+                    $pdf_data['logo_path'] = $logo_path;
 
                     $this->bookingConfirmationMessage($request->phone, $get_booking_details->full_name, $get_department->name, $get_booking_details->appointment_date, $get_booking_details->appointment_time);
 
