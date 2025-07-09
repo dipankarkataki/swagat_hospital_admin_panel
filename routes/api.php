@@ -8,6 +8,7 @@ use App\Http\Controllers\Frontend\DepartmentController;
 use App\Http\Controllers\Frontend\HospitalController;
 use App\Http\Controllers\Frontend\LabTestController;
 use App\Http\Controllers\Frontend\PhoneNumberController;
+use App\Http\Controllers\Frontend\PopupManagerController;
 use App\Http\Controllers\Frontend\PortfolioController;
 
 Route::get('/user', function (Request $request) {
@@ -51,4 +52,8 @@ Route::group(['prefix' => 'booking'], function(){
 
 Route::group(['prefix' => 'academic'], function(){
     Route::get('list-of-announcements', [AcademicController::class, 'listOfAnnouncements']);
+});
+
+Route::group(['prefix' => 'creative-popup'], function(){
+    Route::get('get-creative', [PopupManagerController::class, 'getCreative']);
 });
