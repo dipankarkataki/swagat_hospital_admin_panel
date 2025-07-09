@@ -33,7 +33,7 @@
                                 <div class="error-message"></div>
                             </div>
                             <div class="form-item">
-                                <label class="form-label mb-2">Creative Name *</label>
+                                <label class="form-label mb-2">Creative Name</label>
                                 <div>
                                     <input type="text" class="input form-control" name="creative_name" id="creative_name" placeholder="e.g New Welcome Course 2025">
                                 </div>

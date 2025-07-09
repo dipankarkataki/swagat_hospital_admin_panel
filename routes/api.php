@@ -47,7 +47,6 @@ Route::group(['prefix' => 'guest'], function(){
 
 Route::group(['prefix' => 'booking'], function(){
     Route::post('save-booking-details', [AppointmentBookingController::class, 'saveBookingDetails']);
-    Route::post('generate-booking-pdf', [AppointmentBookingController::class, 'generateBookingPdf']);
 });
 
 Route::group(['prefix' => 'academic'], function(){

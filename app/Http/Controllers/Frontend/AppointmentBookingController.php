@@ -23,7 +23,7 @@ class AppointmentBookingController extends Controller
             'portfolio_id' => 'required',
             'hospital_id' => 'required',
             'full_name' => 'required',
-            'email' => 'required|email|unique:appointment_bookings,email',
+            'email' => 'required',
             'phone' => 'required',
             'zipcode' => 'required|digits:6',
             'dob' => 'required',
@@ -40,11 +40,11 @@ class AppointmentBookingController extends Controller
             try{
                 DB::beginTransaction();
 
-                $latestBooking = AppointmentBooking::withTrashed()->latest('id')->first();
-                $nextNumber = $latestBooking ? $latestBooking->id + 1 : 1;
+                    $latestBooking = AppointmentBooking::withTrashed()->latest('id')->first();
+                    $nextNumber = $latestBooking ? $latestBooking->id + 1 : 1;
 
-                $formattedNumber = str_pad($nextNumber, 5, '0', STR_PAD_LEFT); // 00001, 00002, etc.
-                $bookingId = 'BK-SWGH-OFL-'.now()->format('ymd').'-'.$formattedNumber;
+                    $formattedNumber = str_pad($nextNumber, 5, '0', STR_PAD_LEFT); // 00001, 00002, etc.
+                    $bookingId = 'BK-SWGH-OFL-'.now()->format('ymd').'-'.$formattedNumber;
 
                     AppointmentBooking::create([
                         'booking_id' => $bookingId,
@@ -60,7 +60,7 @@ class AppointmentBookingController extends Controller
                         'appointment_time' => $request->appointment_time,
                         'appointment_mode' => $request->appointment_mode
                     ]);
-                    $get_booking_details = AppointmentBooking::with('hospital', 'portfolio')->where('portfolio_id', $request->portfolio_id)->where('hospital_id', $request->hospital_id)->first();
+                    $get_booking_details = AppointmentBooking::with('hospital', 'portfolio')->where('booking_id', $bookingId)->first();
                     $pdf_data = [];
                     if($get_booking_details != null){
 
@@ -74,7 +74,7 @@ class AppointmentBookingController extends Controller
                             'booking_id' => $get_booking_details->booking_id,
                             'opd_date' => $get_booking_details->appointment_date,
                             'opd_time' => $get_booking_details->appointment_time,
-                            'opd_mode' => $get_department->appointment_mode,
+                            'opd_mode' => $get_booking_details->appointment_mode,
                             'patient_full_name' => $get_booking_details->full_name,
                             'patient_email' => $get_booking_details->email,
                             'patient_phone' => $get_booking_details->phone,
@@ -96,9 +96,13 @@ class AppointmentBookingController extends Controller
                         'booking_pdf_link' => $publicUrl
                     ]);
 
+                    $pdf_data['download_link'] = $publicUrl;
+
+                    $this->bookingConfirmationMessage($request->phone, $get_booking_details->full_name, $get_department->name, $get_booking_details->appointment_date, $get_booking_details->appointment_time);
+
                 DB::commit();
 
-                return $this->success('Great! Appointment booked successfully', $publicUrl, 201);
+                return $this->success('Great! Appointment booked successfully', $pdf_data, 201);
             }catch(\Exception $e){
                 DB::rollBack();
                 Log::error('Error at AppointmentBookingController@saveBookingDetails :----:'.$e->getMessage().'. At line no :---:'.$e->getLine());
@@ -107,25 +111,24 @@ class AppointmentBookingController extends Controller
         }
     }
 
-    public function generateBookingPdf(Request $request){
-        $validator = Validator::make($request->all(), [
-            'portfolio_id' => 'required'
-        ]);
-        if($validator->fails()){
-            return $this->error('Oops! Validation Error: '.$validator->errors()->first(), null, 400);
-        }else{
-            try{
-                $get_booking_details = AppointmentBooking::with('hospital', 'portfolio')->where('portfolio_id', $request->portfolio_id)->first();
-                return $this->success('Great! PDF generated successfully', $get_booking_details, 200);
-                $data = [
-                    'doctor_name' => $get_booking_details->portfolio->full_name,
+    private function bookingConfirmationMessage($guest_phone_no, $patient_name, $dept_name, $opd_date, $opd_time){
+        $api_key = '4682186920A022';
+        $contacts = $guest_phone_no;
+        $senderID = 'SWAHPL';
+        $template_id = '1207171758399997178';
+        $msg = 'Dear '.$patient_name.', you have been registered in OPD at '.$dept_name.' at '.$opd_date.' '.$opd_time.'. Swagat Hospital';
+        $sms_text = urlencode($msg);
 
-                ];
+        //Submit to server
 
-            }catch(\Exception $e){
-                Log::error('Error at AppointmentBookingController@generateBookingPdf :----: '.$e->getMessage().'. At line no :----: '.$e->getLine());
-                return $this->error('Oops! Something went wrong. Please try later', null, 500);
-            }
-        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://sms.hitechsms.com/app/smsapi/index.php");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,
+            "key=$api_key&campaign=0&routeid=13&type=text&contacts=$contacts&senderid=$senderID&msg=$sms_text&template_id=$template_id"
+        );
+        $response = curl_exec($ch);
+        curl_close($ch);
     }
 }

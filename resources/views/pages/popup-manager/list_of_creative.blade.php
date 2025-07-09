@@ -53,7 +53,7 @@
                                             </td>
                                             <td>
                                                 <div class="flex items-center gap-2">
-                                                    <span class="font-semibold">{{ $item->name }}</span>
+                                                    <span class="font-semibold">{{ $item->name ?? '-----'}}</span>
                                                 </div>
                                             </td>
                                             <td>

@@ -29,7 +29,6 @@ class PopupController extends Controller
         }else{
             $validator = Validator::make($request->all(), [
                 'creative_image' => 'required|image|mimes:png,jpg,jpeg|max:1024',
-                'creative_name' => 'required|string|max:255',
             ]);
 
             if($validator->fails()){
@@ -67,7 +66,6 @@ class PopupController extends Controller
     public function editCreativePopup(Request $request){
         $validator = Validator::make($request->all(), [
             'creative_image' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
-            'creative_name' => 'required|string|max:255',
         ]);
 
         if($validator->fails()){

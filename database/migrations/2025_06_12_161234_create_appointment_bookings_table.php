@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('portfolio_id');
             $table->unsignedBigInteger('hospital_id');
             $table->string('full_name');
-            $table->string('email')->unique();
-            $table->string('phone')->unique();
+            $table->string('email');
+            $table->string('phone');
             $table->string('zipcode');
             $table->date('dob');
             $table->string('gender');
