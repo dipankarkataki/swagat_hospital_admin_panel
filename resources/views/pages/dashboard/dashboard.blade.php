@@ -132,111 +132,33 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="flex items-center gap-2">
-                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-1.jpg')}}"
-                                                        loading="lazy">
+                                    @forelse ($latest_offline_appointments as $item)
+                                        <tr>
+                                            <td>
+                                                <div class="flex items-center gap-2">
+                                                    <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
+                                                        <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-1.jpg')}}"
+                                                            loading="lazy">
+                                                    </span>
+                                                    <span class="font-semibold">{{$item->full_name}}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="tag rounded-md">New</div>
+                                            </td>
+                                            <td>{{$item->email}}</td>
+                                            <td>
+                                                <span>
+                                                    {{$item->appointment_date}} {{$item->appointment_time}}
                                                 </span>
-                                                <span class="font-semibold">Eileen Horton</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="tag rounded-md">New</div>
-                                        </td>
-                                        <td>eileen_h@hotmail.com</td>
-                                        <td><span>12/06/2021 12:53</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="flex items-center gap-2">
-                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-2.jpg')}}"
-                                                        loading="lazy">
-                                                </span>
-                                                <span class="font-semibold">Terrance Moreno</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div
-                                                class="tag bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100 border-0 rounded">
-                                                Sold</div>
-                                        </td>
-                                        <td>terrance_moreno@infotech.io</td>
-                                        <td><span>23/09/2021 06:40</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="flex items-center gap-2">
-                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-3.jpg')}}"
-                                                        loading="lazy">
-                                                </span>
-                                                <span class="font-semibold">Ron Vargas</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div
-                                                class="tag bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100 border-0 rounded">
-                                                Sold</div>
-                                        </td>
-                                        <td>ronnie_vergas@infotech.io</td>
-                                        <td><span>23/09/2021 06:40</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="flex items-center gap-2">
-                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-4.jpg')}}"
-                                                        loading="lazy">
-                                                </span>
-                                                <span class="font-semibold">Luke Cook</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div
-                                                class="tag text-amber-600 bg-amber-100 dark:text-amber-100 dark:bg-amber-500/20 border-0 rounded">
-                                                Not Interested</div>
-                                        </td>
-                                        <td>cookie_lukie@hotmail.com</td>
-                                        <td><span>28/09/2021 12:53</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="flex items-center gap-2">
-                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-5.jpg')}}"
-                                                        loading="lazy">
-                                                </span>
-                                                <span class="font-semibold">Joyce Freeman</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div
-                                                class="tag bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100 border-0 rounded">
-                                                In Progress</div>
-                                        </td>
-                                        <td>joyce991@infotech.io</td>
-                                        <td><span>24/09/2021 12:53</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="flex items-center gap-2">
-                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-6.jpg')}}"
-                                                        loading="lazy">
-                                                </span>
-                                                <span class="font-semibold">Samantha
-                                                    Phillips</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="tag rounded-md">New</div>
-                                        </td>
-                                        <td>samanthaphil@infotech.io</td>
-                                        <td><span>02/10/2021 12:53</span></td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td>No Latest Appointments.</td>
+                                        </tr>
+                                    @endforelse
+
                                 </tbody>
                             </table>
                         </div>
