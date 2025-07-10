@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Academic\AcademicAnnouncementController;
+use App\Http\Controllers\Appointment\AppointmentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -111,6 +112,12 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('edit-popup', [PopupController::class, 'editCreativePopup'])->name('popup.manager.edit');
         Route::get('delete-popup/{id}', [PopupController::class, 'deleteCreativePopup'])->name('popup.manager.delete');
         Route::post('update-popup-status', [PopupController::class, 'updateCreativePopupStatus'])->name('popup.manager.update.status');
+    });
+
+    Route::group(['prefix' => 'appointment'], function(){
+        Route::group(['prefix' => 'offline'], function(){
+            Route::get('list-of-appointments', [AppointmentController::class, 'listOfAppointments'])->name('appointment.offline.list');
+        });
     });
 
     Route::get('view-pdf', function(){
