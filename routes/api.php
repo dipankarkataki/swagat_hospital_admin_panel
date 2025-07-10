@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\DepartmentController;
 use App\Http\Controllers\Frontend\HospitalController;
 use App\Http\Controllers\Frontend\LabTestController;
+use App\Http\Controllers\Frontend\Payment\LabTest\LabTestPaymentController;
 use App\Http\Controllers\Frontend\PhoneNumberController;
 use App\Http\Controllers\Frontend\PopupManagerController;
 use App\Http\Controllers\Frontend\PortfolioController;
@@ -55,4 +56,12 @@ Route::group(['prefix' => 'academic'], function(){
 
 Route::group(['prefix' => 'creative-popup'], function(){
     Route::get('get-creative', [PopupManagerController::class, 'getCreative']);
+});
+
+Route::group(['prefix' => 'payment'], function(){
+    Route::group(['prefix' => 'lab-test'], function(){
+        Route::post('create-order', [LabTestPaymentController::class, 'createOrder']);
+        Route::post('save-order-details', [LabTestPaymentController::class, 'saveOrderDetails']);
+        Route::post('generate-invoice', [LabTestPaymentController::class, 'generateInvoice']);
+    });
 });

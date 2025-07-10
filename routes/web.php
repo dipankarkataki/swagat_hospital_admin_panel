@@ -121,7 +121,7 @@ Route::group(['middleware' => 'auth'], function(){
     });
 
     Route::get('view-pdf', function(){
-        return view('pages.appointment-booking.generate_pdf');
+        return view('pages.appointment-booking.generate_lab_test_payment_pdf');
     });
 
     Route::get('logout', function(){

@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="form-item">
-                                <label class="form-label mb-2">Set OPD Date</label>
+                                <label class="form-label mb-2">Set OPD Unavailable Dates</label>
                                 <div>
                                     <div class="input-group mb-4">
                                         @php $opd_dates = json_decode($opd_schedule->opd_date ?? '[]', true) ?? []; @endphp
