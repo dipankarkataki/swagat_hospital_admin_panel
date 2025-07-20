@@ -3,8 +3,15 @@
 @section('content')
     <div class="page-container relative h-full flex flex-auto flex-col px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div class="container mx-auto">
-            <div class=" mb-4">
-                <h3>Edit Portfolio</h3>
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-4">
+                    <a href="{{route('portfolio.list')}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"></path>
+                        </svg>
+                    </a>
+                    <h3>Edit Portfolio</h3>
+                </div>
             </div>
             <div class="card card-border">
                 <div class="card-body">
@@ -324,13 +331,10 @@
                 $(this).attr('disabled', true).text('Please wait...');
                 const status = $(this).data('status');
                 const portfolio_id = $(this).data('id');
-                // const available_time_slot = @json($portfolio->available_time_slot);
-                const opd_date = @json($portfolio->opd_date);
-                const opd_start_time = @json($portfolio->opd_start_time);
-                const opd_end_time = @json($portfolio->opd_end_time);
+                const opd_timings = @json($portfolio->opdTimings);
                 const account_status = @json($portfolio->status);
 
-                if(opd_date === null || opd_start_time === null || opd_end_time === null || account_status == 0){
+                if(opd_timings.length === 0 ||  account_status == 0){
                     if(account_status == 0){
                         toastr.error('Account is blocked. Please unblock the account first!');
                     }else{

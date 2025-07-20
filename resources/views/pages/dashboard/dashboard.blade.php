@@ -64,7 +64,7 @@
                             </span>
                             <div>
                                 <div class="flex gap-1.5 items-end mb-2">
-                                    <h3 class="font-bold leading-none">49</h3>
+                                    <h3 class="font-bold leading-none">0</h3>
                                     <p class="font-semibold">Consultations</p>
                                 </div>
                             </div>

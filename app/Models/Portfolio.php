@@ -12,7 +12,7 @@ class Portfolio extends Model
     protected $table = 'portfolios';
     protected $fillable = [
         'department_id', 'profile_pic', 'full_name', 'email', 'qualification', 'experience', 'languages_speak', 'brief_description', 'expertise',
-        'membership', 'research', 'awards', 'status'
+        'membership', 'research', 'awards', 'accepting_appointments', 'status'
     ];
 
     public function portfolioLinkedHospital()

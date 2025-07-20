@@ -18,8 +18,8 @@
                                             <th>Doctor</th>
                                             <th>Assigned Hospital</th>
                                             <th>Address</th>
-                                            <th>Available Date Slot</th>
-                                            <th>Available Time Slot</th>
+                                            <th>Unavailable Dates</th>
+                                            <th>OPD Time Slot</th>
                                             <th>Schedule Status</th>
                                             <th>Action</th>
                                         </tr>

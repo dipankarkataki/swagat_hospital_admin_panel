@@ -93,7 +93,7 @@ class PortfolioController extends Controller
     public function portfolioById($id){
         try{
             $portfolio_id = decrypt($id);
-            $portfolio = Portfolio::find($portfolio_id);
+            $portfolio = Portfolio::with('opdTimings')->find($portfolio_id);
             $list_of_hospitals = Hospital::where('status', 1)->get();
             $list_of_departments = Department::where('status', 1)->get();
             return view('pages.portfolio.edit')->with(['portfolio' => $portfolio, 'list_of_hospitals' => $list_of_hospitals, 'list_of_departments' => $list_of_departments]);
@@ -120,13 +120,6 @@ class PortfolioController extends Controller
             'membership' => 'nullable|array',
             'research' => 'nullable|array',
             'awards' => 'nullable|array',
-            // 'availableDate' => 'nullable|array',
-            // 'opdDate' => 'nullable|array',
-            // 'opdStartTime' => 'nullable',
-            // 'opdEndTime' => 'nullable',
-            // 'hospital_id' => 'required|numeric'
-        ],[
-            // 'hospital_id.required' => 'Please select a hospital.',
         ]);
 
         if($validator->fails()){
@@ -154,11 +147,6 @@ class PortfolioController extends Controller
             $portfolio->membership = json_encode($request->membership);
             $portfolio->research = json_encode($request->research);
             $portfolio->awards = json_encode($request->awards);
-            // $portfolio->available_time_slot = json_encode($request->availableDate);
-            // $portfolio->opd_date = json_encode($request->opdDate);
-            // $portfolio->opd_start_time = $request->opdStartTime;
-            // $portfolio->opd_end_time = $request->opdEndTime;
-            // $portfolio->hospital_id = $request->hospital_id;
 
             if ($portfolio->save()) {
                 Session::flash('success', 'Portfolio updated successfully.');
@@ -199,6 +187,9 @@ class PortfolioController extends Controller
             $portfolio = Portfolio::find($portfolio_id);
             if($portfolio){
                 $portfolio->status = $request->status;
+                if($request->status == 0){
+                    $portfolio->accepting_appointments = 0;
+                }
                 $portfolio->save();
                 $message = 'Status updated successfully. From '.($request->status == '1' ? 'blocked to active ' : 'active to blocked');
                 return $this->success($message, null, 204);
