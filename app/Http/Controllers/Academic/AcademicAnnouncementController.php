@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Academic;
 
 use App\Http\Controllers\Controller;
 use App\Models\AcademicAnnouncement;
+use App\Models\AcademicMedia;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -36,13 +37,27 @@ class AcademicAnnouncementController extends Controller
                 return $this->error('Oops! Validation Error :: '.$validator->errors()->first(), null, 400);
             }else{
                 try{
-                    AcademicAnnouncement::create([
+                    $create_announcement = AcademicAnnouncement::create([
                         'name' => $request->title,
                         'type' => $request->type,
                         'start_date' => $request->start_date,
                         'end_date' => $request->end_date,
                         'description' => $request->description
                     ]);
+                    if($create_announcement && $request->hasFile('academic_images')){
+                        $batch_media_insert = [];
+                        foreach($request->file('academic_images') as $image){
+                            $image_path = $image->store('academic/images');
+                            $batch_media_insert[] = [
+                                'academic_announcement_id' => $create_announcement->id,
+                                'type' => 'image',
+                                'photo' => $image_path,
+                                'created_at' => now(),
+                                'updated_at' => now()
+                            ];
+                        }
+                        AcademicMedia::insert($batch_media_insert);
+                    }
                     return $this->success('Great! Academic announcement created successfully', null, 201);
                 }catch(\Exception $e){
                     Log::error('Error at AcademicAnnouncementController@createAnnouncements Post Method ::: --- ::: '.$e->getMessage().'. At Line no ::: --- ::: '.$e->getLine());
