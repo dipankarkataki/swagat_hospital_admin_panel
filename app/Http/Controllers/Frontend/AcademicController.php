@@ -14,7 +14,7 @@ class AcademicController extends Controller
 
     public function listOfAnnouncements(){
         try{
-            $announcements = AcademicAnnouncement::where('status', 1)->latest()->get();
+            $announcements = AcademicAnnouncement::with('academic_media')->where('status', 1)->latest()->get();
             return $this->success('Great! Academic announcements fetched successfully', $announcements, 200);
         }catch(\Exception $e){
             Log::error('Error at AcademicController@listOfAnnouncements ::: --- ::: '.$e->getMessage().'. At Line no ::: --- ::: '.$e->getLine());
