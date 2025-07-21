@@ -132,7 +132,8 @@
                     <td width="40%" align="right" valign="top">
                         <div class="title">Invoice</div>
                         <div class="box">#INV-{{ $invoice_id }}</div><br>
-                        <small><strong>Issue Date:</strong> {{ $issue_date }}</small><br>
+                        <small><strong>Issue Time:</strong> {{ $issue_date }}</small><br>
+                        <small><strong>Issue Time:</strong> {{$issue_time}}</small><br>
                         <small><strong>Due Date:</strong> {{ $due_date }}</small>
                     </td>
                 </tr>
@@ -142,9 +143,9 @@
         <!-- Bill To -->
         <div class="section-title">Bill To</div>
         <div class="info">
-            <p><strong>Name:</strong> Dipankar kataki</p>
-            <p><strong>Address:</strong> 456 Patient Road, Wellness Town, ST 654321</p>
-            <p><strong>Phone:</strong> (987) 654-3210</p>
+            <p><strong>Name:</strong> {{ $patient_info['patient_name'] ?? '' }}</p>
+            <p><strong>Email:</strong> {{ $patient_info['patient_email'] ?? '' }}</p>
+            <p><strong>Phone:</strong> {{ $patient_info['patient_phone'] ?? '' }}</p>
         </div>
 
         <!-- Invoice Items -->

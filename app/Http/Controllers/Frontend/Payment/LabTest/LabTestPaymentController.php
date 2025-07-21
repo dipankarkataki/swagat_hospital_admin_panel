@@ -52,6 +52,10 @@ class LabTestPaymentController extends Controller
             'razorpay_signature' => 'required',
             'amount' => 'required|numeric',
             'cart' => 'required|array',
+            'payment_status' => 'required',
+            'fullName' => 'required',
+            'email' => 'required',
+            'phone' => 'required'
         ]);
 
         if($validator->fails()){
@@ -78,6 +82,10 @@ class LabTestPaymentController extends Controller
                         'razorpay_payment_id' => $request->razorpay_payment_id,
                         'razorpay_order_id' => $request->razorpay_order_id,
                         'amount' => $request->amount,
+                        'payment_status' => $request->payment_status,
+                        'patient_name' => $request->fullName,
+                        'patient_email' => $request->email,
+                        'patient_phone' => $request->phone
                     ]);
                 }
                 return $this->success('Great! Order details saved successfully', null, 200);
@@ -164,10 +172,21 @@ class LabTestPaymentController extends Controller
 
         try {
             $get_payment_details = LabTestPayment::where('razorpay_order_id', $request->order_id)->get();
+            if($get_payment_details->isEmpty()){
+                return $this->error('Oops! Failed to generate invoice.', null, 404);
+            }
+
             $invoice_items = [];
             $subtotal = 0;
 
+            $patient_info = [
+                'patient_name' => $get_payment_details[0]['patient_name'],
+                'patient_email' => $get_payment_details[0]['patient_email'],
+                'patient_phone' => $get_payment_details[0]['patient_phone']
+            ];
+
             foreach ($get_payment_details as $details) {
+
                 if ($details->type === 'test') {
                     $lab_test = LabTest::find($details->cart_item_id);
                     if ($lab_test) {
@@ -202,12 +221,14 @@ class LabTestPaymentController extends Controller
             $pdf = Pdf::loadView('pages.appointment-booking.generate_lab_test_payment_pdf', [
                 'invoice_id' => $request->order_id,
                 'issue_date' => now()->format('d M Y'),
+                'issue_time' => now()->format('h:i A'),
                 'due_date' => now()->format('d M Y'),
                 'invoice_items' => $invoice_items,
                 'subtotal' => number_format($subtotal, 2),
                 'tax' => number_format($tax, 2),
                 'total' => number_format($total, 2),
-                'logo_path' => public_path('assets/img/logo/swagat-logo-old.png')
+                'logo_path' => public_path('assets/img/logo/swagat-logo-old.png'),
+                'patient_info' =>  $patient_info
             ]);
 
             $fileName = 'invoice_' . $request->order_id . '.pdf';
