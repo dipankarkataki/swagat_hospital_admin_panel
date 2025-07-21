@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers\Frontend\Payment\LabTest;
 
-use App\Http\Controllers\Controller;
-use App\Models\LabTestPayment;
+use Razorpay\Api\Api;
+use App\Models\LabTest;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use App\Models\LabTestPackage;
+use App\Models\LabTestPayment;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Razorpay\Api\Api;
 use Razorpay\Api\Errors\SignatureVerificationError;
 
 class LabTestPaymentController extends Controller
@@ -68,7 +73,8 @@ class LabTestPaymentController extends Controller
                     LabTestPayment::create([
                         'name' => $item['name'],
                         'price' => $item['price'],
-                        'type' => isset($item['discount']) ? 'package' : 'test',
+                        'type' => $item['type'],
+                        'cart_item_id' => $item['selected_item_id'],
                         'razorpay_payment_id' => $request->razorpay_payment_id,
                         'razorpay_order_id' => $request->razorpay_order_id,
                         'amount' => $request->amount,
@@ -82,32 +88,138 @@ class LabTestPaymentController extends Controller
         }
     }
 
-    public function generateInvoice(Request $request){
+    // public function generateInvoice(Request $request){
+    //     $validator = Validator::make($request->all(), [
+    //         'order_id' => 'required'
+    //     ]);
+
+    //     if($validator->fails()){
+    //         return $this->error('Oops! Validation Error :: '.$validator->errors()->first(), null, 400);
+    //     }else{
+    //         try{
+    //             $get_payment_details = LabTestPayment::where('razorpay_order_id', $request->order_id)->get();
+
+    //             $logo_path = 'assets/img/logo/swagat-logo-old.png';
+    //             $invoice_data = [
+    //                 'logo_path' => $logo_path
+    //             ];
+
+    //             foreach ($get_payment_details as $details) {
+    //                 if ($details->type === 'test') {
+    //                     $lab_test = LabTest::find($details->cart_item_id);
+
+    //                     if ($lab_test) {
+    //                         $invoice_data[] = [
+    //                             'type' => 'test',
+    //                             'test_name' => $lab_test->name,
+    //                             'price' => $lab_test->price,
+    //                             'razorpay_order_id' => $details->razorpay_order_id,
+    //                             'created_at' => Carbon::parse($details->created_at)->format('d M, Y')
+    //                         ];
+    //                     }
+    //                 } else if ($details->type === 'package') {
+    //                     $package = LabTestPackage::find($details->cart_item_id);
+
+    //                     if ($package) {
+    //                         $tests = LabTest::whereIn('id', json_decode($package->lab_test_id))->get();
+
+    //                         foreach ($tests as $lab_test) {
+    //                             $invoice_data[] = [
+    //                                 'type' => 'package',
+    //                                 'test_name' => $lab_test->name,
+    //                                 'price' => $lab_test->price,
+    //                                 'razorpay_order_id' => $details->razorpay_order_id,
+    //                                 'full_price' => $package->full_price,
+    //                                 'discount' => $package->discount,
+    //                                 'discounted_price' => $package->discounted_price,
+    //                                 'created_at' => Carbon::parse($details->created_at)->format('d M, Y')
+    //                             ];
+    //                         }
+    //                     }
+    //                 }
+    //             }
+
+    //             $pdf = Pdf::loadView('pages.appointment-booking.generate_lab_test_payment_pdf', $invoice_data);
+    //             $fileName = 'invoice_' . $request->order_id . '.pdf';
+    //             $path = 'invoice/labTest/pdf/' . $fileName;
+    //             Storage::disk('public')->put($path, $pdf->output());
+    //             $publicUrl = asset('storage/' . $path);
+    //             return $this->success('Great! Order details saved successfully', $publicUrl, 200);
+    //         }catch(\Exception $e){
+    //             Log::error('Error at Frontend/LabTestPaymentController@generateInvoice ::---:: '.$e->getMessage().'. At Line no ::--:: '.$e->getLine());
+    //             return $this->error('Oops! Something went wrong while generating invoice for Lab Test', null, 500);
+    //         }
+    //     }
+    // }
+
+    public function generateInvoice(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'order_id' => $request->order_id
+            'order_id' => 'required'
         ]);
 
-        if($validator->fails()){
-            return $this->error('Oops! Validation Error :: '.$validator->errors()->first(), null, 400);
-        }else{
-            try{
-                $get_test_details = LabTestPayment::where('razorpay_order_id', $request->order_id)->get();
-                // $logo_path = 'assets/img/logo/swagat-logo-old.png';
-                // $pdf_data = [
-                //     'invoice_id' => $get_booking_details->booking_id,
-                //     'patient_full_name' => $get_booking_details->full_name,
-                //     'patient_email' => $get_booking_details->email,
-                //     'patient_phone' => $get_booking_details->phone,
-                //     'dob' => $get_booking_details->dob,
-                //     'gender' => $get_booking_details->gender,
-                //     'zipcode' => $get_booking_details->zipcode,
-                //     'created_at' => $get_booking_details->created_at,
-                //     'logo_path' => $logo_path
-                // ];
-            }catch(\Exception $e){
-                Log::error('Error at Frontend/LabTestPaymentController@generateInvoice ::---:: '.$e->getMessage().'. At Line no ::--:: '.$e->getLine());
-                return $this->error('Oops! Something went wrong while generating invoice for Lab Test', null, 500);
+        if ($validator->fails()) {
+            return $this->error('Validation Error: ' . $validator->errors()->first(), null, 400);
+        }
+
+        try {
+            $get_payment_details = LabTestPayment::where('razorpay_order_id', $request->order_id)->get();
+            $invoice_items = [];
+            $subtotal = 0;
+
+            foreach ($get_payment_details as $details) {
+                if ($details->type === 'test') {
+                    $lab_test = LabTest::find($details->cart_item_id);
+                    if ($lab_test) {
+                        $invoice_items[] = [
+                            'description' => $lab_test->name,
+                            'quantity' => 1,
+                            'unit_price' => $lab_test->price,
+                            'total' => $lab_test->price
+                        ];
+                        $subtotal += $lab_test->price;
+                    }
+                } elseif ($details->type === 'package') {
+                    $package = LabTestPackage::find($details->cart_item_id);
+                    if ($package) {
+                        $tests = LabTest::whereIn('id', json_decode($package->lab_test_id))->get();
+                        foreach ($tests as $lab_test) {
+                            $invoice_items[] = [
+                                'description' => $lab_test->name . ' (Part of Package: ' . $package->name . ')',
+                                'quantity' => 1,
+                                'unit_price' => $lab_test->price,
+                                'total' => $lab_test->price
+                            ];
+                            $subtotal += $lab_test->price;
+                        }
+                    }
+                }
             }
+
+            $tax = $subtotal * 0;
+            $total = $subtotal + $tax;
+
+            $pdf = Pdf::loadView('pages.appointment-booking.generate_lab_test_payment_pdf', [
+                'invoice_id' => $request->order_id,
+                'issue_date' => now()->format('d M Y'),
+                'due_date' => now()->format('d M Y'),
+                'invoice_items' => $invoice_items,
+                'subtotal' => number_format($subtotal, 2),
+                'tax' => number_format($tax, 2),
+                'total' => number_format($total, 2),
+                'logo_path' => public_path('assets/img/logo/swagat-logo-old.png')
+            ]);
+
+            $fileName = 'invoice_' . $request->order_id . '.pdf';
+            $path = 'invoice/labTest/pdf/' . $fileName;
+            Storage::disk('public')->put($path, $pdf->output());
+            $publicUrl = asset('storage/' . $path);
+
+            return $this->success('Invoice generated successfully', $publicUrl, 200);
+        } catch (\Exception $e) {
+            Log::error('Invoice generation error: ' . $e->getMessage());
+            return $this->error('Failed to generate invoice.', null, 500);
         }
     }
+
 }

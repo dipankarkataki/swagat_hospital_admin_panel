@@ -131,9 +131,9 @@
                     </td>
                     <td width="40%" align="right" valign="top">
                         <div class="title">Invoice</div>
-                        <div class="box">Invoice #INV-1001</div><br>
-                        <small><strong>Issue Date:</strong> 10 Jul 2025</small><br>
-                        <small><strong>Due Date:</strong> 10 Jul 2025</small>
+                        <div class="box">#INV-{{ $invoice_id }}</div><br>
+                        <small><strong>Issue Date:</strong> {{ $issue_date }}</small><br>
+                        <small><strong>Due Date:</strong> {{ $due_date }}</small>
                     </td>
                 </tr>
             </table>
@@ -155,32 +155,20 @@
                     <th style="width: 5%;">#</th>
                     <th style="width: 50%;">Item Description</th>
                     <th style="width: 15%;">Quantity</th>
-                    <th style="width: 15%;">Unit Price (₹)</th>
-                    <th style="width: 15%;">Total (₹)</th>
+                    <th style="width: 15%;">Unit Price</th>
+                    <th style="width: 15%;">Total</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Liver Test</td>
-                    <td>1</td>
-                    <td>500.00</td>
-                    <td>500.00</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>X-Ray - Chest</td>
-                    <td>1</td>
-                    <td>800.00</td>
-                    <td>800.00</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Blood Test (Complete Profile)</td>
-                    <td>1</td>
-                    <td>1200.00</td>
-                    <td>1200.00</td>
-                </tr>
+                @foreach ($invoice_items as $index => $item)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $item['description'] }}</td>
+                        <td>{{ $item['quantity'] }}</td>
+                        <td>{{ number_format($item['unit_price'], 2) }}</td>
+                        <td>{{ number_format($item['total'], 2) }}</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
 
@@ -188,24 +176,24 @@
         <table class="summary-table">
             <tr>
                 <td class="text-right" colspan="4">Subtotal</td>
-                <td class="text-right">₹2500.00</td>
+                <td class="text-right">Rs {{ $subtotal }}</td>
             </tr>
             <tr>
-                <td class="text-right" colspan="4">Tax (5%)</td>
-                <td class="text-right">₹125.00</td>
+                <td class="text-right" colspan="4">Tax</td>
+                <td class="text-right">Rs {{ $tax }}</td>
             </tr>
             <tr>
-                <td class="text-right" colspan="4">Total</td>
-                <td class="text-right">₹2625.00</td>
+                <td class="text-right" colspan="4"><strong>Total</strong></td>
+                <td class="text-right"><strong>Rs {{ $total }}</strong></td>
             </tr>
         </table>
 
         <!-- Footer -->
         <div class="thanks">
-            Thank you for choosing CityCare Hospital. Get well soon!
+            <p>Thank you for choosing Swagat Surgical Super Speciality Hospital. Get well soon!</p>
 
             <!-- Note -->
-            <div class="note">
+            <div class="note" style="margin-top:10px;">
                 <strong>Note:</strong> Please present this confirmation at the hospital counter during your visit.
             </div>
         </div>
