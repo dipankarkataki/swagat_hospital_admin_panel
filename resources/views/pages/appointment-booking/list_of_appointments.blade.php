@@ -48,7 +48,7 @@
                                         <th>Assigned_Doctor</th>
                                         <th>Hospital</th>
                                         <th>Status</th>
-                                        <th>Action</th>
+                                        {{-- <th>Action</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -82,7 +82,7 @@
                                                     </div>
                                                 @endif
                                             </td>
-                                            <td>
+                                            {{-- <td>
                                                 <div class="flex justify-end text-lg gap-2">
                                                     <a href="{{ route('lab.test.get.by.id', ['id' => encrypt($appointment->id)]) }}">
                                                         <span class="cursor-pointer p-2 hover:text-indigo-600 editButton">
@@ -99,7 +99,7 @@
                                                         </span>
                                                     </a>
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>

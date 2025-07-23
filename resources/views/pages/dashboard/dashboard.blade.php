@@ -42,9 +42,12 @@
                                 </span>
                             </span>
                             <div>
-                                <div class="flex gap-1.5 items-end mb-2">
+                                <div class="flex gap-2 items-center mb-2">
                                     <h3 class="font-bold leading-none">{{$total_appointments}}</h3>
-                                    <p class="font-semibold">Appointments</p>
+                                    <div class="flex flex-col">
+                                        <p class="font-semibold">Offline</p>
+                                        <p class="font-semibold">Appointments</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -105,9 +108,12 @@
                                 </span>
                             </span>
                             <div>
-                                <div class="flex gap-1.5 items-end mb-2">
+                                <div class="flex gap-2 items-center mb-2">
                                     <h3 class="font-bold leading-none">{{$total_lab_tests_package}}</h3>
-                                    <p class="font-semibold">Lab Tests Packages</p>
+                                    <div class="flex flex-col">
+                                        <p class="font-semibold">Lab</p>
+                                        <p class="font-semibold">Packages</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +124,7 @@
                 <div class="card card-layout-frame xl:col-span-5">
                     <div class="card-body">
                         <div class="flex items-center justify-between mb-4">
-                            <h4>Latest Appointments</h4>
+                            <h4>Latest Offline Appointments</h4>
                             <button class="btn btn-default btn-sm">View All</button>
                         </div>
                         <div class="overflow-x-auto">
@@ -172,8 +178,9 @@
                                 <div class="progress-circle" style="width: 200px;">
                                     <span class="progress-circle-info">
                                         <span class="progress-info circle">
-                                            <div>
-                                                <h3 class="font-bold">3650</h3>
+                                            <div class="text-center">
+                                                <h3 class="font-bold">0</h3>
+                                                <p class="font-semi">Currently Disabled</p>
                                             </div>
                                         </span>
                                     </span>
@@ -184,7 +191,7 @@
                                         </path>
                                         <path d="M 50,50 m 0,-48 a 48,48 0 1 1 0,96 a 48,48 0 1 1 0,-96"
                                             stroke-linecap="round" stroke-width="4" fill-opacity="0"
-                                            class="progress-circle-stroke text-indigo-600"
+                                            class="progress-circle-stroke text-gray-600"
                                             style="stroke-dasharray: 220.163px, 301.593px; stroke-dashoffset: 0px;">
                                         </path>
                                     </svg>
