@@ -120,6 +120,10 @@ Route::group(['middleware' => 'auth'], function(){
         });
     });
 
+    Route::group(['prefix' => 'lab-test-bookings'], function(){
+        Route::get('list-of-bookings', [AppointmentController::class, 'listOfLabBookings'])->name('appointment.lab.test.bookings');
+    });
+
     Route::get('view-pdf', function(){
         return view('pages.appointment-booking.generate_lab_test_payment_pdf');
     });

@@ -124,7 +124,7 @@
                 <div class="card-body">
                     <div class="flex items-center justify-between mb-4">
                         <h4>Latest Offline Appointments</h4>
-                        <button class="btn btn-default btn-sm">View All</button>
+                        <a href="{{route('appointment.offline.list')}}" class="btn btn-default btn-sm">View All</a>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="table-default table-hover">
@@ -174,49 +174,8 @@
                     <div class="card-body">
                         <div class="flex items-center justify-between mb-4">
                             <h4>Latest Lab Test Bookings</h4>
-                            <button class="btn btn-default btn-sm">View All</button>
+                            <a href="{{route('appointment.lab.test.bookings')}}" class="btn btn-default btn-sm">View All</a>
                         </div>
-                        {{-- <div class="overflow-x-auto">
-                            <table class="table-default table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Test Name</th>
-                                        <th>Status</th>
-                                        <th>Email</th>
-                                        <th>Created Time</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($latest_offline_appointments as $item)
-                                        <tr>
-                                            <td>
-                                                <div class="flex items-center gap-2">
-                                                    <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
-                                                        <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-1.jpg')}}"
-                                                            loading="lazy">
-                                                    </span>
-                                                    <span class="font-semibold">{{$item->full_name}}</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="tag rounded-md">New</div>
-                                            </td>
-                                            <td>{{$item->email}}</td>
-                                            <td>
-                                                <span>
-                                                    {{$item->appointment_date}} {{$item->appointment_time}}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td>No Latest Appointments.</td>
-                                        </tr>
-                                    @endforelse
-
-                                </tbody>
-                            </table>
-                        </div> --}}
                         @foreach($groupedInvoices as $invoice)
                             <div class="mb-6 border rounded-lg shadow-sm p-4 bg-white">
                                 <h2 class="text-lg font-semibold mb-2 text-indigo-800">#INV-{{ $invoice['razorpay_order_id'] }}</h2>

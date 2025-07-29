@@ -163,6 +163,25 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="{{ request()->segment(1) === 'lab-test-bookings' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
+                        <div class="menu-collapse-item">
+                            <svg class="menu-item-icon" stroke="currentColor" fill="none" stroke-width="1.5"
+                                viewBox="0 0 24 24" height="1em" width="1em"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                </path>
+                            </svg>
+                            <span class="menu-item-text">Lab Test Bookings</span>
+                        </div>
+                        <ul style="{{ request()->segment(1) === 'lab-test-bookings' ? 'display:block' : 'display:none' }}">
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('appointment.lab.test.bookings') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('appointment.lab.test.bookings') }}">
+                                    <span>List of Bookings</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="{{ request()->segment(1) === 'appointment' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
                         <div class="menu-collapse-item">
                             <svg class="menu-item-icon" stroke="currentColor" fill="none" stroke-width="1.5"
@@ -180,71 +199,8 @@
                                     <span>List of Appointments</span>
                                 </a>
                             </li>
-                            {{-- <li data-menu-item="modern-project-list" class="{{ request()->routeIs('lab.test.package.create') ? 'menu-item menu-item-active' : 'menu-item' }}">
-                                <a class="h-full w-full flex items-center" href="{{ route('lab.test.package.create') }}">
-                                    <span>Create Package</span>
-                                </a>
-                            </li> --}}
                         </ul>
                     </li>
-                    {{-- <li class="menu-collapse">
-                        <div class="menu-collapse-item">
-                            <svg class="menu-item-icon" stroke="currentColor" fill="none" stroke-width="0"
-                                viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
-                                </path>
-                            </svg>
-                            <span class="menu-item-text">Offline Appointment</span>
-                        </div>
-                        <ul>
-                            <li data-menu-item="modern-crm-dashboard" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="modern-crm-dashboard.html">
-                                    <span>List of Appointments</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="menu-collapse">
-                        <div class="menu-collapse-item">
-                            <svg class="menu-item-icon" stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                            </svg>
-                            <span class="menu-item-text">Consultation</span>
-                        </div>
-                        <ul>
-                            <li data-menu-item="modern-sales-dashboard" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="modern-sales-dashboard.html">
-                                    <span>Dashboard</span>
-                                </a>
-                            </li>
-                            <li data-menu-item="modern-product-list" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="modern-product-list.html">
-                                    <span>Product List</span>
-                                </a>
-                            </li>
-                            <li data-menu-item="modern-product-edit" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="modern-product-edit.html">
-                                    <span>Product Edit</span>
-                                </a>
-                            </li>
-                            <li data-menu-item="modern-new-product" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="modern-new-product.html">
-                                    <span>New Product</span>
-                                </a>
-                            </li>
-                            <li data-menu-item="modern-order-list" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="modern-order-list.html">
-                                    <span>Order List</span>
-                                </a>
-                            </li>
-                            <li data-menu-item="modern-order-details" class="menu-item">
-                                <a class="h-full w-full flex items-center" href="modern-order-details.html">
-                                    <span>Order Details</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li> --}}
                     <li class="{{ request()->segment(1) === 'recent-events' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
                         <div class="menu-collapse-item">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" height="1em" width="1em" class="menu-item-icon">
