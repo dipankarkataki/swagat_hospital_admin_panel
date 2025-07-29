@@ -39,6 +39,10 @@ Route::group(['prefix' => 'lab-test'], function(){
     Route::get('lab-test-details-by-id/{id}', [LabTestController::class, 'labTestDetailsById']);
 });
 
+Route::group(['prefix' => 'lab-package'], function(){
+    Route::get('get-details/{id}', [LabTestController::class, 'getLabPackageDetails']);
+});
+
 Route::group(['prefix' => 'guest'], function(){
     Route::group(['prefix' => 'phone-number'], function(){
         Route::post('send-otp', [PhoneNumberController::class, 'sendOTP'])->middleware('throttle:1,1');
