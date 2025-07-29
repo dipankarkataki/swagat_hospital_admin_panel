@@ -34,14 +34,15 @@
                         <div class="flex items-center justify-between mb-4">
                             <h4>Latest Lab Test Bookings</h4>
                         </div>
-                        @foreach($groupedInvoices as $invoice)
+                        @forelse($groupedInvoices as $invoice)
                             <div class="mb-6 border rounded-lg shadow-sm p-4 bg-white">
                                 <h2 class="text-lg font-semibold mb-2 text-indigo-800">#INV-{{ $invoice['razorpay_order_id'] }}</h2>
                                 <div class="flex justify-between">
                                     <div class="mb-3">
                                         <strong>Patient Name:</strong> {{ $invoice['patient_info']['name'] }}<br>
                                         <strong>Email:</strong> {{ $invoice['patient_info']['email'] }}<br>
-                                        <strong>Phone:</strong> {{ $invoice['patient_info']['phone'] }}
+                                        <strong>Phone:</strong> {{ $invoice['patient_info']['phone'] }}<br>
+                                        <strong>Payment Method:</strong> <span style="text-transform: capitalize;">{{$invoice['patient_info']['payment_method']}}</span>
                                     </div>
                                     <img src="{{ asset('assets/img/others/paid_stamp.png') }}" alt="paid status" style="height: 60px;" />
                                 </div>
@@ -75,7 +76,11 @@
                                     </table>
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="flex justify-center items-center h-full">
+                                <p class="h-full">Empty Bookings!</p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </div>

@@ -154,24 +154,13 @@
 
         <!-- Bill To -->
         <div class="section-title">Bill To</div>
-        {{-- <div class="info">
-            <p><strong>Name:</strong> {{ $patient_info['patient_name'] ?? '' }}</p>
-            <p><strong>Email:</strong> {{ $patient_info['patient_email'] ?? '' }}</p>
-            <p><strong>Phone:</strong> {{ $patient_info['patient_phone'] ?? '' }}</p>
-        </div>
-
-        <div class="info">
-            @if(file_exists(public_path($paid_stamp_path)))
-                <img src="{{ public_path($paid_stamp_path) }}" alt="Hospital Logo" class="paid_logo">
-            @endif
-        </div> --}}
-
         <table width="100%" style="margin-top: 10px; border: none; border-collapse: collapse;">
             <tr>
                 <td width="70%" valign="top" style="border: none;">
                     <p><strong>Name:</strong> {{ $patient_info['patient_name'] ?? '' }}</p>
                     <p><strong>Email:</strong> {{ $patient_info['patient_email'] ?? '' }}</p>
                     <p><strong>Phone:</strong> {{ $patient_info['patient_phone'] ?? '' }}</p>
+                    <p><strong>Payment Method:</strong> <span style="text-transform: capitalize;">{{ $patient_info['payment_method'] ?? '' }}</span></p>
                 </td>
                 <td width="30%" align="center" valign="top" style="border: none;">
                     @if(file_exists(public_path($paid_stamp_path)))

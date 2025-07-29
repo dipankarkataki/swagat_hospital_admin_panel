@@ -40,6 +40,7 @@ class DashboardController extends Controller
                     'name' => $first->patient_name,
                     'email' => $first->patient_email,
                     'phone' => $first->patient_phone,
+                    'payment_method' => $first->payment_method
                 ];
 
                 $invoice['items'] = [];
