@@ -263,7 +263,7 @@
                         </div>
                     </li>
                     <li class="menu-item-divider"></li>
-                    <li class="menu-item menu-item-hoverable mb-1 h-[35px]">
+                    {{-- <li class="menu-item menu-item-hoverable mb-1 h-[35px]">
                         <a class="flex gap-2 items-center" href="modern-settings.html">
                             <span class="text-xl opacity-50">
                                 <svg stroke="currentColor" fill="none" stroke-width="0"
@@ -277,7 +277,7 @@
                             </span>
                             <span>Profile</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li id="menu-item-29-2VewETdxAb" class="menu-item-divider"></li>
                     <li class="menu-item menu-item-hoverable gap-2 h-[35px]">
                         <a class="flex flex-row justify-center items-center gap-2" href="{{ route('logout') }}">
