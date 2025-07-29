@@ -70,12 +70,13 @@
                                         <input class="upload-input draggable" id="academic_images" name="academic_images[]" accept="image/jpeg,image/png" type="file" multiple>
                                     </div>
                                     <div class="text-center">
-                                        @if ($announcement_details->academic_media->isEmpty())
-                                            <svg id="uploadImgSvg" class="mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" height="200">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                                            </svg>
-                                        @else
-                                            <div id="previewContainer" class="flex flex-wrap justify-center items-center gap-4 my-4">
+
+                                        <div id="previewContainer" class="flex flex-wrap justify-center items-center gap-4 my-4">
+                                            @if ($announcement_details->academic_media->isEmpty())
+                                                <svg id="uploadImgSvg" class="mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" height="200">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                                </svg>
+                                            @else
                                                 @foreach ($announcement_details->academic_media as $media)
                                                     <div class="relative w-[150px] h-[150px] media-image-wrapper">
                                                         <!-- Image container -->
@@ -90,8 +91,9 @@
                                                         </div>
                                                     </div>
                                                 @endforeach
-                                            </div>
-                                        @endif
+                                            @endif
+                                        </div>
+
                                         <p class="font-semibold">
                                             <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
                                             <span class="text-blue-500">browse</span>
@@ -133,10 +135,17 @@
             console.log('Total Image Count ', total_image_count);
 
             let selectedImages = [];
+            function updateUploadSvgVisibility() {
+                if (total_image_count > 0) {
+                    $('#uploadImgSvg').hide();
+                } else {
+                    $('#uploadImgSvg').show();
+                }
+            }
 
             $('#academic_images').on('change', function (e) {
                 const files = Array.from(e.target.files);
-                if(total_image_count >= 4){
+                if(total_image_count + files.length > 4){
                     toastr.error('Oops! Maximum 4 images can be uploaded at a time');
                     return;
                 }
@@ -189,6 +198,7 @@
                         `;
                         previewContainer.append(previewHTML);
                         total_image_count = total_image_count + 1;
+                        updateUploadSvgVisibility();
                         console.log('New Total Image Count after add ', total_image_count);
                         console.log('Selected Images After Adding ---', selectedImages);
                     };
@@ -206,10 +216,12 @@
                     removedExistingImages.push(image_id);
                     console.log('Removed Images Array ------', removedExistingImages);
                 }
-                
+
                 total_image_count = total_image_count - 1;
                 console.log('New Total Image Count after Remove ', total_image_count);
                 $(this).closest('.media-image-wrapper').remove();
+                updateUploadSvgVisibility();
+                console.log('Selected Images After Removal ---', selectedImages);
             });
 
             //Remove Newly Added Images
@@ -227,8 +239,9 @@
                         $(this).find('.new-remove-image-btn').attr('data-index', newIndex);
                     });
                 }
-                
+
                 total_image_count = total_image_count - 1;
+                updateUploadSvgVisibility();
                 console.log('Final Selected Images ---', selectedImages);
                 console.log('New Total Image Count after Remove ', total_image_count);
             });
@@ -258,7 +271,7 @@
                         console.log('Response ', response);
                         if(response.success === true){
                             toastr.success(response.message);
-                            // location.reload();
+                            location.reload();
                         }else{
                             toastr.error(response.message);
                             const errors = response.data;

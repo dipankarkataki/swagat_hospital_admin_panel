@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Academic;
 
-use App\Http\Controllers\Controller;
-use App\Models\AcademicAnnouncement;
-use App\Models\AcademicMedia;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use App\Models\AcademicMedia;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Models\AcademicAnnouncement;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,36 +31,41 @@ class AcademicAnnouncementController extends Controller
         }else{
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
-                'type' => 'required'
+                'type' => 'required',
+                'academic_images' => 'nullable|array',
+                'academic_images.*' => 'image|mimes:png,jpg,jpeg|max:1024',
             ]);
 
             if($validator->fails()){
                 return $this->error('Oops! Validation Error :: '.$validator->errors()->first(), null, 400);
             }else{
                 try{
-                    $create_announcement = AcademicAnnouncement::create([
-                        'name' => $request->title,
-                        'type' => $request->type,
-                        'start_date' => $request->start_date,
-                        'end_date' => $request->end_date,
-                        'description' => $request->description
-                    ]);
-                    if($create_announcement && $request->hasFile('academic_images')){
-                        $batch_media_insert = [];
-                        foreach($request->file('academic_images') as $image){
-                            $image_path = $image->store('academic/images');
-                            $batch_media_insert[] = [
-                                'academic_announcement_id' => $create_announcement->id,
-                                'type' => 'image',
-                                'photo' => $image_path,
-                                'created_at' => now(),
-                                'updated_at' => now()
-                            ];
+                    DB::beginTransaction();
+                        $create_announcement = AcademicAnnouncement::create([
+                            'name' => $request->title,
+                            'type' => $request->type,
+                            'start_date' => $request->start_date,
+                            'end_date' => $request->end_date,
+                            'description' => $request->description
+                        ]);
+                        if($create_announcement && $request->hasFile('academic_images')){
+                            $batch_media_insert = [];
+                            foreach($request->file('academic_images') as $image){
+                                $image_path = $image->store('academic/images');
+                                $batch_media_insert[] = [
+                                    'academic_announcement_id' => $create_announcement->id,
+                                    'type' => 'image',
+                                    'photo' => $image_path,
+                                    'created_at' => now(),
+                                    'updated_at' => now()
+                                ];
+                            }
+                            AcademicMedia::insert($batch_media_insert);
                         }
-                        AcademicMedia::insert($batch_media_insert);
-                    }
+                    DB::commit();
                     return $this->success('Great! Academic announcement created successfully', null, 201);
                 }catch(\Exception $e){
+                    DB::rollBack();
                     Log::error('Error at AcademicAnnouncementController@createAnnouncements Post Method ::: --- ::: '.$e->getMessage().'. At Line no ::: --- ::: '.$e->getLine());
                     return $this->error('Oops! Something went wrong', null, 500);
                 }
@@ -80,7 +86,9 @@ class AcademicAnnouncementController extends Controller
     public function editAnnouncement(Request $request){
         $validator = Validator::make($request->all(), [
             'title' => 'required',
-            'type' => 'required'
+            'type' => 'required',
+            'academic_images' => 'nullable|array',
+            'academic_images.*' => 'image|mimes:png,jpg,jpeg|max:1024',
         ]);
 
         if($validator->fails()){
@@ -88,15 +96,39 @@ class AcademicAnnouncementController extends Controller
         }else{
             try{
                 $announcement_id = decrypt($request->announcement_id);
-                AcademicAnnouncement::where('id', $announcement_id)->update([
-                    'name' => $request->title,
-                    'type' => $request->type,
-                    'start_date' => $request->start_date,
-                    'end_date' => $request->end_date,
-                    'description' => $request->description
-                ]);
+                DB::beginTransaction();
+                    AcademicAnnouncement::where('id', $announcement_id)->update([
+                        'name' => $request->title,
+                        'type' => $request->type,
+                        'start_date' => $request->start_date,
+                        'end_date' => $request->end_date,
+                        'description' => $request->description
+                    ]);
+
+                    if($request->hasFile('academic_images')){
+                        $batch_media_insert = [];
+                        foreach($request->file('academic_images') as $image){
+                            $image_path = $image->store('academic/images');
+                            $batch_media_insert[] = [
+                                'academic_announcement_id' => $announcement_id,
+                                'type' => 'image',
+                                'photo' => $image_path,
+                                'created_at' => now(),
+                                'updated_at' => now()
+                            ];
+                        }
+                        AcademicMedia::insert($batch_media_insert);
+                    }
+
+                    if($request->removedExistingImages != null){
+                        foreach($request->removedExistingImages  as $remove_image_id){
+                            AcademicMedia::where('id', $remove_image_id)->where('academic_announcement_id', $announcement_id)->delete();
+                        }
+                    }
+                DB::commit();
                 return $this->success('Great! Announcement edited successfully', null, 200);
             }catch(\Exception $e){
+                DB::rollBack();
                 Log::error('Error at AcademicAnnouncementController@editAnnouncement ::: --- ::: '.$e->getMessage().'. At Line no ::: --- ::: '.$e->getLine());
                 return $this->error('Oops! Something went wrong', null, 500);
             }
