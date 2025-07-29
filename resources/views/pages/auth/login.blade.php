@@ -65,7 +65,7 @@
                                                         </div>
                                                         <div class="error-message"></div>
                                                     </div>
-                                                    <div class="flex justify-between mb-6">
+                                                    {{-- <div class="flex justify-between mb-6">
                                                         <label class="checkbox-label mb-0">
                                                             <input class="checkbox" type="checkbox" value="true"
                                                                 checked>
@@ -73,7 +73,7 @@
                                                         </label>
                                                         <a class="text-primary-600 hover:underline"
                                                             href="/">Forgot Password?</a>
-                                                    </div>
+                                                    </div> --}}
                                                     <button class="btn btn-solid w-full" type="submit" id="submitBtn">Sign In</button>
                                                 </div>
                                             </form>
@@ -141,7 +141,7 @@
                     },
                     success:function(response){
                         if(response.success === true){
-                            window.location.href = "{{ route('dashboard.index') }}"; 
+                            window.location.href = "{{ route('dashboard.index') }}";
                         }else{
                             toastr.error(response.message);
                             const errors = response.data;
