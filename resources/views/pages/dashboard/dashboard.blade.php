@@ -120,18 +120,67 @@
                     </div>
                 </div>
             </div>
+            <div class="card card-layout-frame xl:col-span-5">
+                <div class="card-body">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4>Latest Offline Appointments</h4>
+                        <button class="btn btn-default btn-sm">View All</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="table-default table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Email</th>
+                                    <th>Created Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($latest_offline_appointments as $item)
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <span class="avatar avatar-circle avatar-sm" data-avatar-size="25">
+                                                    <img class="avatar-img avatar-circle" src="{{asset('assets/img/avatars/thumb-1.jpg')}}"
+                                                        loading="lazy">
+                                                </span>
+                                                <span class="font-semibold">{{$item->full_name}}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="tag rounded-md">New</div>
+                                        </td>
+                                        <td>{{$item->email}}</td>
+                                        <td>
+                                            <span>
+                                                {{$item->appointment_date}} {{$item->appointment_time}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td>No Latest Appointments.</td>
+                                    </tr>
+                                @endforelse
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
             <div class="grid grid-cols-1 xl:grid-cols-7 gap-4">
                 <div class="card card-layout-frame xl:col-span-5">
                     <div class="card-body">
                         <div class="flex items-center justify-between mb-4">
-                            <h4>Latest Offline Appointments</h4>
+                            <h4>Latest Lab Test Bookings</h4>
                             <button class="btn btn-default btn-sm">View All</button>
                         </div>
-                        <div class="overflow-x-auto">
+                        {{-- <div class="overflow-x-auto">
                             <table class="table-default table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Test Name</th>
                                         <th>Status</th>
                                         <th>Email</th>
                                         <th>Created Time</th>
@@ -167,7 +216,49 @@
 
                                 </tbody>
                             </table>
-                        </div>
+                        </div> --}}
+                        @foreach($groupedInvoices as $invoice)
+                            <div class="mb-6 border rounded-lg shadow-sm p-4 bg-white">
+                                <h2 class="text-lg font-semibold mb-2 text-indigo-800">#INV-{{ $invoice['razorpay_order_id'] }}</h2>
+                                <div class="flex justify-between">
+                                    <div class="mb-3">
+                                        <strong>Patient Name:</strong> {{ $invoice['patient_info']['name'] }}<br>
+                                        <strong>Email:</strong> {{ $invoice['patient_info']['email'] }}<br>
+                                        <strong>Phone:</strong> {{ $invoice['patient_info']['phone'] }}
+                                    </div>
+                                    <img src="{{ asset('assets/img/others/paid_stamp.png') }}" alt="paid status" style="height: 60px;" />
+                                </div>
+
+                                <div class="overflow-x-auto">
+                                    <table class="table-auto w-full border-collapse border border-gray-300 mb-3">
+                                        <thead class="bg-[#024568] text-white">
+                                            <tr>
+                                                <th class="border border-gray-300 px-4 py-2 text-left">#</th>
+                                                <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
+                                                <th class="border border-gray-300 px-4 py-2 text-left">Quantity</th>
+                                                <th class="border border-gray-300 px-4 py-2 text-left">Unit Price</th>
+                                                <th class="border border-gray-300 px-4 py-2 text-left">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($invoice['items'] as $index => $item)
+                                                <tr class="hover:bg-gray-100">
+                                                    <td class="border border-gray-300 px-4 py-2">{{ $index + 1 }}</td>
+                                                    <td class="border border-gray-300 px-4 py-2">{{ $item['description'] }}</td>
+                                                    <td class="border border-gray-300 px-4 py-2">{{ $item['quantity'] }}</td>
+                                                    <td class="border border-gray-300 px-4 py-2">₹{{ number_format($item['unit_price'], 2) }}</td>
+                                                    <td class="border border-gray-300 px-4 py-2">₹{{ number_format($item['total'], 2) }}</td>
+                                                </tr>
+                                            @endforeach
+                                            <tr class="bg-gray-100 font-semibold">
+                                                <td colspan="4" class="border border-gray-300 px-4 py-2 text-right">Subtotal</td>
+                                                <td class="border border-gray-300 px-4 py-2">₹{{ number_format($invoice['subtotal'], 2) }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="card card-layout-frame xl:col-span-2">

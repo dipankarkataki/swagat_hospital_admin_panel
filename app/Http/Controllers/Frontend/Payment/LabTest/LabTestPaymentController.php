@@ -228,6 +228,7 @@ class LabTestPaymentController extends Controller
                 'tax' => number_format($tax, 2),
                 'total' => number_format($total, 2),
                 'logo_path' => public_path('assets/img/logo/swagat-logo-old.png'),
+                'paid_stamp_path' => public_path('assets/img/others/paid_stamp.png'),
                 'patient_info' =>  $patient_info
             ]);
 

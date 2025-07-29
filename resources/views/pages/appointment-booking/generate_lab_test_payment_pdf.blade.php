@@ -32,6 +32,10 @@
             margin-bottom: 10px;
         }
 
+        .paid_logo{
+            height: 100px;
+        }
+
         .title {
             font-size: 22px;
             font-weight: bold;
@@ -106,6 +110,13 @@
             color: #856404;
             text-align: center;
         }
+
+        .bill-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
     </style>
 </head>
 <body>
@@ -118,6 +129,7 @@
                     <td width="60%" valign="top">
                         @php
                             $logo_path = '/assets/img/logo/swagat-logo-old.png';
+                            $paid_stamp_path = '/assets/img/others/paid_stamp.png';
                         @endphp
                         @if(file_exists(public_path($logo_path)))
                             <img src="{{ public_path($logo_path) }}" alt="Hospital Logo" class="logo">
@@ -142,11 +154,33 @@
 
         <!-- Bill To -->
         <div class="section-title">Bill To</div>
-        <div class="info">
+        {{-- <div class="info">
             <p><strong>Name:</strong> {{ $patient_info['patient_name'] ?? '' }}</p>
             <p><strong>Email:</strong> {{ $patient_info['patient_email'] ?? '' }}</p>
             <p><strong>Phone:</strong> {{ $patient_info['patient_phone'] ?? '' }}</p>
         </div>
+
+        <div class="info">
+            @if(file_exists(public_path($paid_stamp_path)))
+                <img src="{{ public_path($paid_stamp_path) }}" alt="Hospital Logo" class="paid_logo">
+            @endif
+        </div> --}}
+
+        <table width="100%" style="margin-top: 10px; border: none; border-collapse: collapse;">
+            <tr>
+                <td width="70%" valign="top" style="border: none;">
+                    <p><strong>Name:</strong> {{ $patient_info['patient_name'] ?? '' }}</p>
+                    <p><strong>Email:</strong> {{ $patient_info['patient_email'] ?? '' }}</p>
+                    <p><strong>Phone:</strong> {{ $patient_info['patient_phone'] ?? '' }}</p>
+                </td>
+                <td width="30%" align="center" valign="top" style="border: none;">
+                    @if(file_exists(public_path($paid_stamp_path)))
+                        <img src="{{ public_path($paid_stamp_path) }}" alt="Paid Stamp" class="paid_logo">
+                    @endif
+                </td>
+            </tr>
+        </table>
+
 
         <!-- Invoice Items -->
         <div class="section-title">Invoice Items</div>
