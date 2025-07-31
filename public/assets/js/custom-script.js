@@ -162,6 +162,16 @@ $(document).ready(function(){
         reader.readAsDataURL(this.files[0]);
     });
 
+     // Edit Preview Photo Before Upload
+    $('#editUploadProfilePicture').on('change', function(e) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            $('#imageFromDB').attr('src', event.target.result).hide();
+            $('#imagePreview').attr('src', event.target.result).show();
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
+
     //Dynamic form submit button
     $(document).on('submit', 'form', function(e){
 

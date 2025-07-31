@@ -24,14 +24,14 @@
                                         <label class="form-label mb-2">Profile Picture *</label>
                                         <div class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]" @error('uploadProfilePicture') style="border: 2px dashed rgb(239 68 68)" @enderror>
                                             <div>
-                                                <input class="upload-input draggable" id="uploadProfilePicture" name="uploadProfilePicture" type="file">
+                                                <input class="upload-input draggable" id="editUploadProfilePicture" name="uploadProfilePicture" type="file">
                                             </div>
                                             <div class="text-center">
                                                 <div class="flex flex-row justify-center items-center">
                                                     <img id="imageFromDB" src="{{ asset('storage/'.$portfolio->profile_pic) }}" alt="Image Preview" style="max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
                                                 </div>
                                                 <div class="flex flex-row justify-center items-center">
-                                                    <img id="imagePreview" src="{{ asset('assets/storage/'.$portfolio->profile_pic) }}" alt="Image Preview" style="display:none; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                                    <img id="imagePreview" src="" alt="Image Preview" style="display:none; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
                                                 </div>
                                                 <p class="font-semibold">
                                                     <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
