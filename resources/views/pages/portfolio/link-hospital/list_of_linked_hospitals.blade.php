@@ -30,7 +30,7 @@
                                                 <td>
                                                     <div class="flex items-center gap-3">
                                                         <span class="avatar avatar-circle w-[50px]" data-avatar-size="50">
-                                                            <img class="avatar-img avatar-circle" src="{{ asset('storage/' . $item->portfolio->profile_pic) }}" loading="lazy">
+                                                            <img class="avatar-img avatar-circle" src="{{ asset('storage/' . optional($item->portfolio)->profile_pic) }}" loading="lazy">
                                                         </span>
                                                         <a class="hover:text-primary-600 ml-2 rtl:mr-2 font-semibold">{{ $item->portfolio->full_name }}</a>
                                                     </div>
