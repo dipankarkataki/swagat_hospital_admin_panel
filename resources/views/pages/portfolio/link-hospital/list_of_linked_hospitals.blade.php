@@ -32,11 +32,11 @@
                                                         <span class="avatar avatar-circle w-[50px]" data-avatar-size="50">
                                                             <img class="avatar-img avatar-circle" src="{{ asset('storage/' . optional($item->portfolio)->profile_pic) }}" loading="lazy">
                                                         </span>
-                                                        <a class="hover:text-primary-600 ml-2 rtl:mr-2 font-semibold">{{ $item->portfolio->full_name }}</a>
+                                                        <a class="hover:text-primary-600 ml-2 rtl:mr-2 font-semibold">{{ optional($item->portfolio)->full_name }}</a>
                                                     </div>
                                                 </td>
-                                                <td>{{ $item->hospitals->name }}</td>
-                                                 <td>{{ $item->hospitals->address }}</td>
+                                                <td>{{ optional($item->portfolio)->name }}</td>
+                                                 <td>{{ optional($item->portfolio)->address }}</td>
                                                 <td>
                                                     @if ($item->status == 1)
                                                         <div class="flex justify-start items-center">
