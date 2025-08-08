@@ -36,8 +36,8 @@
                                                             <a class="hover:text-primary-600 ml-2 rtl:mr-2 font-semibold">{{ optional($item->portfolio)->full_name }}</a>
                                                         </div>
                                                     </td>
-                                                    <td>{{ optional($item->portfolio)->name }}</td>
-                                                    <td>{{ optional($item->portfolio)->address }}</td>
+                                                    <td>{{ optional($item->portfolio)->name ?? 'Not Found' }}</td>
+                                                    <td>{{ optional($item->portfolio)->address ?? 'Not Found' }}</td>
                                                     <td>
                                                         @if ($item->status == 1)
                                                             <div class="flex justify-start items-center">
