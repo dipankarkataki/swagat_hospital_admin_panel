@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->json('lab_test_id');
-            $table->decimal('full_price', 6, 2);
+            $table->decimal('full_price', 8, 2);
             $table->integer('discount')->nullable();
-            $table->decimal('discounted_price', 6, 2)->nullable();
+            $table->decimal('discounted_price', 8, 2)->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
