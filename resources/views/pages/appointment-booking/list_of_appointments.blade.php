@@ -66,7 +66,7 @@
                                             <td>{{ $appointment->phone ?? '-----'}}</td>
                                             <td>{{ $appointment->appointment_date ?? '-----'}}</td>
                                             <td>{{ $appointment->appointment_time ?? '-----'}}</td>
-                                            <td>{{ optional($appointment->portfolio->departments)->name ?? '-----'}}</td>
+                                            <td>{{ optional(optional($appointment->portfolio)->departments)->name ?? '-----'}}</td>
                                             <td>{{ optional($appointment->portfolio)->full_name ?? '-----'}} [{{ optional($appointment->portfolio)->email ?? '-----'}}]</td>
                                             <td>{{ optional($appointment->hospital)->name ?? '-----'}}</td>
                                             <td>
