@@ -55,7 +55,7 @@
                                                 </div>
                                             </td>
                                             <td>{{ \Str::limit($item->description, 50) ?? 'N/A' }}</td>
-                                            <td>{{ $item->labTestCategory->name}}</td>
+                                            <td>{{ optional($item->labTestCategory)->name}}</td>
                                             <td>{{ count(json_decode($item->lab_test_id))}}</td>
                                             <td>{{ $item->full_price}}</td>
                                             <td>{{ $item->discount == '' ? 'N/A' : $item->discount.'%'}}</td>
