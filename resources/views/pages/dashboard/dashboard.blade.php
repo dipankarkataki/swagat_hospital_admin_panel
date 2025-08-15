@@ -87,9 +87,12 @@
                                 </span>
                             </span>
                             <div>
-                                <div class="flex gap-1.5 items-end mb-2">
+                                <div class="flex gap-2 items-center mb-2">
                                     <h3 class="font-bold leading-none">{{$total_lab_tests}}</h3>
-                                    <p class="font-semibold">Lab Tests</p>
+                                    <div class="flex flex-col">
+                                        <p class="font-semibold">Available</p>
+                                        <p class="font-semibold">Lab Tests</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -184,14 +187,15 @@
                                         <strong>Patient Name:</strong> {{ $invoice['patient_info']['name'] }}<br>
                                         <strong>Email:</strong> {{ $invoice['patient_info']['email'] }}<br>
                                         <strong>Phone:</strong> {{ $invoice['patient_info']['phone'] }}<br>
-                                        <strong>Payment Method:</strong> <span style="text-transform: capitalize;">{{$invoice['patient_info']['payment_method']}}</span>
+                                        <strong>Payment Method:</strong> <span style="text-transform: capitalize;">{{$invoice['patient_info']['payment_method']}}</span><br>
+                                        <strong>Total Payment:</strong> <span style="color:#0023d9">₹{{ number_format($invoice['subtotal'], 2) }}</span>
                                     </div>
                                     <img src="{{ asset('assets/img/others/paid_stamp.png') }}" alt="paid status" style="height: 60px;" />
                                 </div>
 
-                                <div class="overflow-x-auto">
+                                {{-- <div class="overflow-x-auto">
                                     <table class="table-auto w-full border-collapse border border-gray-300 mb-3">
-                                        <thead class="bg-[#024568] text-white">
+                                        <thead class="bg-[#024568] text-[#024658]">
                                             <tr>
                                                 <th class="border border-gray-300 px-4 py-2 text-left">#</th>
                                                 <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
@@ -216,7 +220,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> --}}
                             </div>
                         @empty
                             <div class="flex justify-center items-center h-full">

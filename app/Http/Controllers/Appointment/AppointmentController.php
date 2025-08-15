@@ -30,12 +30,16 @@ class AppointmentController extends Controller
 
             $groupedInvoices = [];
 
+
+
             foreach ($allPayments as $razorpayId => $paymentsGroup) {
                 $invoice = [];
                 $subtotal = 0;
                 $first = $paymentsGroup->first(); // to fetch patient info once
 
                 $invoice['razorpay_order_id'] = $razorpayId;
+                $invoice['payment_status'] = $first->payment_status;
+                $invoice['total_amount'] = $first->amount;
                 $invoice['patient_info'] = [
                     'name' => $first->patient_name,
                     'email' => $first->patient_email,
