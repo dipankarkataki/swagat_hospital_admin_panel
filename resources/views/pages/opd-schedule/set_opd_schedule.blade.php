@@ -50,7 +50,7 @@
                                 <label class="form-label mb-2">Set OPD Unavailable Dates</label>
                                 <div>
                                     <div class="input-group mb-4">
-                                        <input class="input opd_date" type="date" name="opd_date[]" value="" required>
+                                        <input class="input opd_date" type="date" name="opd_date[]" value="">
                                         <button class="btn btn-solid" id="addAvailableDateBtn">
                                             <span class="flex items-center justify-center gap-2">
                                                 <span class="text-lg">
@@ -161,19 +161,19 @@
                 // Disable button immediately
                 $('#setOpdTimingBtn').attr('disabled', true).text('Please wait...');
 
-                let hasEmptyDate = false;
+                // let hasEmptyDate = false;
 
-                $('.opd_date').each(function() {
-                    if (!$(this).val()) {
-                        hasEmptyDate = true;
-                    }
-                });
+                // $('.opd_date').each(function() {
+                //     if (!$(this).val()) {
+                //         hasEmptyDate = true;
+                //     }
+                // });
 
-                if (hasEmptyDate) {
-                    toastr.error('Please select all OPD dates before submitting.');
-                    $('#setOpdTimingBtn').attr('disabled', false).text('Submit');
-                    return;
-                }
+                // if (hasEmptyDate) {
+                //     toastr.error('Please select all OPD dates before submitting.');
+                //     $('#setOpdTimingBtn').attr('disabled', false).text('Submit');
+                //     return;
+                // }
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -25,6 +25,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                         @foreach ($opd_schedules as $index => $item)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
@@ -43,9 +44,15 @@
                                                 <td>{{ optional($item->hospital)->name }}</td>
                                                 <td>{{ \Str::limit(optional($item->hospital)->address, 50) }}</td>
                                                 <td>
-                                                    @foreach(json_decode($item->opd_date, true) as $date)
+                                                    @php
+                                                        $dates = array_filter(json_decode($item->opd_date, true) ?? []);
+                                                    @endphp
+
+                                                    @forelse($dates as $date)
                                                         <div>{{ \Carbon\Carbon::parse($date)->format('M-d') }}</div>
-                                                    @endforeach
+                                                    @empty
+                                                        <span class="text-red-700">-----</span>
+                                                    @endforelse
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::parse($item->opd_start_time)->format('h:i:a') }} to {{ \Carbon\Carbon::parse($item->opd_end_time)->format('h:i:a') }}</td>
                                                 <td>

@@ -36,8 +36,8 @@ class OpdTimingController extends Controller
                 'linked_portfolio_id' => 'required',
                 'portfolio_id' => 'required',
                 'hospital_id' => 'required',
-                'opd_date' => 'required|array',
-                'opd_date.*' => 'required|date',
+                'opd_date' => 'nullable|array',
+                'opd_date.*' => 'nullable|date',
                 'opd_start_time' => 'required',
                 'opd_end_time' => 'required'
             ],[
