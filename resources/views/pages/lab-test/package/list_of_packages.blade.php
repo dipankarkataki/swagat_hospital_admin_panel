@@ -46,7 +46,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($all_lab_test_packages as $index => $item)
+                                    @forelse ($all_lab_test_packages as $index => $item)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
@@ -92,7 +92,11 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr colspan="10">
+                                            <td>No data found.</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
