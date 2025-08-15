@@ -40,8 +40,8 @@
                                                         <a class="hover:text-primary-600 ml-2 rtl:mr-2 font-semibold">{{ optional($item->portfolio)->full_name }}</a>
                                                     </div>
                                                 </td>
-                                                <td>{{ $item->hospital->name }}</td>
-                                                <td>{{ \Str::limit($item->hospital->address, 50) }}</td>
+                                                <td>{{ optional($item->hospital)->name }}</td>
+                                                <td>{{ \Str::limit(optional($item->hospital)->address, 50) }}</td>
                                                 <td>
                                                     @foreach(json_decode($item->opd_date, true) as $date)
                                                         <div>{{ \Carbon\Carbon::parse($date)->format('M-d') }}</div>
