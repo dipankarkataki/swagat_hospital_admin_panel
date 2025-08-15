@@ -37,7 +37,7 @@
                                                                 <img class="avatar-img avatar-circle" src="{{ asset('assets/img/avatars/user-avatar.png') }}" loading="lazy">
                                                             @endif
                                                         </span>
-                                                        <a class="hover:text-primary-600 ml-2 rtl:mr-2 font-semibold">{{ $item->portfolio->full_name }}</a>
+                                                        <a class="hover:text-primary-600 ml-2 rtl:mr-2 font-semibold">{{ optional($item->portfolio)->full_name }}</a>
                                                     </div>
                                                 </td>
                                                 <td>{{ $item->hospital->name }}</td>
