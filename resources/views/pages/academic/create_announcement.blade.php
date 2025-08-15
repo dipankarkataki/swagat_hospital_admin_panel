@@ -71,7 +71,7 @@
                                         <p class="text-sm">
                                             <span class="text-gray-800 dark:text-white">Press and hold ctrl or cmd to select multiple image</span>
                                         </p>
-                                        <p class="mt-1 mb-5 opacity-60 dark:text-white">Support: jpeg, png</p>
+                                        <p class="mt-1 mb-5 opacity-60 dark:text-white">Support: jpeg, png, webp</p>
                                     </div>
                                 </div>
                             </div>

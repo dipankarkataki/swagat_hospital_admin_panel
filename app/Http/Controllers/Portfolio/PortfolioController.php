@@ -36,7 +36,7 @@ class PortfolioController extends Controller
             return view('pages.portfolio.create')->with(['list_of_departments' =>  $list_of_departments]);
         }else{
             $validator = Validator::make($request->all(), [
-                'uploadProfilePicture' => 'required|image|mimes:png,jpg,jpeg|max:1024',
+                'uploadProfilePicture' => 'required|image|mimes:png,jpg,jpeg,webp|max:1024',
                 'fullName' => 'required|string|min:3|max:255',
                 'email' => 'required|email|unique:portfolios,email',
                 'qualification' => 'required|string|min:3',
@@ -108,7 +108,7 @@ class PortfolioController extends Controller
         $portfolio_id = decrypt($id);
 
         $validator = Validator::make($request->all(), [
-            'uploadProfilePicture' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
+            'uploadProfilePicture' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:1024',
             'fullName' => 'required|string|min:3|max:255',
             'email' => 'required|email|unique:portfolios,email,'.$portfolio_id,
             'qualification' => 'required|string',

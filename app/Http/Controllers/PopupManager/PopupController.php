@@ -28,7 +28,7 @@ class PopupController extends Controller
             return view('pages.popup-manager.create_popup');
         }else{
             $validator = Validator::make($request->all(), [
-                'creative_image' => 'required|image|mimes:png,jpg,jpeg|max:1024',
+                'creative_image' => 'required|image|mimes:png,jpg,jpeg,webp|max:1024',
             ]);
 
             if($validator->fails()){
@@ -65,7 +65,7 @@ class PopupController extends Controller
 
     public function editCreativePopup(Request $request){
         $validator = Validator::make($request->all(), [
-            'creative_image' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
+            'creative_image' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:1024',
         ]);
 
         if($validator->fails()){

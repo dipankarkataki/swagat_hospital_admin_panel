@@ -68,7 +68,7 @@
                                             <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
                                             <span class="text-blue-500">browse</span>
                                         </p>
-                                        <p class="mt-1 opacity-60 dark:text-white">Support: jpeg, png</p>
+                                        <p class="mt-1 opacity-60 dark:text-white">Support: jpeg, png, webp</p>
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
                                                 <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
                                                 <span class="text-blue-500">browse</span>
                                             </p>
-                                            <p class="mt-1 opacity-60 dark:text-white">Support: jpeg, png</p>
+                                            <p class="mt-1 opacity-60 dark:text-white">Support: jpeg, png, webp</p>
                                         </div>
                                     </div>
                                 </div>

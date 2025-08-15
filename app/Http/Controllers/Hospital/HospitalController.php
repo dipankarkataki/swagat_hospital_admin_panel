@@ -24,7 +24,7 @@ class HospitalController extends Controller
             return view('pages.hospital.create');
         }else{
             $validator = Validator::make($request->all(), [
-                'hospital_image' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
+                'hospital_image' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:1024',
                 'hospital_name' => 'required|string|max:255',
                 'hospital_phone' => 'required',
                 'hospital_address' => 'required|string|max:255',
@@ -68,7 +68,7 @@ class HospitalController extends Controller
 
     public function editHospital(Request $request){
         $validator = Validator::make($request->all(), [
-            'hospital_image' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
+            'hospital_image' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:1024',
             'hospital_id' => 'required',
             'hospital_name' => 'required|string|max:255',
             'hospital_phone' => 'required',

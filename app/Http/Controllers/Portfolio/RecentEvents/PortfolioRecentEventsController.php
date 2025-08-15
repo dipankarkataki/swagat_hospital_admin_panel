@@ -30,8 +30,8 @@ class PortfolioRecentEventsController extends Controller
                 'portfolio_id' => 'required',
                 'event_title' => 'required',
                 'media_type' => 'required',
-                'event_picture' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
-                'event_video_thumbnail' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
+                'event_picture' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:1024',
+                'event_video_thumbnail' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:1024',
                 'event_video' => 'nullable|file|mimes:mp4,avi|max:3024',
             ]);
 
@@ -104,8 +104,8 @@ class PortfolioRecentEventsController extends Controller
             'portfolio_id' => 'required',
             'event_title' => 'required',
             'media_type' => 'required',
-            'event_picture' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
-            'event_video_thumbnail' => 'nullable|image|mimes:png,jpg,jpeg|max:1024',
+            'event_picture' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:1024',
+            'event_video_thumbnail' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:1024',
             'event_video' => 'nullable|file|mimes:mp4,avi|max:3024',
         ]);
 
