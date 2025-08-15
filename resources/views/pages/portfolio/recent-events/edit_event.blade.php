@@ -21,7 +21,7 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Select Doctor *</label>
                                 <div>
-                                    <input class="input" type="text" name="portfolio_id" id="portfolio_id" value="{{$event_details->portfolio->full_name}} : [{{$event_details->portfolio->email}}]" required readonly>
+                                    <input class="input" type="text" name="portfolio_id" id="portfolio_id" value="{{$event_details->portfolio?->full_name}} : [{{$event_details->portfolio?->email}}]" required readonly>
                                 </div>
                             </div>
                             <div class="form-item">
