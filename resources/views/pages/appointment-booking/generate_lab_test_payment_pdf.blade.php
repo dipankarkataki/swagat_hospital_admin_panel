@@ -117,6 +117,21 @@
             align-items: flex-start;
             gap: 20px;
         }
+        .package-name{
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .test-heading{
+            font-size: 13px;
+        }
+        .test-name{
+            font-size: 12px;
+            margin-left:20px;
+        }
+        .discount{
+            font-size: 10px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -185,13 +200,37 @@
             </thead>
             <tbody>
                 @foreach ($invoice_items as $index => $item)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $item['description'] }}</td>
-                        <td>{{ $item['quantity'] }}</td>
-                        <td>{{ number_format($item['unit_price'], 2) }}</td>
-                        <td>{{ number_format($item['total'], 2) }}</td>
-                    </tr>
+                    @if ($item['test_type'] === 'package')
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>
+                                <p class="package-name">{{ $item['description'] }}</p>
+                                <p class="test-heading">Included Test: </p>
+                                @foreach ($item['test_details'] as $test)
+                                    <p class="test-name">{{$test->name}}</p>
+                                @endforeach
+                            </td>
+                            <td>{{ $item['quantity'] }}</td>
+                            <td>
+                                @if ($item['discount'] != null)
+                                    <p>{{ number_format($item['full_price'], 2) }}</p>
+                                    <p class="discount">Discounts Applied : ( {{$item['discount']}} % )</p>
+                                @else
+                                    {{ number_format($item['total'], 2) }}
+                                @endif
+
+                            </td>
+                            <td>{{ number_format($item['total'], 2) }}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $item['description'] }}</td>
+                            <td>{{ $item['quantity'] }}</td>
+                            <td>{{ number_format($item['unit_price'], 2) }}</td>
+                            <td>{{ number_format($item['total'], 2) }}</td>
+                        </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>

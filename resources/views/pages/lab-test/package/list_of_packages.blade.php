@@ -30,7 +30,7 @@
                 <div class="card card-layout-frame">
                     <div class="card-body">
                         <div class="overflow-x-auto">
-                            <table id="labTestDataTable" class="table-default table-hover">
+                            <table id="labTestPackageDataTable" class="table-default table-hover">
                                 <thead>
                                     <tr>
                                         <th>Sl No.</th>
@@ -46,7 +46,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($all_lab_test_packages as $index => $item)
+                                    @foreach ($all_lab_test_packages as $index => $item)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
@@ -55,7 +55,15 @@
                                                 </div>
                                             </td>
                                             <td>{{ \Str::limit($item->description, 50) ?? 'N/A' }}</td>
-                                            <td>{{ optional($item->labTestCategory)->name}}</td>
+                                            <td>
+                                                <div class="flex flex-wrap gap-2">
+                                                    @foreach($item->categories as $category)
+                                                        <span class="px-2 py-1 rounded-full text-white text-xs font-semibold {{ $loop->index % 2 == 0 ? 'bg-indigo-500' : 'bg-emerald-500' }}">
+                                                            {{ $category->name }}
+                                                        </span>
+                                                    @endforeach
+                                                </div>
+                                            </td>
                                             <td>{{ count(json_decode($item->lab_test_id))}}</td>
                                             <td>{{ $item->full_price}}</td>
                                             <td>{{ $item->discount == '' ? 'N/A' : $item->discount.'%'}}</td>
@@ -92,11 +100,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @empty
-                                        <tr rowspan="10">
-                                            <td>No data found.</td>
-                                        </tr>
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -109,6 +113,6 @@
 @endsection
 @section('custom-scripts')
     <script>
-        $('#labTestDataTable').DataTable();
+        $('#labTestPackageDataTable').DataTable();
     </script>
 @endsection

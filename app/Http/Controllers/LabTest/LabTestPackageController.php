@@ -9,6 +9,7 @@ use App\Models\LabTestPackage;
 use App\Models\LabTestCategory;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\LabTestPackageCategory;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,20 +27,33 @@ class LabTestPackageController extends Controller
             }
         }else{
             $validator = Validator::make($request->all(), [
-                'category_id' => 'required',
-                'package_name' => 'required',
-                'lab_test_id' => 'required',
-                'package_desc' => 'required',
-                'package_amount' => 'required',
+                'category_id'   => 'required|array',
+                'package_name'  => 'required|string',
+                'lab_test_id'   => 'required|array',
+                'package_desc'  => 'required|string',
+                'package_amount'=> 'required|numeric',
             ]);
 
             if($validator->fails()){
                 return $this->error('Oops! Validation Error: '.$validator->errors()->first(), null, 400);
             }else{
                 try{
-                    $category_id = decrypt($request->category_id);
-                    LabTestPackage::create([
-                        'lab_test_category_id' => $category_id,
+                    // Decrypt all category ids
+
+                    $category_ids = [];
+                    foreach ($request->category_id as $encId) {
+                        try {
+                            $category_ids[] = decrypt($encId);
+                        } catch (\Exception $ex) {
+                            Log::warning("Warning LabTestPackageController@createTestPackage Invalid encrypted category_id: ".$encId);
+                        }
+                    }
+
+                    if (empty($category_ids)) {
+                        return $this->error('Invalid category IDs received.', null, 400);
+                    }
+
+                    $package = LabTestPackage::create([
                         'name' => $request->package_name,
                         'description' => $request->package_desc,
                         'lab_test_id' => json_encode($request->lab_test_id),
@@ -47,6 +61,9 @@ class LabTestPackageController extends Controller
                         'discount' => $request->package_discount,
                         'discounted_price' => $request->package_discounted_amount
                     ]);
+
+                    $package->categories()->attach($category_ids);
+
                     return $this->success('Great! Lab test package created successfully', null, 201);
                 }catch(\Exception $e){
                     Log::error('Error at LabTestPackageController@createTestPackage -- Method POST ---'.$e->getMessage().'. At line no: '.$e->getLine());
@@ -56,10 +73,28 @@ class LabTestPackageController extends Controller
         }
     }
 
-    public function getLabTestByCategory($id){
+    public function getLabTestByCategories(Request $request){
         try{
-            $category_id = decrypt($id);
-            $all_lab_tests = LabTest::where('lab_test_category_id', $category_id)->latest()->get();
+            $encrypted_ids = $request->input('category_ids', []); // array of encrypted IDs
+            if(empty($encrypted_ids)){
+                return $this->error('No categories selected.', null, 400);
+            }
+
+            $category_ids = [];
+            foreach ($encrypted_ids as $encId) {
+                try {
+                    $category_ids[] = decrypt($encId);
+                } catch (\Exception $e) {
+                    Log::warning("Warning at LabTestPackageController@getLabTestByCategory Invalid encrypted category id: " . $encId);
+                }
+            }
+
+            if (empty($category_ids)) {
+                return $this->error('Invalid category IDs.', null, 400);
+            }
+
+            $all_lab_tests = LabTest::whereIn('lab_test_category_id', $category_ids)->latest()->get();
+
             return $this->success('Great! Lab test by category fetched successfully.', $all_lab_tests, 200);
         }catch(\Exception $e){
             Log::error('Error at LabTestPackageController@getLabTestByCategory :'.$e->getMessage().'. At line no: '.$e->getLine());
@@ -69,7 +104,7 @@ class LabTestPackageController extends Controller
 
     public function getListOfPackages(){
         try{
-            $all_lab_test_packages = LabTestPackage::with('labTestCategory')->latest()->get();
+            $all_lab_test_packages = LabTestPackage::with('categories')->latest()->get();
             return view('pages.lab-test.package.list_of_packages')->with(['all_lab_test_packages' => $all_lab_test_packages]);
         }catch(\Exception $e){
             Log::error('Error at LabTestPackageController@getListOfPackages :'.$e->getMessage().'. At line no: '.$e->getLine());
@@ -92,21 +127,34 @@ class LabTestPackageController extends Controller
     public function labTestPackageById($id){
         try{
             $get_package_id = decrypt($id);
-            $package_details = LabTestPackage::with('labTestCategory')->where('id', $get_package_id)->first();
-            $all_lab_test = LabTest::where('lab_test_category_id',  $package_details->lab_test_category_id)->where('status', 1)->latest()->get();
-            return view('pages.lab-test.package.edit_package')->with(['all_lab_test' => $all_lab_test, 'package_details' => $package_details]);
+            $package_categories = LabTestPackageCategory::where('lab_test_package_id', $get_package_id)->get();
+            if($package_categories->isEmpty()){
+                Log::error('Error at LabTestPackageController@labTestPackageById : No Package Id Found');
+                Session::flash('exception', 'Oops! Something went wrong. Package id not found.');
+                return redirect()->route('lab.package.test.get.list');
+            }
+
+            $category_ids = $package_categories->pluck('lab_test_category_id')->toArray();
+
+            $package_details = LabTestPackage::where('id', $get_package_id)->first();
+            $lab_test_category = LabTestCategory::where('status', 1)->get();
+            $all_lab_test = LabTest::whereIn('lab_test_category_id',  $category_ids)->where('status', 1)->latest()->get();
+            return view('pages.lab-test.package.edit_package')->with(['lab_test_category' => $lab_test_category, 'all_lab_test' => $all_lab_test, 'package_details' => $package_details, 'selected_categories' => $category_ids]);
         }catch(\Exception $e){
             Log::error('Error at LabTestPackageController@labTestPackageById :'.$e->getMessage().'. At line no: '.$e->getLine());
+            Session::flash('exception', 'Unexpected error occurred. Please try again.');
+            return redirect()->route('lab.package.test.get.list');
         }
     }
 
     public function editLabTestPackage(Request $request){
         $validator = Validator::make($request->all(), [
-            'package_id' => 'required',
-            'package_name' => 'required',
-            'lab_test_id' => 'required',
-            'package_desc' => 'required',
-            'package_amount' => 'required',
+            'package_id'        => 'required',
+            'category_id'       => 'required|array',
+            'package_name'      => 'required|string',
+            'lab_test_id'       => 'required|array',
+            'package_desc'      => 'required|string',
+            'package_amount'    => 'required|numeric',
         ]);
 
         if($validator->fails()){
@@ -114,17 +162,38 @@ class LabTestPackageController extends Controller
         }else{
             try{
                 $package_id = decrypt($request->package_id);
-                LabTestPackage::where('id', $package_id)->update([
-                    'name' => $request->package_name,
-                    'description' => $request->package_desc,
-                    'lab_test_id' => json_encode($request->lab_test_id),
-                    'full_price' => $request->package_amount,
-                    'discount' => $request->package_discount,
-                    'discounted_price' => $request->package_discounted_amount
+
+                // Decrypt category IDs
+                $category_ids = [];
+                foreach ($request->category_id as $encId) {
+                    try {
+                        $category_ids[] = decrypt($encId);
+                    } catch (\Exception $ex) {
+                        Log::warning("Warning LabTestPackageController@editLabTestPackage Invalid encrypted category_id: ".$encId);
+                    }
+                }
+
+                if (empty($category_ids)) {
+                    return $this->error('Invalid category IDs received.', null, 400);
+                }
+
+                $package = LabTestPackage::findOrFail($package_id);
+
+                // Update package
+                $package->update([
+                    'name'              => $request->package_name,
+                    'description'       => $request->package_desc,
+                    'lab_test_id'       => json_encode($request->lab_test_id),
+                    'full_price'        => $request->package_amount,
+                    'discount'          => $request->package_discount,
+                    'discounted_price'  => $request->package_discounted_amount
                 ]);
-                return $this->success('Great! Lab test package created successfully', null, 201);
+
+                // Sync categories (detach old, attach new)
+                $package->categories()->sync($category_ids);
+                return $this->success('Great! Lab test package edited successfully', null, 200);
             }catch(\Exception $e){
-                Log::error('Error at LabTestPackageController@createTestPackage -- Method POST ---'.$e->getMessage().'. At line no: '.$e->getLine());
+                Log::error('Error at LabTestPackageController@editLabTestPackage -- Method POST ---'.$e->getMessage().'. At line no: '.$e->getLine());
                 return $this->error('Oops! Something went wrong. Please try later', null, 500);
             }
         }

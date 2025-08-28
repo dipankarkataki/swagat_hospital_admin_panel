@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Models\LabTest;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use App\Models\LabTestPackage;
+use App\Models\LabTestCategory;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\LabTest;
-use App\Models\LabTestCategory;
-use App\Models\LabTestPackage;
+use App\Models\LabTestPackageCategory;
 
 class LabTestController extends Controller
 {
@@ -44,9 +45,9 @@ class LabTestController extends Controller
         }
     }
 
-    public function listOfPackageByCategory($category_id){
+    public function listOfPackages(){
         try{
-            $list_of_packages = LabTestPackage::where('lab_test_category_id', $category_id)->where('status', 1)->latest()->get();
+            $list_of_packages = LabTestPackage::with('categories')->latest()->get();
             return $this->success('Great! Package by category fetched successfully', $list_of_packages, 200);
         }catch(\Exception $e){
             Log::error('Error occurred at Frontend/LabTestController@listOfPackageByCategory : ' . $e->getMessage().'. At line no: '.$e->getLine());
@@ -56,7 +57,7 @@ class LabTestController extends Controller
 
     public function getLabPackageDetails($id){
         try{
-            $package_details = LabTestPackage::where('id', $id)
+            $package_details = LabTestPackage::with('categories')->where('id', $id)
                 ->where('status', 1)
                 ->first();
 
@@ -64,12 +65,22 @@ class LabTestController extends Controller
                 return $this->error('Oops! Package details not found', null, 400);
             }
 
+
+            $package_categories = LabTestPackageCategory::where('lab_test_package_id', $id)->get();
+            if($package_categories->isEmpty()){
+                return $this->error('Oops! Package categories not found', null, 400);
+            }
+
+            $category_ids = $package_categories->pluck('lab_test_category_id')->toArray();
+            $test_categories = LabTestCategory::where('status', 1)->get();
+
             $output_array = [
                 'package_name' => $package_details->name,
                 'full_price' => $package_details->full_price,
                 'discounted_price' => $package_details->discounted_price,
                 'discount' => $package_details->discount,
                 'package_description' => $package_details->description,
+                'test_categories' => $test_categories,
                 'test_details' => []
             ];
 
@@ -77,12 +88,13 @@ class LabTestController extends Controller
 
             foreach ($parsed_lab_test_ids as $test_id) {
                 $lab_test_details = LabTest::where('id', $test_id)
-                    ->where('lab_test_category_id', $package_details->lab_test_category_id)
+                    ->whereIn('lab_test_category_id', $category_ids)
                     ->where('status', 1)
                     ->get();
 
                 foreach ($lab_test_details as $test) {
                     $output_array['test_details'][] = [
+                        'lab_test_category_id' => $test->lab_test_category_id,
                         'lab_test_name' => $test->name,
                         'description' => $test->description,
                         'price' => $test->price,

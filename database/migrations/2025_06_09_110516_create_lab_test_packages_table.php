@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('lab_test_packages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('lab_test_category_id');
             $table->string('name');
             $table->text('description');
             $table->json('lab_test_id');
@@ -23,8 +22,6 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('lab_test_category_id')->references('id')->on('lab_test_categories')->onDelete('cascade');
         });
     }
 

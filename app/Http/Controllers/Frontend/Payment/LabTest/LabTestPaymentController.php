@@ -132,6 +132,7 @@ class LabTestPaymentController extends Controller
                     $lab_test = LabTest::find($details->cart_item_id);
                     if ($lab_test) {
                         $invoice_items[] = [
+                            'test_type' => 'single_test',
                             'description' => $lab_test->name,
                             'quantity' => 1,
                             'unit_price' => $lab_test->price,
@@ -143,15 +144,20 @@ class LabTestPaymentController extends Controller
                     $package = LabTestPackage::find($details->cart_item_id);
                     if ($package) {
                         $tests = LabTest::whereIn('id', json_decode($package->lab_test_id))->get();
-                        foreach ($tests as $lab_test) {
+                        // foreach ($tests as $lab_test) {
                             $invoice_items[] = [
-                                'description' => $lab_test->name . ' (Part of Package: ' . $package->name . ')',
+                                'test_type' => 'package',
+                                'description' => 'Package: ' . $package->name,
+                                'test_details' =>  $tests,
+                                // 'test_price' =>  $lab_test->price,
                                 'quantity' => 1,
-                                'unit_price' => $lab_test->price,
-                                'total' => $lab_test->price
+                                'full_price' => $package->full_price,
+                                'discount' => $package->discount,
+                                'discounted_price' => $package->discounted_price,
+                                'total' => $package->discount != null ? $package->discounted_price : $package->full_price
                             ];
-                            $subtotal += $lab_test->price;
-                        }
+                            $subtotal += $package->discount != null ? $package->discounted_price : $package->full_price;
+                        // }
                     }
                 }
             }

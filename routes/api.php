@@ -35,7 +35,7 @@ Route::group(['prefix' => 'department'], function(){
 Route::group(['prefix' => 'lab-test'], function(){
     Route::get('categories', [LabTestController::class, 'getLabTestCategories']);
     Route::get('list-of-single-test-by-category/{category_id}', [LabTestController::class, 'listOfSingleTestByCategory']);
-    Route::get('list-of-package-by-category/{category_id}', [LabTestController::class, 'listOfPackageByCategory']);
+    Route::get('list-of-packages', [LabTestController::class, 'listOfPackages']);
     Route::get('lab-test-details-by-id/{id}', [LabTestController::class, 'labTestDetailsById']);
 });
 

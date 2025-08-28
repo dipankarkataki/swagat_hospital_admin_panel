@@ -256,6 +256,10 @@ $(document).ready(function(){
         });
     });
 
+    $('.select-lab-category').select2({
+        placeholder: "Choose"
+    });
+
     $('.select-lab-test').select2({
         placeholder: "Choose"
     });

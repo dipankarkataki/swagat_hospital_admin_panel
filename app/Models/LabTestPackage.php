@@ -14,8 +14,14 @@ class LabTestPackage extends Model
         'lab_test_category_id', 'name', 'description', 'lab_test_id', 'full_price', 'discount', 'discounted_price', 'status'
     ];
 
-    public function labTestCategory(){
-        return $this->belongsTo(LabTestCategory::class, 'lab_test_category_id', 'id');
+    public function categories()
+    {
+        return $this->belongsToMany(
+            LabTestCategory::class,          // related model
+            'lab_test_package_categories',   // pivot table
+            'lab_test_package_id',           // foreign key for current model
+            'lab_test_category_id'           // foreign key for related model
+        )->withTimestamps();
     }
 
     public function labTest(){

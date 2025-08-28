@@ -25,8 +25,8 @@
                             <div class="form-item">
                                 <label class="form-label mb-2">Select Category *</label>
                                 <div>
-                                    <select class="input" name="category_id" id="selectCategory" required>
-                                        <option value="" disabled selected> Choose </option>
+                                    <select class="input select-lab-category" name="category_id[]" id="selectCategory" required  multiple="multiple">
+                                        {{-- <option value="" disabled selected> Choose </option> --}}
 
                                         @foreach ($lab_test_categories as $category)
                                             <option value="{{ encrypt($category->id) }}">
@@ -140,8 +140,9 @@
                 });
             });
 
-            let debounceTimer;
             //Get Category Linked Lab Tests
+            let debounceTimer;
+
             $('#selectCategory').on('change', function(e) {
                 clearTimeout(debounceTimer); // Clear previous timer
                 $('#loadingIndicator').show();
@@ -155,16 +156,23 @@
 
 
                 debounceTimer = setTimeout(() => {
-                    const category_id = e.target.value;
-                    if (!category_id){
+                    const category_ids = $(this).val();
+                    if (!category_ids || category_ids.length === 0){
                         $('#loadingIndicator').hide();
                         return;
                     }
-                    const get_lab_test_by_category_url = `/lab-test-package/lab-test-by-category/${category_id}`;
+
+                    // const get_lab_test_by_category_url = `/lab-test-package/lab-test-by-category/${category_ids}`;
 
                     $.ajax({
-                        url: get_lab_test_by_category_url,
-                        type: "GET",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: "{{route('lab.package.test.get.by.categories')}}",
+                        type: "POST",
+                        data: {
+                            category_ids: category_ids
+                        },
                         success: function(response) {
                             if (response.success === true) {
                                 if (response.data?.length > 0) {

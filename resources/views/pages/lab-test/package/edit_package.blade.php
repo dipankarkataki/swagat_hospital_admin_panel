@@ -32,8 +32,18 @@
                             </div>
                             <div class="form-item">
                                 <label class="form-label mb-2">Test Category *</label>
-                                <div>
-                                    <input class="input" type="text" name="category_name" id="category_name" placeholder="e.g. 999.23" value="{{$package_details->labTestCategory->name}}" readonly required>
+                               <div>
+                                    <select class="input select-lab-category" id="selectCategory" multiple="multiple" name="category_id[]" required>
+                                        @foreach ($lab_test_category as $test_category)
+                                            @php
+                                                $isSelected = in_array($test_category->id, $selected_categories ?? []);
+                                            @endphp
+
+                                            <option value="{{ encrypt($test_category->id) }}" {{ $isSelected ? 'selected' : '' }}>
+                                                {{ $test_category->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-item">
@@ -60,7 +70,7 @@
                                             @endphp
 
                                             <option value="{{ $value }}" {{ $isSelected ? 'selected' : '' }}>
-                                                {{ $lab_test->name }}
+                                                {{ $lab_test->name }} : [ price -- ₹ {{ $lab_test->price }} ]
                                             </option>
                                         @endforeach
                                     </select>
@@ -182,60 +192,80 @@
                 });
             });
 
-            // let debounceTimer;
             //Get Category Linked Lab Tests
-            // $('#selectCategory').on('change', function(e) {
-            //     clearTimeout(debounceTimer); // Clear previous timer
-            //     $('#loadingIndicator').show();
-            //     $('#package_amount').val(''); //Clear package amount
-            //     $('#package_discounted_amount').val('');
-            //     $('#package_discount').val('');
+            let debounceTimer;
 
-            //     const labTestSelect = $('#selectLabTest');
-            //     labTestSelect.empty(); // Clear previous options
-            //     labTestSelect.append('<option value="" >Choose</option>');
+            $('#selectCategory').on('change', function(e) {
+                clearTimeout(debounceTimer);
+                $('#loadingIndicator').show();
 
+                // Reset amounts
+                $('#package_amount').val('');
+                $('#package_discounted_amount').val('');
+                $('#package_discount').val('');
 
-            //     debounceTimer = setTimeout(() => {
-            //         const category_id = e.target.value;
-            //         if (!category_id){
-            //             $('#loadingIndicator').hide();
-            //             return;
-            //         }
-            //         const get_lab_test_by_category_url = `/lab-test-package/lab-test-by-category/${category_id}`;
+                debounceTimer = setTimeout(() => {
+                    const category_ids = $(this).val(); // selected categories
 
-            //         $.ajax({
-            //             url: get_lab_test_by_category_url,
-            //             type: "GET",
-            //             success: function(response) {
-            //                 if (response.success === true) {
-            //                     if (response.data?.length > 0) {
-            //                         response.data.forEach(labTest => {
-            //                             const labTestId = labTest.id;
-            //                             const labTestName = labTest.name || 'Unnamed';
-            //                             const labTestPrice = labTest.price;
-            //                             labTestSelect.append(`<option value="${labTestId}-${labTestPrice}">${labTestName} : [ price -- ₹ ${labTestPrice} ]</option>`);
-            //                         });
-            //                         toastr.success(response.message);
-            //                     } else {
-            //                         labTestSelect.append(`<option value="">No lab test found :( </option>`);
-            //                         toastr.error( 'Oops! No lab test is linked with this category.');
-            //                     }
-            //                 } else {
-            //                     toastr.error(response.message);
-            //                 }
-            //             },
-            //             error: function(xhr, status, error) {
-            //                 if (xhr) {
-            //                     toastr.error('Oops! Something went wrong. Please try again.');
-            //                 }
-            //             },
-            //             complete: function() {
-            //                 $('#loadingIndicator').hide();
-            //             }
-            //         });
-            //     }, 2000);
-            // });
+                    // ✅ Capture selected tests BEFORE clearing
+                    const previouslySelected = $('#selectLabTest').val() || [];
+
+                    const labTestSelect = $('#selectLabTest');
+                    labTestSelect.empty();
+                    labTestSelect.append('<option value="">Choose</option>');
+
+                    if (!category_ids || category_ids.length === 0) {
+                        $('#loadingIndicator').hide();
+                        return;
+                    }
+
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: "{{ route('lab.package.test.get.by.categories') }}",
+                        type: "POST",
+                        data: { category_ids: category_ids },
+                        success: function(response) {
+                            if (response.success === true) {
+                                if (response.data?.length > 0) {
+                                    response.data.forEach(labTest => {
+                                        const labTestId = labTest.id;
+                                        const labTestName = labTest.name || 'Unnamed';
+                                        const labTestPrice = labTest.price;
+                                        const optionValue = `${labTestId}-${labTestPrice}`;
+
+                                        const isSelected = previouslySelected.includes(optionValue) ? 'selected' : '';
+
+                                        labTestSelect.append(
+                                            `<option value="${optionValue}" ${isSelected}>
+                                                ${labTestName} : [ price -- ₹ ${labTestPrice} ]
+                                            </option>`
+                                        );
+                                    });
+
+                                    // ✅ Trigger recalculation after updating options
+                                    labTestSelect.trigger('change');
+
+                                    toastr.success(response.message);
+                                } else {
+                                    labTestSelect.append(`<option value="">No lab test found :( </option>`);
+                                    toastr.error('Oops! No lab test is linked with this category.');
+                                }
+                            } else {
+                                toastr.error(response.message);
+                            }
+                        },
+                        error: function(xhr) {
+                            toastr.error('Oops! Something went wrong. Please try again.');
+                        },
+                        complete: function() {
+                            $('#loadingIndicator').hide();
+                        }
+                    });
+                }, 500);
+            });
+
 
             //Get Selected Lab Test ID and Price
             $('#selectLabTest').on('change', function(e){
