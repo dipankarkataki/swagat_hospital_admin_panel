@@ -9,6 +9,7 @@ use App\Models\LabTestCategory;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class LabTestController extends Controller
@@ -27,6 +28,7 @@ class LabTestController extends Controller
             $validator = Validator::make($request->all(), [
                 'category_id' => 'required',
                 'test_name' => 'required',
+                'uploadCategoryIcon' => 'nullable|file|mimes:png,jpg,jpeg,webp,svg|max:1024',
                 'test_amount' => 'required'
             ]);
 
@@ -34,9 +36,36 @@ class LabTestController extends Controller
                 return $this->error('Oops! Validation Error: '.$validator->errors()->first(), null, 400);
             }else{
                 try{
+
+                    $image_path = null;
+
+                    if ($request->hasFile('uploadCategoryIcon')) {
+                        $file = $request->file('uploadCategoryIcon');
+
+                        if ($file->getClientOriginalExtension() === 'svg') {
+                            // Read SVG contents
+                            $svgContent = file_get_contents($file->getRealPath());
+
+                            // Basic sanitization: remove scripts and inline event handlers
+                            $safeSvg = preg_replace('/<script.*?<\/script>/is', '', $svgContent);
+                            $safeSvg = preg_replace('/on\w+="[^"]*"/i', '', $safeSvg);
+
+                            // Save to storage (public disk)
+                            $filename = 'labTest/category/icon/' . uniqid() . '.svg';
+                            Storage::disk('public')->put($filename, $safeSvg);
+
+                            $image_path = $filename;
+                        } else {
+                            // For other images (png, jpg, jpeg, webp)
+                            $image_path = $file->store('labTest/category/icon', 'public');
+                        }
+                    }
+
+
                     LabTest::create([
                         'lab_test_category_id' => $request->category_id,
                         'name' => $request->test_name,
+                        'icon' => $image_path,
                         'description' => $request->test_desc,
                         'price' => $request->test_amount
                     ]);
@@ -73,6 +102,7 @@ class LabTestController extends Controller
         $validator = Validator::make($request->all(), [
             'category_id' => 'required',
             'test_name' => 'required',
+            'uploadCategoryIcon' => 'nullable|file|mimes:png,jpg,jpeg,webp,svg|max:1024',
             'test_amount' => 'required'
         ]);
 
@@ -80,11 +110,37 @@ class LabTestController extends Controller
             return $this->error('Oops! Validation Error: '.$validator->errors()->first(), null, 400);
         }else{
             try{
+
+                $image_path = null;
+
+                if ($request->hasFile('uploadCategoryIcon')) {
+                    $file = $request->file('uploadCategoryIcon');
+
+                    if ($file->getClientOriginalExtension() === 'svg') {
+                        // Read SVG contents
+                        $svgContent = file_get_contents($file->getRealPath());
+
+                        // Basic sanitization: remove scripts and inline event handlers
+                        $safeSvg = preg_replace('/<script.*?<\/script>/is', '', $svgContent);
+                        $safeSvg = preg_replace('/on\w+="[^"]*"/i', '', $safeSvg);
+
+                        // Save to storage (public disk)
+                        $filename = 'labTest/category/icon/' . uniqid() . '.svg';
+                        Storage::disk('public')->put($filename, $safeSvg);
+
+                        $image_path = $filename;
+                    } else {
+                        // For other images (png, jpg, jpeg, webp)
+                        $image_path = $file->store('labTest/category/icon', 'public');
+                    }
+                }
+
                 $lab_test_id = decrypt($request->lab_test_id);
 
                 LabTest::where('id', $lab_test_id)->update([
                     'lab_test_category_id' => $request->category_id,
                     'name' => $request->test_name,
+                    'icon' => $image_path,
                     'description' => $request->test_desc,
                     'price' => $request->test_amount
                 ]);
