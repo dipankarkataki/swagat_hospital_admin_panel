@@ -81,7 +81,7 @@
                                 <label class="form-label mb-2">Amount</label>
                                 <div class="mb-4">
                                     <input class="input" type="text" name="test_amount" id="test_amount" placeholder="e.g. 999.23" value="{{$lab_test_details->price}}" required>
-                                    <span class="ml-1 text-xs">Maximum allowed amount in rupees ₹ 9999.99</span>
+                                    <span class="ml-1 text-xs">Maximum allowed amount in rupees ₹ 999999.99</span>
                                 </div>
                             </div>
                             <div class="form-item">
@@ -154,24 +154,24 @@
             const paste = (e.clipboardData || window.clipboardData).getData("text");
             if (!/^\d{0,4}(\.\d{0,2})?$/.test(paste)) {
                 e.preventDefault();
-                toastr.error("Only numeric values up to 9999.99 allowed");
+                toastr.error("Only numeric values up to 999999.99 allowed");
             }
             });
 
             // Validate after user stops typing
             amountInput.addEventListener("input", () => {
-            clearTimeout(typingTimer);
+                clearTimeout(typingTimer);
 
-            typingTimer = setTimeout(() => {
-                const value = amountInput.value.trim();
-                const regex = /^\d{1,4}(\.\d{1,2})?$/;
+                typingTimer = setTimeout(() => {
+                    const value = amountInput.value.trim();
+                    const regex = /^\d{1,6}(\.\d{1,2})?$/;
 
-                if (!regex.test(value)) {
-                toastr.error("Invalid amount. Maximum 9999.99 allowed");
-                } else {
-                toastr.clear();
-                }
-            }, 500); // delay after user stops typing
+                    if (!regex.test(value)) {
+                    toastr.error("Invalid amount. Maximum 999999.99 allowed");
+                    } else {
+                    toastr.clear();
+                    }
+                }, 500); // delay after user stops typing
             });
 
 

@@ -137,10 +137,12 @@ class LabTestController extends Controller
 
                 $lab_test_id = decrypt($request->lab_test_id);
 
+                $get_lab_test = LabTest::where('id', $lab_test_id)->first();
+
                 LabTest::where('id', $lab_test_id)->update([
                     'lab_test_category_id' => $request->category_id,
                     'name' => $request->test_name,
-                    'icon' => $image_path,
+                    'icon' => $image_path ?? $get_lab_test->icon,
                     'description' => $request->test_desc,
                     'price' => $request->test_amount
                 ]);

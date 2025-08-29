@@ -144,10 +144,12 @@ class LabTestCategoryController extends Controller
                     return $this->error('Oops! A similar category already exists.', null, 400);
                 }
 
+                $get_lab_test_category = LabTestCategory::where('id', $category_id)->first();
+
                 LabTestCategory::where('id', $category_id)->update([
                     'name' => $request->category_name,
                     'slug' => $normalizedSlug,
-                    'icon' => $image_path
+                    'icon' => $image_path ?? $get_lab_test_category->icon
                 ]);
                 return $this->success('Great! Lab test category updated successfully', null, 200);
             }catch(\Exception $e){

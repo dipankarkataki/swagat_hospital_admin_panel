@@ -36,7 +36,7 @@
                                     <input class="input" type="text" name="test_name" placeholder="e.g HBsAg - Quantitative (CMIA)" required>
                                 </div>
                             </div>
-                             <div class="form-item">
+                            <div class="form-item">
                                 <label class="form-label mb-2">Lab Test Icon</label>
                                 <div class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]">
                                     <div>

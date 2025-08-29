@@ -77,6 +77,33 @@
                                 </div>
                             </div>
                             <div class="form-item">
+                                <label class="form-label mb-2">Package Icon</label>
+                                <div class="upload upload-draggable hover:border-primary-600 cursor-pointer h-[300px]">
+                                    <div>
+                                        <input class="upload-input draggable" id="uploadCategoryIcon" name="uploadCategoryIcon" type="file">
+                                    </div>
+                                    <div class="text-center">
+                                        @if ($package_details->icon != null)
+                                            <div class="flex flex-row justify-center items-center">
+                                                <img id="imageFromDB" src="{{ asset('storage/'.$package_details->icon) }}" alt="Image Preview" style="max-width: 350px; max-height:200px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                            </div>
+                                        @else
+                                            <svg id="uploadImgSvg" class="mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                            </svg>
+                                        @endif
+                                        <div class="flex flex-row justify-center items-center">
+                                            <img id="imagePreview" src="" alt="Image Preview" style="display:none; max-width: 150px; margin-top: 10px; margin-bottom:10px; border-radius: 5px;">
+                                        </div>
+                                        <p class="font-semibold">
+                                            <span class="text-gray-800 dark:text-white">Drop your image here, or</span>
+                                            <span class="text-blue-500">browse</span>
+                                        </p>
+                                        <p class="mt-1 opacity-60 dark:text-white">Support: jpeg, png, webp, svg</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-item">
                                 <label class="form-label mb-2">Description *</label>
                                 <div>
                                     <textarea class="input input-textarea" name="package_desc" placeholder="Type test description here..." maxlength="200" required>{{$package_details->description}}</textarea>
@@ -309,11 +336,51 @@
             });
 
 
-            //Create Lab Test Package
+            // Preview Picture Before Upload
+            $('#uploadCategoryIcon').on('change', function (e) {
+                const file = this.files[0];
+                if (!file) return;
+
+                const allowedTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'];
+                const MAX_IMAGE_SIZE = 1024 * 1024; // 1MB
+
+                if (!allowedTypes.includes(file.type)) {
+                    toastr.error('Oops! Not a valid image format (allowed: PNG, JPG, JPEG, WEBP, SVG)');
+                    this.value = ''; // reset input
+                    return;
+                }
+
+                if (file.size > MAX_IMAGE_SIZE) {
+                    toastr.error('Image size should not exceed 1MB.');
+                    this.value = ''; // reset input
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    $('#uploadImgSvg').hide();
+
+                   if (file.type === 'image/svg+xml') {
+                        $('#svgPreview').hide();
+                        $('#imagePreview').attr('src', event.target.result).show();
+                    } else {
+                        $('#svgPreview').hide();
+                        $('#imagePreview').attr('src', event.target.result).show();
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+
+
+            //Edit Lab Test Package
             $('#editLabTestPackageForm').on('submit', function(e){
                 e.preventDefault();
 
                 const formData = new FormData(this);
+                const file = $('#uploadCategoryIcon')[0].files[0];
+                if (file) {
+                    formData.append('uploadCategoryIcon', file);
+                }
 
                 const selectedValues = $('#selectLabTest').val();
                 const selectedTestIDs = [];

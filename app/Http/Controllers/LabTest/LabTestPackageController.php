@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\LabTestPackageCategory;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class LabTestPackageController extends Controller
@@ -30,6 +31,7 @@ class LabTestPackageController extends Controller
                 'category_id'   => 'required|array',
                 'package_name'  => 'required|string',
                 'lab_test_id'   => 'required|array',
+                'uploadCategoryIcon' => 'nullable|file|mimes:png,jpg,jpeg,webp,svg|max:1024',
                 'package_desc'  => 'required|string',
                 'package_amount'=> 'required|numeric',
             ]);
@@ -53,8 +55,33 @@ class LabTestPackageController extends Controller
                         return $this->error('Invalid category IDs received.', null, 400);
                     }
 
+                    $image_path = null;
+
+                    if ($request->hasFile('uploadCategoryIcon')) {
+                        $file = $request->file('uploadCategoryIcon');
+
+                        if ($file->getClientOriginalExtension() === 'svg') {
+                            // Read SVG contents
+                            $svgContent = file_get_contents($file->getRealPath());
+
+                            // Basic sanitization: remove scripts and inline event handlers
+                            $safeSvg = preg_replace('/<script.*?<\/script>/is', '', $svgContent);
+                            $safeSvg = preg_replace('/on\w+="[^"]*"/i', '', $safeSvg);
+
+                            // Save to storage (public disk)
+                            $filename = 'labTest/category/icon/' . uniqid() . '.svg';
+                            Storage::disk('public')->put($filename, $safeSvg);
+
+                            $image_path = $filename;
+                        } else {
+                            // For other images (png, jpg, jpeg, webp)
+                            $image_path = $file->store('labTest/category/icon', 'public');
+                        }
+                    }
+
                     $package = LabTestPackage::create([
                         'name' => $request->package_name,
+                        'icon' => $image_path,
                         'description' => $request->package_desc,
                         'lab_test_id' => json_encode($request->lab_test_id),
                         'full_price' => $request->package_amount,
@@ -153,6 +180,7 @@ class LabTestPackageController extends Controller
             'category_id'       => 'required|array',
             'package_name'      => 'required|string',
             'lab_test_id'       => 'required|array',
+            'uploadCategoryIcon' => 'nullable|file|mimes:png,jpg,jpeg,webp,svg|max:1024',
             'package_desc'      => 'required|string',
             'package_amount'    => 'required|numeric',
         ]);
@@ -177,11 +205,36 @@ class LabTestPackageController extends Controller
                     return $this->error('Invalid category IDs received.', null, 400);
                 }
 
+                $image_path = null;
+
+                if ($request->hasFile('uploadCategoryIcon')) {
+                    $file = $request->file('uploadCategoryIcon');
+
+                    if ($file->getClientOriginalExtension() === 'svg') {
+                        // Read SVG contents
+                        $svgContent = file_get_contents($file->getRealPath());
+
+                        // Basic sanitization: remove scripts and inline event handlers
+                        $safeSvg = preg_replace('/<script.*?<\/script>/is', '', $svgContent);
+                        $safeSvg = preg_replace('/on\w+="[^"]*"/i', '', $safeSvg);
+
+                        // Save to storage (public disk)
+                        $filename = 'labTest/category/icon/' . uniqid() . '.svg';
+                        Storage::disk('public')->put($filename, $safeSvg);
+
+                        $image_path = $filename;
+                    } else {
+                        // For other images (png, jpg, jpeg, webp)
+                        $image_path = $file->store('labTest/category/icon', 'public');
+                    }
+                }
+
                 $package = LabTestPackage::findOrFail($package_id);
 
                 // Update package
                 $package->update([
                     'name'              => $request->package_name,
+                    'icon'              => $image_path ?? $package->icon,
                     'description'       => $request->package_desc,
                     'lab_test_id'       => json_encode($request->lab_test_id),
                     'full_price'        => $request->package_amount,
