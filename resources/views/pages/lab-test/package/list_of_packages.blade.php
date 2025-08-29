@@ -71,7 +71,7 @@
                                                 <div class="flex flex-wrap gap-2">
                                                     @foreach($item->categories as $category)
                                                         <span class="px-2 py-1 rounded-full text-white text-xs font-semibold {{ $loop->index % 2 == 0 ? 'bg-indigo-500' : 'bg-emerald-500' }}">
-                                                            {{ $category->name }}
+                                                            {{ \Str::limit($category->name, 50) ?? 'N/A'}}
                                                         </span>
                                                     @endforeach
                                                 </div>
