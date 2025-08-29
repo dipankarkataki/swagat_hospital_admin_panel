@@ -46,8 +46,15 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                <div class="flex items-center gap-2">
-                                                    <span class="font-semibold">{{ $item->name }}</span>
+                                                <div class="flex items-center">
+                                                    <span class="avatar avatar-circle w-[50px]" data-avatar-size="50">
+                                                        @if ($item->icon != null)
+                                                            <img class="avatar-img avatar-circle" src="{{ asset('storage/' . $item->icon) }}" loading="lazy">
+                                                        @else
+                                                            <img class="avatar-img avatar-circle" src="{{ asset('assets/img/img-placeholder.png') }}" loading="lazy">
+                                                        @endif
+                                                    </span>
+                                                    <a class="hover:text-primary-600 ml-2 rtl:mr-2 font-semibold">{{ $item->name }}</a>
                                                 </div>
                                             </td>
                                             <td>

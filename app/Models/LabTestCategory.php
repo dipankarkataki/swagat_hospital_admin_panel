@@ -10,7 +10,7 @@ class LabTestCategory extends Model
     use SoftDeletes;
 
     protected $table = 'lab_test_categories';
-    protected $fillable = [ 'name', 'slug', 'status' ];
+    protected $fillable = [ 'name', 'slug', 'icon', 'status' ];
 
     // Many-to-many with packages
     public function packages()

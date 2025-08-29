@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\LabTest;
 
-use App\Http\Controllers\Controller;
 use App\Models\LabTest;
-use App\Models\LabTestCategory;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use App\Models\LabTestCategory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class LabTestCategoryController extends Controller
@@ -29,13 +30,38 @@ class LabTestCategoryController extends Controller
             }
         }else{
             $validator = Validator::make($request->all(), [
-                'category_name' => 'required|string|max:30'
+                'category_name' => 'required|string|max:30',
+                'uploadCategoryIcon' => 'nullable|file|mimes:png,jpg,jpeg,webp,svg|max:1024',
             ]);
 
             if($validator->fails()){
                 return $this->error('Oops! Validation Error: '.$validator->errors()->first(), null, 400);
             }else{
                 try{
+                    $image_path = null;
+
+                    if ($request->hasFile('uploadCategoryIcon')) {
+                        $file = $request->file('uploadCategoryIcon');
+
+                        if ($file->getClientOriginalExtension() === 'svg') {
+                            // Read SVG contents
+                            $svgContent = file_get_contents($file->getRealPath());
+
+                            // Basic sanitization: remove scripts and inline event handlers
+                            $safeSvg = preg_replace('/<script.*?<\/script>/is', '', $svgContent);
+                            $safeSvg = preg_replace('/on\w+="[^"]*"/i', '', $safeSvg);
+
+                            // Save to storage (public disk)
+                            $filename = 'labTest/category/icon/' . uniqid() . '.svg';
+                            Storage::disk('public')->put($filename, $safeSvg);
+
+                            $image_path = $filename;
+                        } else {
+                            // For other images (png, jpg, jpeg, webp)
+                            $image_path = $file->store('labTest/category/icon', 'public');
+                        }
+                    }
+
                     $normalizedSlug = $this->normalizeCategoryName($request->category_name);
                     $category_exists = LabTestCategory::where('slug', $normalizedSlug)->exists();
                     if ($category_exists) {
@@ -44,6 +70,7 @@ class LabTestCategoryController extends Controller
                     LabTestCategory::create([
                         'name' => $request->category_name,
                         'slug' => $normalizedSlug,
+                        'icon' => $image_path
                     ]);
                     return $this->success('Great! Lab test category added successfully', null, 201);
                 }catch(\Exception $e){
@@ -77,7 +104,8 @@ class LabTestCategoryController extends Controller
     public function editLabTestCategory(Request $request){
         $validator = Validator::make($request->all(), [
             'category_id' => 'required',
-            'category_name' => 'required|string|max:30'
+            'category_name' => 'required|string|max:30',
+            'uploadCategoryIcon' => 'nullable|file|mimes:png,jpg,jpeg,webp,svg|max:1024',
         ]);
 
         if($validator->fails()){
@@ -86,8 +114,32 @@ class LabTestCategoryController extends Controller
             try{
                 $category_id = decrypt($request->category_id);
 
+                $image_path = null;
+
+                if ($request->hasFile('uploadCategoryIcon')) {
+                    $file = $request->file('uploadCategoryIcon');
+
+                    if ($file->getClientOriginalExtension() === 'svg') {
+                        // Read SVG contents
+                        $svgContent = file_get_contents($file->getRealPath());
+
+                        // Basic sanitization: remove scripts and inline event handlers
+                        $safeSvg = preg_replace('/<script.*?<\/script>/is', '', $svgContent);
+                        $safeSvg = preg_replace('/on\w+="[^"]*"/i', '', $safeSvg);
+
+                        // Save to storage (public disk)
+                        $filename = 'labTest/category/icon/' . uniqid() . '.svg';
+                        Storage::disk('public')->put($filename, $safeSvg);
+
+                        $image_path = $filename;
+                    } else {
+                        // For other images (png, jpg, jpeg, webp)
+                        $image_path = $file->store('labTest/category/icon', 'public');
+                    }
+                }
+
                 $normalizedSlug = $this->normalizeCategoryName($request->category_name);
-                $category_exists = LabTestCategory::where('slug', $normalizedSlug)->exists();
+                $category_exists = LabTestCategory::where('slug', $normalizedSlug)->where('id', '!=', $category_id)->exists();
                 if ($category_exists) {
                     return $this->error('Oops! A similar category already exists.', null, 400);
                 }
@@ -95,6 +147,7 @@ class LabTestCategoryController extends Controller
                 LabTestCategory::where('id', $category_id)->update([
                     'name' => $request->category_name,
                     'slug' => $normalizedSlug,
+                    'icon' => $image_path
                 ]);
                 return $this->success('Great! Lab test category updated successfully', null, 200);
             }catch(\Exception $e){

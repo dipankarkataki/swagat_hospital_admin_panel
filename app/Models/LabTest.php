@@ -11,7 +11,7 @@ class LabTest extends Model
 
     protected $table = 'lab_tests';
     protected $fillable = [
-        'lab_test_category_id', 'name', 'description', 'price', 'status'
+        'lab_test_category_id', 'name', 'icon', 'description', 'price', 'status'
     ];
 
     public function labTestCategory(){
