@@ -136,7 +136,7 @@
                                     <th>Name</th>
                                     <th>Status</th>
                                     <th>Email</th>
-                                    <th>Created Time</th>
+                                    <th>Appointment Date & Time</th>
                                 </tr>
                             </thead>
                             <tbody>
