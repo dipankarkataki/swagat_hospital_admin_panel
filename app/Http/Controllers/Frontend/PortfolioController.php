@@ -34,4 +34,14 @@ class PortfolioController extends Controller
             return $this->error('Oops! Something went wrong. Failed to fetch doctors portfolio.', null, 500);
         }
     }
+
+    public function getAllLinkedHospitals(){
+        try{
+            $linked_portfolios = PortfolioLinkedHospital::where('status', 1)->latest()->get();
+            return $this->success('Linked Portfolios fetched successfully', $linked_portfolios, 200);
+        }catch(\Exception $e){
+            Log::error('Error occurred at Frontend/getAllLinkedHospitals function: ' . $e->getMessage());
+            return $this->error('Oops! Something went wrong. Failed to fetch all linked portfolios.', null, 500);
+        }
+    }
 }

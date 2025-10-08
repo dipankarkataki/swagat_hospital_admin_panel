@@ -26,6 +26,7 @@ Route::group(['prefix' => 'hospital'], function(){
 Route::group(['prefix' => 'portfolio'], function(){
     Route::get('get-by-linked-hospital/{id}', [PortfolioController::class, 'getByLinkedHospital']);
     Route::get('get-by-id/{id}', [PortfolioController::class, 'getPortfolioById']);
+    Route::get('get-all-linked-hospitals', [PortfolioController::class, 'getAllLinkedHospitals']);
 });
 
 Route::group(['prefix' => 'department'], function(){
