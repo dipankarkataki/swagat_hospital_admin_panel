@@ -36,4 +36,8 @@ class Portfolio extends Model
     public function recentEvents(){
         return $this->hasMany(PortfolioRecentEvents::class, 'portfolio_id', 'id');
     }
+
+    public function reviews(){
+        return $this->hasMany(PortfolioReview::class, 'portfolio_id', 'id')->latest();
+    }
 }

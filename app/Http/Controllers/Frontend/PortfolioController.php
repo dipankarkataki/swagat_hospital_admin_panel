@@ -27,7 +27,7 @@ class PortfolioController extends Controller
 
     public function getPortfolioById($id){
         try{
-            $portfolio_details = Portfolio::with('hospitals', 'departments', 'opdTimings', 'recentEvents')->where('id', $id)->first();
+            $portfolio_details = Portfolio::with('hospitals', 'departments', 'opdTimings', 'recentEvents', 'reviews')->where('id', $id)->first();
             return $this->success('Portfolio fetched successfully', $portfolio_details, 200);
         }catch(\Exception $e){
             Log::error('Error occurred at Frontend/getPortfolioById function: ' . $e->getMessage());

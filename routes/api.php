@@ -11,6 +11,7 @@ use App\Http\Controllers\Frontend\Payment\LabTest\LabTestPaymentController;
 use App\Http\Controllers\Frontend\PhoneNumberController;
 use App\Http\Controllers\Frontend\PopupManagerController;
 use App\Http\Controllers\Frontend\PortfolioController;
+use App\Http\Controllers\Portfolio\Review\PortfolioReviewController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -27,6 +28,9 @@ Route::group(['prefix' => 'portfolio'], function(){
     Route::get('get-by-linked-hospital/{id}', [PortfolioController::class, 'getByLinkedHospital']);
     Route::get('get-by-id/{id}', [PortfolioController::class, 'getPortfolioById']);
     Route::get('get-all-linked-hospitals', [PortfolioController::class, 'getAllLinkedHospitals']);
+    Route::group(['prefix' => 'review'], function(){
+        Route::post('add-reviews', [PortfolioReviewController::class, 'addReviews']);
+    });
 });
 
 Route::group(['prefix' => 'department'], function(){
