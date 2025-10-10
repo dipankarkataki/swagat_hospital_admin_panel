@@ -10,6 +10,7 @@ use App\Models\Department;
 use App\Models\Hospital;
 use App\Models\OpdTiming;
 use App\Models\PortfolioLinkedHospital;
+use App\Models\PortfolioReview;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -326,6 +327,36 @@ class PortfolioController extends Controller
             DB::rollBack();
             Log::error('Error occurred at PortfolioController@updateLinkedHospitalStatus: ' . $e->getMessage());
             return $this->error('Oops! Something went wrong', null, 500);
+        }
+    }
+
+    public function getListOfReviews(){
+        try{
+            // $portfolio_reviews = Portfolio::with('reviews', 'departments')->latest()->get();
+            $portfolio_reviews = PortfolioReview::with('docProfile')->latest()->get();
+            return view('pages.portfolio.reviews.list_of_reviews')->with(['portfolio_reviews' => $portfolio_reviews]);
+        }catch(\Exception $e){
+            Log::error('Error occurred at portfolio review function: ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Something went wrong. Please try later.'], 'exception');
+        }
+    }
+
+    public function deleteReviews($id){
+        try{
+            $portfolio_id = decrypt($id);
+            $portfolio = PortfolioReview::find($portfolio_id);
+            if($portfolio){
+                $portfolio->delete();
+                Session::flash('success', 'Review deleted successfully.');
+                return redirect()->route('portfolio.list.reviews');
+            }else{
+                Session::flash('exception', 'Portfolio review not found.');
+                return redirect()->route('portfolio.list.reviews');
+            }
+        }catch(\Exception $e){
+            Log::error('Error occurred at delete review function: ' . $e->getMessage());
+            Session::flash('exception', 'Something went wrong. Please try later.');
+            return redirect()->route('portfolio.list.reviews');
         }
     }
 }

@@ -41,6 +41,9 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('delete-portfolio/{id}', [PortfolioController::class, 'deletePortfolio'])->name('portfolio.delete');
         Route::post('update-portfolio-status', [PortfolioController::class, 'updatePortfolioStatus'])->name('portfolio.status.update');
         Route::post('update-appointment-status', [PortfolioController::class, 'updateAppointmentStatus'])->name('appointment.status.update');
+
+        Route::get('reviews', [PortfolioController::class, 'getListOfReviews'])->name('portfolio.list.reviews');
+        Route::get('delete-review/{id}', [PortfolioController::class, 'deleteReviews'])->name('portfolio.reviews.delete');
     });
 
     Route::group(['prefix' => 'link-hospital'], function(){

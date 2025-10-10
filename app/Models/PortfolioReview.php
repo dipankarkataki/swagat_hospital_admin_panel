@@ -10,4 +10,8 @@ class PortfolioReview extends Model
     protected $fillable = [
         'portfolio_id', 'name', 'review', 'rating', 'status'
     ];
+
+    public function docProfile(){
+        return $this->belongsTo(Portfolio::class, 'portfolio_id', 'id');
+    }
 }

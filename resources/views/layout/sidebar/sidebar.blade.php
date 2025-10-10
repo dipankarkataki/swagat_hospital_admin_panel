@@ -55,6 +55,11 @@
                                     <span>Create New</span>
                                 </a>
                             </li>
+                            <li data-menu-item="modern-project-list" class="{{ request()->routeIs('portfolio.list.reviews') ? 'menu-item menu-item-active' : 'menu-item' }}">
+                                <a class="h-full w-full flex items-center" href="{{ route('portfolio.list.reviews') }}">
+                                    <span>Reviews</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="{{ request()->segment(1) === 'link-hospital' ? 'menu-collapse menu-collapse-item-active' : 'menu-collapse' }}">
