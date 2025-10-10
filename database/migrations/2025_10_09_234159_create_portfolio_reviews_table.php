@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('portfolio_reviews', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('portfolio_id');
+            $table->string('name');
             $table->text('review');
             $table->integer('rating');
             $table->boolean('status')->default(1);
